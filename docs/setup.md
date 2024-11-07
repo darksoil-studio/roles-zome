@@ -48,7 +48,7 @@ And then add the `<roles-context>` element in your html:
 
 4. Attach the `rolesStore` to the `<roles-context>` element:
 
-- Go to [this page](https://holochain-open-dev.github.io/reusable-modules/frontend/frameworks/), select the framework you are using, and follow its example.
+- Go to [this page](https://darksoil.studio/tnesh-stack/integrating-with-frameworks/), select the framework you are using, and follow its example.
 
 You need to set the `store` property of it to your already instantiated `RolesStore` object:
 
@@ -84,8 +84,9 @@ OR
 const contextElement = document.querySelector("roles-context");
 contextElement.store = store;
 ```
-
-> You can read more about the context pattern [here](https://holochain-open-dev.github.io/reusable-modules/frontend/using/#context).
+k f
+> [!NOTE]
+> You can read more about the context pattern [here](https://darksoil.studio/tnesh-stack/guides/custom-elements#context).
 
 5. [Choose which elements you need](?path=/docs/frontend-elements) and import them like this:
 
