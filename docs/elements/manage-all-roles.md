@@ -27,11 +27,6 @@ Here is an interactive demo of the element:
 <element-demo>
 </element-demo>
 
-```mermaid
-graph TD;
-  A-->B
-```
-
 <script setup>
 import { onMounted } from "vue";
 import { ProfilesClient, ProfilesStore } from '@darksoil-studio/profiles-zome';
