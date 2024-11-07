@@ -90,10 +90,14 @@ export default withMermaid({
 			// Synchronize the vitepress dark/light theme with the shoelace mode
 			`
   function syncTheme() {
-      const isDark = document.documentElement.classList.contains('dark');
-      const isShoelaceDark = document.documentElement.classList.contains('sl-theme-dark');
-      if (isDark && !isShoelaceDark) document.documentElement.classList = "dark sl-theme-dark";
-      if (!isDark && isShoelaceDark) document.documentElement.classList = "";
+    const isDark = document.documentElement.classList.contains('dark');
+    const isShoelaceDark = document.body.classList.contains('sl-theme-dark');
+    if (isDark && !isShoelaceDark) {
+      document.body.classList = "sl-theme-dark";
+    }
+    if (!isDark && isShoelaceDark) {
+    	document.body.classList = "";
+    }
   }
   const attrObserver = new MutationObserver((mutations) => {
     mutations.forEach(mu => {
