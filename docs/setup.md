@@ -113,5 +113,5 @@ That's it! You have now integrated both the backend and the frontend for the pro
 
 # Example
 
-You can see a full working example of the UI working in [here](https://github.com/darksoil-studio/roles/blob/main/ui/demo/index.html).
+You can see a full working example of the UI working in [here](https://github.com/darksoil-studio/roles-zome/blob/main/ui/demo/index.html).
 
