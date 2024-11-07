@@ -73,6 +73,7 @@ rec {
         devShells.default = pkgs.mkShell {
           inputsFrom = [
             inputs'.tnesh-stack.devShells.synchronized-pnpm
+            inputs'.p2p-shipyard.devShells.holochainTauriDev
             inputs'.holonix.devShells.default
           ];
 
