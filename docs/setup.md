@@ -1,7 +1,7 @@
 # Setup
 
 > [!WARNING]
-> This guide assumes that you have scaffolded a hApp with the [holochain-open-dev template](https://github.com/holochain-open-dev/templates).
+> This guide assumes that you have scaffolded a hApp with the [TNESH stack template](https://darksoil.studio/tnesh-stack).
 
 1. Run this to scaffold this zome in your hApp:
 
