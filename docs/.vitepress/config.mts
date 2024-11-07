@@ -16,7 +16,7 @@ export default withMermaid({
 			include: ['mermaid', 'dayjs', '@braintree/sanitize-url'],
 		},
 	},
-	base: '/roles',
+	base: '/roles-zome',
 	title: '@darksoil-studio/roles-zome',
 	description: 'Roles zome for holochain apps',
 	srcExclude: ['public/**/*'],
