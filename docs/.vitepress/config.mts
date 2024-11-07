@@ -75,7 +75,7 @@ export default withMermaid({
 		socialLinks: [
 			{
 				icon: 'github',
-				link: 'https://github.com/darksoil-studio/roles',
+				link: 'https://github.com/darksoil-studio/roles-zome',
 			},
 		],
 		search: {
