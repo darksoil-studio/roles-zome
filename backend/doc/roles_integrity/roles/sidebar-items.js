@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["all_roles_path","role_base_address","role_path","validate_create_link_roles_path","validate_delete_link_roles_path"]};

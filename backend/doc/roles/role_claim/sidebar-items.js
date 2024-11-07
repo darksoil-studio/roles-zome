@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["assign_my_roles_to_linked_devices_which_havent_claimed_it_yet","claim_roles_assigned_to_me","create_role_claim","get_assignee_to_role_links_for","query_undeleted_role_claims","query_undeleted_role_claims_for_role"]};

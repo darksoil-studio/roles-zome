@@ -1,0 +1,10 @@
+/home/runner/work/roles-zome/roles-zome/docs/public/backend/release/deps/libsubtle_encoding-6c44e7415084bade.rmeta: /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/subtle-encoding-0.5.1/src/lib.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/subtle-encoding-0.5.1/src/error.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/subtle-encoding-0.5.1/src/base64.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/subtle-encoding-0.5.1/src/encoding.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/subtle-encoding-0.5.1/src/hex.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/subtle-encoding-0.5.1/src/identity.rs
+
+/home/runner/work/roles-zome/roles-zome/docs/public/backend/release/deps/subtle_encoding-6c44e7415084bade.d: /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/subtle-encoding-0.5.1/src/lib.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/subtle-encoding-0.5.1/src/error.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/subtle-encoding-0.5.1/src/base64.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/subtle-encoding-0.5.1/src/encoding.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/subtle-encoding-0.5.1/src/hex.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/subtle-encoding-0.5.1/src/identity.rs
+
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/subtle-encoding-0.5.1/src/lib.rs:
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/subtle-encoding-0.5.1/src/error.rs:
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/subtle-encoding-0.5.1/src/base64.rs:
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/subtle-encoding-0.5.1/src/encoding.rs:
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/subtle-encoding-0.5.1/src/hex.rs:
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/subtle-encoding-0.5.1/src/identity.rs:

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["AssignmentMode"],"fn":["validate_create_link_assignee_to_role","validate_delete_link_assignee_to_role"],"struct":["AssigneeToRoleLinkTag"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["ADMIN_ROLE"],"fn":["validate_agent_was_admin_at_the_time"]};

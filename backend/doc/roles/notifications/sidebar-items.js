@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["RolesNotification"],"fn":["notifications_zome_name","send_roles_notification"],"struct":["RolesNotifications"]};

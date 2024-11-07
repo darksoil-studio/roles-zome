@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["call_local_zome","get_all_my_agents","get_linked_devices_for","linked_devices_zome_name","query_my_linked_devices","reassign_roles_to_linked_device"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["validate_create_all_role_claims_deleted_proof","validate_delete_all_role_claims_deleted_proof","validate_update_all_role_claims_deleted_proof"],"struct":["AllRoleClaimsDeletedProof"]};

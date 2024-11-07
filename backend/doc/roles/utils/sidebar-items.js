@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["create_link_relaxed","create_link_to_link","create_relaxed","delete_link_relaxed","delete_relaxed","ensure_relaxed"]};

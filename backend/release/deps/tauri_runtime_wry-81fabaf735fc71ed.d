@@ -1,0 +1,9 @@
+/home/runner/work/roles-zome/roles-zome/docs/public/backend/release/deps/libtauri_runtime_wry-81fabaf735fc71ed.rmeta: /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tauri-runtime-wry-2.1.2/src/lib.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tauri-runtime-wry-2.1.2/src/undecorated_resizing.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tauri-runtime-wry-2.1.2/src/webview.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tauri-runtime-wry-2.1.2/src/window/mod.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tauri-runtime-wry-2.1.2/src/window/linux.rs
+
+/home/runner/work/roles-zome/roles-zome/docs/public/backend/release/deps/tauri_runtime_wry-81fabaf735fc71ed.d: /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tauri-runtime-wry-2.1.2/src/lib.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tauri-runtime-wry-2.1.2/src/undecorated_resizing.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tauri-runtime-wry-2.1.2/src/webview.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tauri-runtime-wry-2.1.2/src/window/mod.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tauri-runtime-wry-2.1.2/src/window/linux.rs
+
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tauri-runtime-wry-2.1.2/src/lib.rs:
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tauri-runtime-wry-2.1.2/src/undecorated_resizing.rs:
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tauri-runtime-wry-2.1.2/src/webview.rs:
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tauri-runtime-wry-2.1.2/src/window/mod.rs:
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tauri-runtime-wry-2.1.2/src/window/linux.rs:

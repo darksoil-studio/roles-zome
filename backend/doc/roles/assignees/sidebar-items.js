@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["assign_role","get_all_roles","get_all_roles_strings","get_assignees_for_role","get_roles_for_assignee"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["RolesRemoteSignal"],"fn":["recv_remote_signal"]};

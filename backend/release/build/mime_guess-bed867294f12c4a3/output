@@ -1,0 +1,1 @@
+cargo:rustc-env=MIME_TYPES_GENERATED_PATH=/home/runner/work/roles-zome/roles-zome/docs/public/backend/release/build/mime_guess-bed867294f12c4a3/out/mime_types_generated.rs
