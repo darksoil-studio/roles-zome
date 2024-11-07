@@ -1,0 +1,58 @@
+{
+  "name": "@darksoil-studio/roles-zome",
+  "version": "0.1.0",
+  "scripts": {
+    "start": "vite --clearScreen false --port $UI_PORT",
+    "build": "pnpm lint && tsc && pnpm analyze",
+    "lint": "eslint src && prettier \"src/**/*.ts\" --check --ignore-path .gitignore",
+    "format": "eslint src --fix && prettier \"src/**/*.ts\" --write --ignore-path .gitignore",
+    "localize:extract": "lit-localize extract",
+    "localize:build": "lit-localize build",
+    "analyze": "cem analyze --litelement --exclude dist",
+    "prepare": "tsc && pnpm localize:build && pnpm analyze"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "locales",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/darksoil-studio/roles.git"
+  },
+  "exports": {
+    ".": "./dist/index.js",
+    "./dist/*": "./dist/*",
+    "./locales/*": "./locales/*"
+  },
+  "dependencies": {
+    "@darksoil-studio/linked-devices-zome": "github:darksoil-studio/linked-devices#9248c9af2b0449f3467fe3859377c10bf2840466&path:ui",
+    "@darksoil-studio/notifications-zome": "github:darksoil-studio/notifications-zome#d88ee0cc0a367d177596faf2a8a09f8eba3c9ab8&path:ui",
+    "@darksoil-studio/profiles-zome": "github:darksoil-studio/profiles-zome#7e9a80cde206f43fb1dde5856be310c17bab9e65&path:ui",
+    "@holochain/client": "^0.17.1",
+    "@tnesh-stack/elements": "^0.300.0",
+    "@tnesh-stack/signals": "^0.300.0",
+    "@tnesh-stack/utils": "^0.300.0",
+    "@lit/context": "^1.0.0",
+    "@lit/localize": "^0.12.0",
+    "@mdi/js": "^7.2.0",
+    "@msgpack/msgpack": "^2.8.0",
+    "@shoelace-style/shoelace": "^2.11.0",
+    "lit": "^3.0.0"
+  },
+  "devDependencies": {
+    "@custom-elements-manifest/analyzer": "^0.9.4",
+    "@lit/localize-tools": "^0.6.3",
+    "typescript": "^5.4.5",
+    "tslib": "^2.6.2",
+    "vite": "^4.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "customElements": "custom-elements.json",
+  "type": "module"
+}

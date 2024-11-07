@@ -1,0 +1,15 @@
+[package]
+name = "roles_integrity"
+version = "0.0.1"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+name = "roles_integrity"
+
+[dependencies]
+hdi = { workspace = true }
+
+serde = { workspace = true }
+roles_types = {path ="../../../crates/roles_types"}
+linked_devices_types = { git = "https://github.com/darksoil-studio/linked-devices", branch = "main" }
