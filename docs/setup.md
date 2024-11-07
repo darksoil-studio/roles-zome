@@ -6,7 +6,7 @@
 1. Run this to scaffold this zome in your hApp:
 
 ```bash
-nix run github:darksoil-studio/roles#scaffold
+nix run github:darksoil-studio/roles-zome/main-0.3#scaffold
 ```
 
 This will do the following:
