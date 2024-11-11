@@ -13,7 +13,7 @@ import '@darksoil-studio/roles-zome/dist/elements/roles-for-agent.js'
 2. Use it in the html side of your web-app like this:
 
 ```html
-<roles-for-agent>
+<roles-for-agent .agent=${agent}>
 </roles-for-agent>
 ```
 
@@ -22,7 +22,8 @@ import '@darksoil-studio/roles-zome/dist/elements/roles-for-agent.js'
 
 ## Demo
 
-Here is an interactive demo of the element:
+Here is an interactive demo of the element (hint: the two available members are `Alice` and `Bob`):
+
 
 <element-demo>
 </element-demo>
@@ -37,7 +38,7 @@ import { decodeHashFromBase64, encodeHashToBase64 } from '@holochain/client';
 import { render } from "lit";
 import { html, unsafeStatic } from "lit/static-html.js";
 
-import { RolesZomeMock, sampleRoleClaim } from "../../ui/src/mocks.ts";
+import { RolesZomeMock } from "../../ui/src/mocks.ts";
 import { RolesStore } from "../../ui/src/roles-store.ts";
 import { RolesClient } from "../../ui/src/roles-client.ts";
 
@@ -58,19 +59,28 @@ onMounted(async () => {
   );
   const profilesStore = new ProfilesStore(new ProfilesClient(profilesMock, "roles_test"));
 
+  const myPubKey = Array.from(profiles.keys())[0];
+
   const mock = new RolesZomeMock();
   const client = new RolesClient(mock, "roles_test");
 
-  const roleClaim = await sampleRoleClaim(client);
+  await mock.assign_role({
+    role: 'admin',
+    assignees: [Array.from(profiles.keys()).find(k => k.toString() === mock.myPubKey.toString())]
+  });
 
-  const record = await mock.create_role_claim(roleClaim);
+
+  await mock.assign_role({
+    role: 'editor',
+    assignees: [myPubKey]
+  });
 
   const store = new RolesStore(client, {
     roles_config: [{
       role: 'editor',
-      singular_name: 'editor',
-      plural_name: 'editor',
-      description: 'editor',
+      singular_name: 'Editor',
+      plural_name: 'Editors',
+      description: 'Editors is a usual role that you may need in your hApp.',
     }]
   });
   
@@ -79,7 +89,7 @@ onMounted(async () => {
       <roles-context .store=${store}>
         <api-demo src="custom-elements.json" only="roles-for-agent" exclude-knobs="store">
           <template data-element="roles-for-agent" data-target="host">
-            <roles-for-agent ></roles-for-agent>
+            <roles-for-agent agent="${unsafeStatic(encodeHashToBase64(myPubKey))}"></roles-for-agent>
           </template>
         </api-demo>
       </roles-context>

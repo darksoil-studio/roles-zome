@@ -1,5 +1,7 @@
 # `<manage-all-roles>`
 
+Manage the assignees for all the roles in this hApp.
+
 ## Usage
 
 0. If you haven't already, [go through the setup for the module](/setup).
@@ -22,7 +24,7 @@ import '@darksoil-studio/roles-zome/dist/elements/manage-all-roles.js'
 
 ## Demo
 
-Here is an interactive demo of the element:
+Here is an interactive demo of the element (hint: the two available members are `Alice` and `Bob`):
 
 <element-demo>
 </element-demo>
@@ -35,7 +37,7 @@ import { decodeHashFromBase64, encodeHashToBase64 } from '@holochain/client';
 import { render } from "lit";
 import { html, unsafeStatic } from "lit/static-html.js";
 
-import { RolesZomeMock, sampleRoleClaim } from "../../ui/src/mocks.ts";
+import { RolesZomeMock } from "../../ui/src/mocks.ts";
 import { RolesStore } from "../../ui/src/roles-store.ts";
 import { RolesClient } from "../../ui/src/roles-client.ts";
 
@@ -56,19 +58,26 @@ onMounted(async () => {
   );
   const profilesStore = new ProfilesStore(new ProfilesClient(profilesMock, "roles_test"));
 
-  const mock = new RolesZomeMock();
+  const mock = new RolesZomeMock(Array.from(profiles.keys())[0]);
   const client = new RolesClient(mock, "roles_test");
 
-  const roleClaim = await sampleRoleClaim(client);
+  await mock.assign_role({
+    role: 'admin',
+    assignees: [Array.from(profiles.keys()).find(k => k.toString() === mock.myPubKey.toString())]
+  });
 
-  const record = await mock.create_role_claim(roleClaim);
+
+  await mock.assign_role({
+    role: 'editor',
+    assignees: [Array.from(profiles.keys()).find(k => k.toString() !== mock.myPubKey.toString())]
+  });
 
   const store = new RolesStore(client, {
     roles_config: [{
       role: 'editor',
-      singular_name: 'editor',
-      plural_name: 'editor',
-      description: 'editor',
+      singular_name: 'Editor',
+      plural_name: 'Editors',
+      description: 'Editors is a usual role that you may need in your hApp.',
     }]
   });
   
@@ -77,7 +86,7 @@ onMounted(async () => {
       <roles-context .store=${store}>
         <api-demo src="custom-elements.json" only="manage-all-roles" exclude-knobs="store">
           <template data-element="manage-all-roles" data-target="host">
-            <manage-all-roles ></manage-all-roles>
+            <manage-all-roles></manage-all-roles>
           </template>
         </api-demo>
       </roles-context>

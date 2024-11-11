@@ -20,12 +20,12 @@ export class ManageAllRoles extends SignalWatcher(LitElement) {
 	 * @internal
 	 */
 	@consume({ context: rolesStoreContext, subscribe: true })
-	rolesStore!: RolesStore;
+	store!: RolesStore;
 
 	render() {
 		return html`
 			<div class="column" style="gap: 32px; flex: 1">
-				${this.rolesStore.allRoles.map(
+				${this.store.allRoles.map(
 					role => html`
 						<manage-role-assignees .role=${role}></manage-role-assignees>
 					`,

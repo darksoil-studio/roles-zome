@@ -22,6 +22,7 @@ import '@shoelace-style/shoelace/dist/components/divider/divider.js';
 import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 import '@shoelace-style/shoelace/dist/components/icon/icon.js';
 import '@shoelace-style/shoelace/dist/components/spinner/spinner.js';
+import '@shoelace-style/shoelace/dist/components/tag/tag.js';
 import { sharedStyles } from '@tnesh-stack/elements';
 import { notifyError, wrapPathInSvg } from '@tnesh-stack/elements';
 import { SignalWatcher, joinAsyncMap, toPromise } from '@tnesh-stack/signals';
@@ -41,7 +42,7 @@ export class ManageRoleAssignees extends SignalWatcher(LitElement) {
 
 	@consume({ context: rolesStoreContext, subscribe: true })
 	@property()
-	rolesStore!: RolesStore;
+	store!: RolesStore;
 
 	/**
 	 * @internal
@@ -58,7 +59,6 @@ export class ManageRoleAssignees extends SignalWatcher(LitElement) {
 	async addMembersToRole(role: string, profilesHashes: ActionHash[]) {
 		try {
 			this.committing = true;
-
 			const allAgents = await Promise.all(
 				profilesHashes.map(profileHash =>
 					toPromise(this.profilesStore.agentsForProfile.get(profileHash)),
@@ -67,7 +67,7 @@ export class ManageRoleAssignees extends SignalWatcher(LitElement) {
 
 			const firstAgents = allAgents.map(agents => agents[0]);
 
-			await this.rolesStore.client.assignRole(role, firstAgents);
+			await this.store.client.assignRole(role, firstAgents);
 
 			this.dispatchEvent(
 				new CustomEvent('role-assigned-to-members', {
@@ -98,7 +98,7 @@ export class ManageRoleAssignees extends SignalWatcher(LitElement) {
 	) {
 		try {
 			this.removingRole = true;
-			await this.rolesStore.client.requestUnassignRole(
+			await this.store.client.requestUnassignRole(
 				role,
 				assignRoleCreateLinkHash,
 			);
@@ -140,7 +140,7 @@ export class ManageRoleAssignees extends SignalWatcher(LitElement) {
 		assigneeProfileHash: ActionHash,
 		assigneesCount: number,
 	) {
-		const pendingUnassignments = this.rolesStore.pendingUnassignments.get();
+		const pendingUnassignments = this.store.pendingUnassignments.get();
 		switch (pendingUnassignments.status) {
 			case 'pending':
 				return html`<sl-skeleton></sl-skeleton>`;
@@ -154,16 +154,18 @@ export class ManageRoleAssignees extends SignalWatcher(LitElement) {
 				const pendingUnassignment = !!pendingUnassignments.value.find(
 					link =>
 						encodeHashToBase64(link.target) ===
-							encodeHashToBase64(assigneeProfileHash) &&
+							encodeHashToBase64(assigneeLink.create_link_hash) &&
 						(decode(link.tag) as PendingUnassignmentLinkTag).role ===
 							roleConfig.role,
 				);
+
 				if (pendingUnassignment) {
 					return html`<sl-tag>${msg('Remove Role Requested')}</sl-tag>`;
 				}
 
 				return html`
 					<sl-dialog
+						hoist
 						.label=${msg(`Remove role`)}
 						id="remove-role-${roleConfig.role}-for-${encodeHashToBase64(
 							assigneeProfileHash,
@@ -271,7 +273,7 @@ export class ManageRoleAssignees extends SignalWatcher(LitElement) {
 					>${msg('Add Members')}</sl-button
 				>
 			</sl-dialog>
-			<div class="column">
+			<div class="column" style="flex: 1">
 				<div class="row" style="align-items: center">
 					<span class="title" style="flex: 1">${roleConfig.plural_name}</span>
 					${iAmAdmin
@@ -340,17 +342,15 @@ export class ManageRoleAssignees extends SignalWatcher(LitElement) {
 	}
 
 	assigneesForRoleAndIAmAdmin() {
-		const assignees = this.rolesStore.assigneesForRoleLinks
-			.get(this.role)
-			.get();
-		const myRoles = this.rolesStore.myRoles.get();
+		const assignees = this.store.assigneesForRoleLinks.get(this.role).get();
+		const myRoles = this.store.myRoles.get();
 		if (assignees.status !== 'completed') return assignees;
 		if (myRoles.status !== 'completed') return myRoles;
 
 		const profilesHashesForAgents = joinAsyncMap(
 			mapValues(
 				slice(
-					this.profilesStore.agentProfile,
+					this.profilesStore.profileForAgent,
 					assignees.value.map(l => l.target),
 				),
 				value => {
@@ -396,9 +396,7 @@ export class ManageRoleAssignees extends SignalWatcher(LitElement) {
 				const config =
 					this.role === adminRoleConfig.role
 						? adminRoleConfig
-						: this.rolesStore.config.roles_config.find(
-								r => r.role === this.role,
-							)!;
+						: this.store.config.roles_config.find(r => r.role === this.role)!;
 
 				return this.renderRole(
 					config,

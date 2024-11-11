@@ -9,4 +9,4 @@ const store = new RolesStore(new RolesClient(appClient, 'my-role-name'));
 
 > Learn how to setup the `AppClient` object [here](https://www.npmjs.com/package/@holochain/client).
 
-Learn more about the stores and how to integrate them in different frameworks [here](https://holochain-open-dev.github.io/reusable-modules/frontend/using/#stores).
+Learn more about the stores and how to integrate them in different frameworks [here](https://darksoil.studio/tnesh-stack/integrating-with-frameworks/).

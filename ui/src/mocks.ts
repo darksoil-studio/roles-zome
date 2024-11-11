@@ -2,6 +2,7 @@ import {
 	ActionHash,
 	AgentPubKey,
 	AppClient,
+	CreateLink,
 	Delete,
 	EntryHash,
 	Link,
@@ -9,11 +10,14 @@ import {
 	Record,
 	SignedActionHashed,
 	decodeHashFromBase64,
+	encodeHashToBase64,
 	fakeActionHash,
 	fakeAgentPubKey,
 	fakeDnaHash,
 	fakeEntryHash,
 } from '@holochain/client';
+import { encode } from '@msgpack/msgpack';
+import { createLinkToLink } from '@tnesh-stack/signals';
 import {
 	AgentPubKeyMap,
 	HashType,
@@ -23,12 +27,14 @@ import {
 	decodeEntry,
 	entryState,
 	fakeCreateAction,
+	fakeCreateLinkAction,
 	fakeDeleteEntry,
 	fakeEntry,
 	fakeRecord,
 	fakeUpdateEntry,
 	hash,
 	pickBy,
+	retype,
 } from '@tnesh-stack/utils';
 
 import { RolesClient } from './roles-client.js';
@@ -39,90 +45,156 @@ export class RolesZomeMock extends ZomeMock implements AppClient {
 		super('roles_test', 'roles', myPubKey);
 	}
 	/** Role Claim */
-	roleClaims = new HoloHashMap<
-		ActionHash,
-		{
-			deletes: Array<SignedActionHashed<Delete>>;
-			revisions: Array<Record>;
-		}
-	>();
+	roleToAssignee: Map<string, Link[]> = new Map();
+	assigneeToRole: HoloHashMap<AgentPubKey, Link[]> = new HoloHashMap();
+	assigneeRoleClaims: HoloHashMap<AgentPubKey, Link[]> = new HoloHashMap();
+	pendingUnassignments: Link[] = [];
 
-	async create_role_claim(roleClaim: RoleClaim): Promise<Record> {
-		const entryHash = hash(roleClaim, HashType.ENTRY);
-		const record = await fakeRecord(
-			await fakeCreateAction(entryHash),
-			fakeEntry(roleClaim),
-		);
-
-		this.roleClaims.set(record.signed_action.hashed.hash, {
-			deletes: [],
-			revisions: [record],
-		});
-
-		return record;
+	get_assignees_for_role(role: string) {
+		return this.roleToAssignee.get(role) || [];
 	}
 
-	async get_role_claim(roleClaimHash: ActionHash): Promise<Record | undefined> {
-		const roleClaim = this.roleClaims.get(roleClaimHash);
-		return roleClaim ? roleClaim.revisions[0] : undefined;
+	get_roles_for_assignee(assignee: AgentPubKey) {
+		return this.assigneeRoleClaims.get(assignee) || [];
 	}
 
-	async get_all_deletes_for_role_claim(
-		roleClaimHash: ActionHash,
-	): Promise<Array<SignedActionHashed<Delete>> | undefined> {
-		const roleClaim = this.roleClaims.get(roleClaimHash);
-		return roleClaim ? roleClaim.deletes : undefined;
+	async role_base_address(role: string) {
+		return hash(role, HashType.ENTRY);
 	}
 
-	async get_oldest_delete_for_role_claim(
-		roleClaimHash: ActionHash,
-	): Promise<SignedActionHashed<Delete> | undefined> {
-		const roleClaim = this.roleClaims.get(roleClaimHash);
-		return roleClaim ? roleClaim.deletes[0] : undefined;
-	}
-	async delete_role_claim(
-		original_role_claim_hash: ActionHash,
-	): Promise<ActionHash> {
-		const record = await fakeRecord(
-			await fakeDeleteEntry(original_role_claim_hash),
-		);
+	query_undeleted_role_claims_for_role(role: string) {
+		const myRoleClaims = this.assigneeRoleClaims.get(this.myPubKey) || [];
 
-		this.roleClaims
-			.get(original_role_claim_hash)
-			.deletes.push(record.signed_action as SignedActionHashed<Delete>);
-
-		return record.signed_action.hashed.hash;
+		return myRoleClaims.filter(claim => (claim.tag as any) === role);
 	}
 
-	async get_all_roles(): Promise<Array<Link>> {
-		const records: Record[] = Array.from(this.roleClaims.values()).map(
-			r => r.revisions[r.revisions.length - 1],
-		);
-		const base = await fakeEntryHash();
+	async assign_role({
+		role,
+		assignees,
+	}: {
+		role: string;
+		assignees: AgentPubKey[];
+	}): Promise<Array<ActionHash>> {
+		const roleHash = await this.role_base_address(role);
 		return Promise.all(
-			records.map(async record => ({
-				base,
-				target: record.signed_action.hashed.hash,
-				author: record.signed_action.hashed.content.author,
-				timestamp: record.signed_action.hashed.content.timestamp,
-				zome_index: 0,
-				link_type: 0,
-				tag: new Uint8Array(),
-				create_link_hash: await fakeActionHash(),
-			})),
+			assignees.map(async assignee => {
+				const lastLinks = this.roleToAssignee.get(role) || [];
+				const createLink = await fakeCreateLinkAction(
+					retype(roleHash, HashType.ENTRY),
+					assignee,
+					0,
+					encode({
+						role,
+					}),
+				);
+				const linkRecord = await fakeRecord(createLink);
+				this.roleToAssignee.set(role, [
+					...lastLinks,
+					createLinkToLink(
+						linkRecord.signed_action as SignedActionHashed<CreateLink>,
+					),
+				]);
+				setTimeout(() => {
+					this.emitSignal({
+						type: 'LinkCreated',
+						link_type: 'RoleToAssignee',
+						action: linkRecord.signed_action,
+					});
+				});
+
+				const lastLinks2 = this.assigneeToRole.get(assignee) || [];
+				const createLink2 = await fakeCreateLinkAction(
+					retype(assignee, HashType.ENTRY),
+					roleHash,
+				);
+				const linkRecord2 = await fakeRecord(createLink2);
+				this.assigneeToRole.set(assignee, [
+					...lastLinks2,
+					createLinkToLink(
+						linkRecord2.signed_action as SignedActionHashed<CreateLink>,
+					),
+				]);
+				setTimeout(() => {
+					this.emitSignal({
+						type: 'LinkCreated',
+						link_type: 'AssigneeToRole',
+						action: linkRecord2.signed_action,
+					});
+				});
+
+				if (
+					encodeHashToBase64(assignee) === encodeHashToBase64(this.myPubKey)
+				) {
+					const lastLinks3 = this.assigneeRoleClaims.get(assignee) || [];
+					const createLink3 = await fakeCreateLinkAction(
+						retype(assignee, HashType.ENTRY),
+						roleHash,
+						0,
+						encode({ role }),
+					);
+					const linkRecord3 = await fakeRecord(createLink3);
+					this.assigneeRoleClaims.set(assignee, [
+						...lastLinks3,
+						createLinkToLink(
+							linkRecord3.signed_action as SignedActionHashed<CreateLink>,
+						),
+					]);
+					setTimeout(() => {
+						this.emitSignal({
+							type: 'LinkCreated',
+							link_type: 'AssigneeRoleClaim',
+							action: linkRecord3.signed_action,
+						});
+					});
+				}
+
+				return linkRecord.signed_action.hashed.hash;
+			}),
 		);
 	}
-}
 
-export async function sampleRoleClaim(
-	client: RolesClient,
-	partialRoleClaim: Partial<RoleClaim> = {},
-): Promise<RoleClaim> {
-	return {
-		...{
-			role: 'Lorem ipsum 2',
-			assign_role_create_link_hash: await fakeActionHash(),
-		},
-		...partialRoleClaim,
-	};
+	async request_unassign_role({
+		role,
+		role_to_assignee_create_link_hash,
+	}: {
+		role: string;
+		role_to_assignee_create_link_hash: ActionHash;
+	}) {
+		const roleToAssigneeLinks = this.roleToAssignee.get(role)!;
+		const roleToAssigneeLink = roleToAssigneeLinks.find(
+			link =>
+				encodeHashToBase64(link.create_link_hash) ===
+				encodeHashToBase64(role_to_assignee_create_link_hash),
+		);
+		const lastLinks = this.pendingUnassignments;
+		const createLink2 = await fakeCreateLinkAction(
+			await this.role_base_address('pendingunassignments'),
+			role_to_assignee_create_link_hash,
+			2,
+			encode({
+				role,
+				all_agents_for_assignee: [
+					[roleToAssigneeLink!.target, roleToAssigneeLink!.target],
+				],
+			}),
+		);
+		const linkRecord2 = await fakeRecord(createLink2);
+		this.pendingUnassignments = [
+			...lastLinks,
+			createLinkToLink(
+				linkRecord2.signed_action as SignedActionHashed<CreateLink>,
+			),
+		];
+		setTimeout(() => {
+			this.emitSignal({
+				type: 'LinkCreated',
+				link_type: 'PendingUnassignments',
+				action: linkRecord2.signed_action,
+			});
+		});
+	}
+
+	async get_pending_unassignments() {
+		return this.pendingUnassignments;
+	}
 }

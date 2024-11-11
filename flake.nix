@@ -10,7 +10,7 @@ rec {
     tnesh-stack.url = "github:darksoil-studio/tnesh-stack/main-0.3";
     p2p-shipyard.url = "github:darksoil-studio/p2p-shipyard/main-0.3";
 
-    linked-devices.url = "github:darksoil-studio/linked-devices";
+    linked-devices.url = "github:darksoil-studio/linked-devices/main-0.3";
     profiles-zome.url = "github:darksoil-studio/profiles-zome/main-0.3";
     notifications-zome.url =
       "github:darksoil-studio/notifications-zome/main-0.3";
@@ -18,11 +18,11 @@ rec {
 
   nixConfig = {
     extra-substituters = [
-      "https://holochain-open-dev.cachix.org"
+      "https://holochain-ci.cachix.org"
       "https://darksoil-studio.cachix.org"
     ];
     extra-trusted-public-keys = [
-      "holochain-open-dev.cachix.org-1:3Tr+9in6uo44Ga7qiuRIfOTFXog+2+YbyhwI/Z6Cp4U="
+      "holochain-ci.cachix.org-1:5IUSkZc0aoRS53rfkvH9Kid40NpyjwCMCzwRTXy+QN8="
       "darksoil-studio.cachix.org-1:UEi+aujy44s41XL/pscLw37KEVpTEIn8N/kn7jO8rkc="
     ];
   };

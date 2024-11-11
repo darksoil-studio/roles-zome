@@ -22,11 +22,11 @@ export class RolesForAgent extends SignalWatcher(LitElement) {
 	agent!: AgentPubKey;
 
 	@consume({ context: rolesStoreContext, subscribe: true })
-	rolesStore!: RolesStore;
+	store!: RolesStore;
 
 	roleSingularName(role: string) {
 		if (role === adminRoleConfig.role) return adminRoleConfig.singular_name;
-		return this.rolesStore.config.roles_config.find(r => r.role === role)
+		return this.store.config.roles_config.find(r => r.role === role)
 			?.singular_name;
 	}
 
@@ -39,7 +39,7 @@ export class RolesForAgent extends SignalWatcher(LitElement) {
 	}
 
 	render() {
-		const roles = this.rolesStore.rolesForAgent.get(this.agent).get();
+		const roles = this.store.rolesForAgent.get(this.agent).get();
 
 		switch (roles.status) {
 			case 'pending':

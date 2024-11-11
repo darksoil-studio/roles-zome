@@ -94,7 +94,7 @@ test('Assign role lifecycle', async () => {
 			'editor',
 			assignRoleCreateLinkHash,
 		);
-		await pause(100);
+		await pause(1000);
 		pendingUnassigments = await toPromise(alice.store.pendingUnassignments);
 		assert.equal(pendingUnassigments.length, 1);
 
