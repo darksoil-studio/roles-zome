@@ -136,133 +136,123 @@
           "members": [
             {
               "kind": "field",
-              "name": "roleClaims",
-              "default": "new HoloHashMap<\n\t\tActionHash,\n\t\t{\n\t\t\tdeletes: Array<SignedActionHashed<Delete>>;\n\t\t\trevisions: Array<Record>;\n\t\t}\n\t>()",
+              "name": "roleToAssignee",
+              "type": {
+                "text": "Map<string, Link[]>"
+              },
+              "default": "new Map()",
               "description": "Role Claim"
             },
             {
-              "kind": "method",
-              "name": "create_role_claim",
-              "return": {
-                "type": {
-                  "text": "Promise<Record>"
-                }
+              "kind": "field",
+              "name": "assigneeToRole",
+              "type": {
+                "text": "HoloHashMap<AgentPubKey, Link[]>"
               },
+              "default": "new HoloHashMap()"
+            },
+            {
+              "kind": "field",
+              "name": "assigneeRoleClaims",
+              "type": {
+                "text": "HoloHashMap<AgentPubKey, Link[]>"
+              },
+              "default": "new HoloHashMap()"
+            },
+            {
+              "kind": "field",
+              "name": "pendingUnassignments",
+              "type": {
+                "text": "Link[]"
+              },
+              "default": "[]"
+            },
+            {
+              "kind": "method",
+              "name": "get_assignees_for_role",
               "parameters": [
                 {
-                  "name": "roleClaim",
+                  "name": "role",
                   "type": {
-                    "text": "RoleClaim"
+                    "text": "string"
                   }
                 }
               ]
             },
             {
               "kind": "method",
-              "name": "get_role_claim",
-              "return": {
-                "type": {
-                  "text": "Promise<Record | undefined>"
-                }
-              },
+              "name": "get_roles_for_assignee",
               "parameters": [
                 {
-                  "name": "roleClaimHash",
+                  "name": "assignee",
                   "type": {
-                    "text": "ActionHash"
+                    "text": "AgentPubKey"
                   }
                 }
               ]
             },
             {
               "kind": "method",
-              "name": "get_all_deletes_for_role_claim",
-              "return": {
-                "type": {
-                  "text": "Promise<Array<SignedActionHashed<Delete>> | undefined>"
-                }
-              },
+              "name": "role_base_address",
               "parameters": [
                 {
-                  "name": "roleClaimHash",
+                  "name": "role",
                   "type": {
-                    "text": "ActionHash"
+                    "text": "string"
                   }
                 }
               ]
             },
             {
               "kind": "method",
-              "name": "get_oldest_delete_for_role_claim",
-              "return": {
-                "type": {
-                  "text": "Promise<SignedActionHashed<Delete> | undefined>"
-                }
-              },
+              "name": "query_undeleted_role_claims_for_role",
               "parameters": [
                 {
-                  "name": "roleClaimHash",
+                  "name": "role",
                   "type": {
-                    "text": "ActionHash"
+                    "text": "string"
                   }
                 }
               ]
             },
             {
               "kind": "method",
-              "name": "delete_role_claim",
+              "name": "assign_role",
               "return": {
                 "type": {
-                  "text": "Promise<ActionHash>"
+                  "text": "Promise<Array<ActionHash>>"
                 }
               },
               "parameters": [
                 {
-                  "name": "original_role_claim_hash",
+                  "name": "{\n\t\trole,\n\t\tassignees,\n\t}",
                   "type": {
-                    "text": "ActionHash"
+                    "text": "{\n\t\trole: string;\n\t\tassignees: AgentPubKey[];\n\t}"
                   }
                 }
               ]
             },
             {
               "kind": "method",
-              "name": "get_all_roles",
-              "return": {
-                "type": {
-                  "text": "Promise<Array<Link>>"
+              "name": "request_unassign_role",
+              "parameters": [
+                {
+                  "name": "{\n\t\trole,\n\t\trole_to_assignee_create_link_hash,\n\t}",
+                  "type": {
+                    "text": "{\n\t\trole: string;\n\t\trole_to_assignee_create_link_hash: ActionHash;\n\t}"
+                  }
                 }
-              }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "get_pending_unassignments"
             }
           ],
           "superclass": {
             "name": "ZomeMock",
             "package": "@tnesh-stack/utils"
           }
-        },
-        {
-          "kind": "function",
-          "name": "sampleRoleClaim",
-          "return": {
-            "type": {
-              "text": "Promise<RoleClaim>"
-            }
-          },
-          "parameters": [
-            {
-              "name": "client",
-              "type": {
-                "text": "RolesClient"
-              }
-            },
-            {
-              "name": "partialRoleClaim",
-              "default": "{}",
-              "type": {
-                "text": "Partial<RoleClaim>"
-              }
-            }
-          ]
         }
       ],
       "exports": [
@@ -271,14 +261,6 @@
           "name": "RolesZomeMock",
           "declaration": {
             "name": "RolesZomeMock",
-            "module": "src/mocks.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "sampleRoleClaim",
-          "declaration": {
-            "name": "sampleRoleClaim",
             "module": "src/mocks.ts"
           }
         }
@@ -776,11 +758,11 @@
             },
             {
               "kind": "field",
-              "name": "rolesStore",
+              "name": "store",
               "type": {
                 "text": "RolesStore"
               },
-              "attribute": "rolesStore"
+              "attribute": "store"
             },
             {
               "kind": "field",
@@ -945,11 +927,11 @@
               "fieldName": "role"
             },
             {
-              "name": "rolesStore",
+              "name": "store",
               "type": {
                 "text": "RolesStore"
               },
-              "fieldName": "rolesStore"
+              "fieldName": "store"
             }
           ],
           "mixins": [
@@ -1058,7 +1040,7 @@
             },
             {
               "kind": "field",
-              "name": "rolesStore",
+              "name": "store",
               "type": {
                 "text": "RolesStore"
               }
