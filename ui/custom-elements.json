@@ -983,6 +983,38 @@
                 "text": "RolesStore"
               },
               "attribute": "store"
+            },
+            {
+              "kind": "field",
+              "name": "client",
+              "type": {
+                "text": "AppClient"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "config",
+              "type": {
+                "text": "RolesStoreConfig"
+              },
+              "attribute": "config"
+            },
+            {
+              "kind": "field",
+              "name": "role",
+              "type": {
+                "text": "string"
+              },
+              "attribute": "role"
+            },
+            {
+              "kind": "field",
+              "name": "zome",
+              "type": {
+                "text": "string"
+              },
+              "default": "'roles'",
+              "attribute": "zome"
             }
           ],
           "attributes": [
@@ -992,6 +1024,28 @@
                 "text": "RolesStore"
               },
               "fieldName": "store"
+            },
+            {
+              "name": "config",
+              "type": {
+                "text": "RolesStoreConfig"
+              },
+              "fieldName": "config"
+            },
+            {
+              "name": "role",
+              "type": {
+                "text": "string"
+              },
+              "fieldName": "role"
+            },
+            {
+              "name": "zome",
+              "type": {
+                "text": "string"
+              },
+              "default": "'roles'",
+              "fieldName": "zome"
             }
           ],
           "superclass": {

@@ -1,16 +1,9 @@
 import { LinkedDevicesClient } from '@darksoil-studio/linked-devices-zome';
-import {
-	ActionHash,
-	AgentPubKey,
-	Link,
-	encodeHashToBase64,
-} from '@holochain/client';
+import { AgentPubKey } from '@holochain/client';
 import { decode } from '@msgpack/msgpack';
 import {
-	AsyncComputed,
 	collectionSignal,
 	fromPromise,
-	joinAsync,
 	liveLinksSignal,
 	mapCompleted,
 	pipe,
@@ -19,12 +12,6 @@ import { HashType, MemoHoloHashMap, MemoMap, retype } from '@tnesh-stack/utils';
 
 import { RoleConfig } from './role-config.js';
 import { RolesClient } from './roles-client.js';
-import {
-	joinAsyncMap,
-	mapValues,
-	queryLiveEntriesSignal,
-	slice,
-} from './signal.js';
 import { AssigneeRoleClaimLinkTag } from './types.js';
 
 export interface RolesStoreConfig {

@@ -27,8 +27,8 @@
             inputs'.notifications-zome.packages.notifications_integrity;
           notifications = inputs'.notifications-zome.packages.notifications;
           linked_devices_integrity =
-            inputs'.linked-devices.packages.linked_devices_integrity;
-          linked_devices = inputs'.linked-devices.packages.linked_devices;
+            inputs'.linked-devices-zome.packages.linked_devices_integrity;
+          linked_devices = inputs'.linked-devices-zome.packages.linked_devices;
           # This overrides all the "bundled" properties for the DNA manifest
           roles_integrity = self'.packages.roles_integrity;
           roles = self'.packages.roles;

@@ -12,4 +12,4 @@ hdi = { workspace = true }
 
 serde = { workspace = true }
 roles_types = {path ="../../../crates/roles_types"}
-linked_devices_types = { git = "https://github.com/darksoil-studio/linked-devices", branch = "main" }
+linked_devices_types = { git = "https://github.com/darksoil-studio/linked-devices-zome", branch = "main" }

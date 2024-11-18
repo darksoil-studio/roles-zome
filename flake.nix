@@ -10,7 +10,8 @@ rec {
     tnesh-stack.url = "github:darksoil-studio/tnesh-stack/main-0.3";
     p2p-shipyard.url = "github:darksoil-studio/p2p-shipyard/main-0.3";
 
-    linked-devices.url = "github:darksoil-studio/linked-devices/main-0.3";
+    linked-devices-zome.url =
+      "github:darksoil-studio/linked-devices-zome/main-0.3";
     profiles-zome.url = "github:darksoil-studio/profiles-zome/main-0.3";
     notifications-zome.url =
       "github:darksoil-studio/notifications-zome/main-0.3";
