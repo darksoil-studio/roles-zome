@@ -75,11 +75,11 @@ importers:
   tests:
     dependencies:
       '@darksoil-studio/linked-devices-zome':
-        specifier: github:darksoil-studio/linked-devices-zome#752c57f9d7e830075f006f73aff51814f531f122&path:ui
-        version: https://codeload.github.com/darksoil-studio/linked-devices-zome/tar.gz/752c57f9d7e830075f006f73aff51814f531f122#path:ui(@types/react@18.3.11)
+        specifier: github:darksoil-studio/linked-devices-zome#8dd441ea8c5b56ffc08828722e48424ae2f932c3&path:ui
+        version: https://codeload.github.com/darksoil-studio/linked-devices-zome/tar.gz/8dd441ea8c5b56ffc08828722e48424ae2f932c3#path:ui(@types/react@18.3.11)
       '@darksoil-studio/profiles-zome':
-        specifier: github:darksoil-studio/profiles-zome#50483cc9298b2d9d47bb747adefcb7544153d3ee&path:ui
-        version: https://codeload.github.com/darksoil-studio/profiles-zome/tar.gz/50483cc9298b2d9d47bb747adefcb7544153d3ee#path:ui(@types/react@18.3.11)
+        specifier: github:darksoil-studio/profiles-zome#680bbe68a7834255d97f1085c57a10b46170af54&path:ui
+        version: https://codeload.github.com/darksoil-studio/profiles-zome/tar.gz/680bbe68a7834255d97f1085c57a10b46170af54#path:ui(@types/react@18.3.11)
       '@holochain/client':
         specifier: ^0.17.1
         version: 0.17.1
@@ -108,14 +108,14 @@ importers:
   ui:
     dependencies:
       '@darksoil-studio/linked-devices-zome':
-        specifier: github:darksoil-studio/linked-devices-zome#752c57f9d7e830075f006f73aff51814f531f122&path:ui
-        version: https://codeload.github.com/darksoil-studio/linked-devices-zome/tar.gz/752c57f9d7e830075f006f73aff51814f531f122#path:ui(@types/react@18.3.11)
+        specifier: github:darksoil-studio/linked-devices-zome#8dd441ea8c5b56ffc08828722e48424ae2f932c3&path:ui
+        version: https://codeload.github.com/darksoil-studio/linked-devices-zome/tar.gz/8dd441ea8c5b56ffc08828722e48424ae2f932c3#path:ui(@types/react@18.3.11)
       '@darksoil-studio/notifications-zome':
-        specifier: github:darksoil-studio/notifications-zome#3519734da32317d8750d3a8aa684cfe52f4d42a4&path:ui
-        version: https://codeload.github.com/darksoil-studio/notifications-zome/tar.gz/3519734da32317d8750d3a8aa684cfe52f4d42a4#path:ui(@types/react@18.3.11)
+        specifier: github:darksoil-studio/notifications-zome#d49e2292c3c36b7edd49a393e2a712c21a9b351c&path:ui
+        version: https://codeload.github.com/darksoil-studio/notifications-zome/tar.gz/d49e2292c3c36b7edd49a393e2a712c21a9b351c#path:ui(@types/react@18.3.11)
       '@darksoil-studio/profiles-zome':
-        specifier: github:darksoil-studio/profiles-zome#50483cc9298b2d9d47bb747adefcb7544153d3ee&path:ui
-        version: https://codeload.github.com/darksoil-studio/profiles-zome/tar.gz/50483cc9298b2d9d47bb747adefcb7544153d3ee#path:ui(@types/react@18.3.11)
+        specifier: github:darksoil-studio/profiles-zome#680bbe68a7834255d97f1085c57a10b46170af54&path:ui
+        version: https://codeload.github.com/darksoil-studio/profiles-zome/tar.gz/680bbe68a7834255d97f1085c57a10b46170af54#path:ui(@types/react@18.3.11)
       '@holochain/client':
         specifier: ^0.17.1
         version: 0.17.1
@@ -362,16 +362,16 @@ packages:
     resolution: {commit: 055871e8a663402b169691b5b40cdc90751c0628, path: ui, repo: git@github.com:darksoil-studio/linked-devices.git, type: git}
     version: 0.1.0
 
-  '@darksoil-studio/linked-devices-zome@https://codeload.github.com/darksoil-studio/linked-devices-zome/tar.gz/752c57f9d7e830075f006f73aff51814f531f122#path:ui':
-    resolution: {path: ui, tarball: https://codeload.github.com/darksoil-studio/linked-devices-zome/tar.gz/752c57f9d7e830075f006f73aff51814f531f122}
+  '@darksoil-studio/linked-devices-zome@https://codeload.github.com/darksoil-studio/linked-devices-zome/tar.gz/8dd441ea8c5b56ffc08828722e48424ae2f932c3#path:ui':
+    resolution: {path: ui, tarball: https://codeload.github.com/darksoil-studio/linked-devices-zome/tar.gz/8dd441ea8c5b56ffc08828722e48424ae2f932c3}
     version: 0.1.0
 
-  '@darksoil-studio/notifications-zome@https://codeload.github.com/darksoil-studio/notifications-zome/tar.gz/3519734da32317d8750d3a8aa684cfe52f4d42a4#path:ui':
-    resolution: {path: ui, tarball: https://codeload.github.com/darksoil-studio/notifications-zome/tar.gz/3519734da32317d8750d3a8aa684cfe52f4d42a4}
+  '@darksoil-studio/notifications-zome@https://codeload.github.com/darksoil-studio/notifications-zome/tar.gz/d49e2292c3c36b7edd49a393e2a712c21a9b351c#path:ui':
+    resolution: {path: ui, tarball: https://codeload.github.com/darksoil-studio/notifications-zome/tar.gz/d49e2292c3c36b7edd49a393e2a712c21a9b351c}
     version: 0.1.0
 
-  '@darksoil-studio/profiles-zome@https://codeload.github.com/darksoil-studio/profiles-zome/tar.gz/50483cc9298b2d9d47bb747adefcb7544153d3ee#path:ui':
-    resolution: {path: ui, tarball: https://codeload.github.com/darksoil-studio/profiles-zome/tar.gz/50483cc9298b2d9d47bb747adefcb7544153d3ee}
+  '@darksoil-studio/profiles-zome@https://codeload.github.com/darksoil-studio/profiles-zome/tar.gz/680bbe68a7834255d97f1085c57a10b46170af54#path:ui':
+    resolution: {path: ui, tarball: https://codeload.github.com/darksoil-studio/profiles-zome/tar.gz/680bbe68a7834255d97f1085c57a10b46170af54}
     version: 0.300.0
 
   '@darksoil-studio/profiles-zome@https://codeload.github.com/darksoil-studio/profiles-zome/tar.gz/84b84f677bb8276cc02b14957ccde422f8830a62#path:ui':
@@ -3125,7 +3125,7 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@darksoil-studio/linked-devices-zome@https://codeload.github.com/darksoil-studio/linked-devices-zome/tar.gz/752c57f9d7e830075f006f73aff51814f531f122#path:ui(@types/react@18.3.11)':
+  '@darksoil-studio/linked-devices-zome@https://codeload.github.com/darksoil-studio/linked-devices-zome/tar.gz/8dd441ea8c5b56ffc08828722e48424ae2f932c3#path:ui(@types/react@18.3.11)':
     dependencies:
       '@holochain/client': 0.17.1
       '@lit/context': 1.1.3
@@ -3142,10 +3142,10 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@darksoil-studio/notifications-zome@https://codeload.github.com/darksoil-studio/notifications-zome/tar.gz/3519734da32317d8750d3a8aa684cfe52f4d42a4#path:ui(@types/react@18.3.11)':
+  '@darksoil-studio/notifications-zome@https://codeload.github.com/darksoil-studio/notifications-zome/tar.gz/d49e2292c3c36b7edd49a393e2a712c21a9b351c#path:ui(@types/react@18.3.11)':
     dependencies:
-      '@darksoil-studio/linked-devices-zome': https://codeload.github.com/darksoil-studio/linked-devices-zome/tar.gz/752c57f9d7e830075f006f73aff51814f531f122#path:ui(@types/react@18.3.11)
-      '@darksoil-studio/profiles-zome': https://codeload.github.com/darksoil-studio/profiles-zome/tar.gz/50483cc9298b2d9d47bb747adefcb7544153d3ee#path:ui(@types/react@18.3.11)
+      '@darksoil-studio/linked-devices-zome': https://codeload.github.com/darksoil-studio/linked-devices-zome/tar.gz/8dd441ea8c5b56ffc08828722e48424ae2f932c3#path:ui(@types/react@18.3.11)
+      '@darksoil-studio/profiles-zome': https://codeload.github.com/darksoil-studio/profiles-zome/tar.gz/680bbe68a7834255d97f1085c57a10b46170af54#path:ui(@types/react@18.3.11)
       '@holochain/client': 0.17.1
       '@lit/context': 1.1.3
       '@lit/localize': 0.12.2
@@ -3161,9 +3161,9 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@darksoil-studio/profiles-zome@https://codeload.github.com/darksoil-studio/profiles-zome/tar.gz/50483cc9298b2d9d47bb747adefcb7544153d3ee#path:ui(@types/react@18.3.11)':
+  '@darksoil-studio/profiles-zome@https://codeload.github.com/darksoil-studio/profiles-zome/tar.gz/680bbe68a7834255d97f1085c57a10b46170af54#path:ui(@types/react@18.3.11)':
     dependencies:
-      '@darksoil-studio/linked-devices-zome': https://codeload.github.com/darksoil-studio/linked-devices-zome/tar.gz/752c57f9d7e830075f006f73aff51814f531f122#path:ui(@types/react@18.3.11)
+      '@darksoil-studio/linked-devices-zome': https://codeload.github.com/darksoil-studio/linked-devices-zome/tar.gz/8dd441ea8c5b56ffc08828722e48424ae2f932c3#path:ui(@types/react@18.3.11)
       '@holochain/client': 0.17.1
       '@lit/context': 1.1.3
       '@lit/localize': 0.12.2

@@ -100,8 +100,12 @@ test('Assign role lifecycle', async () => {
 
 		await dhtSync([alice.player, bob.player], alice.player.cells[0].cell_id[0]);
 
-		pendingUnassigments = await toPromise(bob.store.pendingUnassignments);
-		assert.equal(pendingUnassigments.length, 1);
+		await waitUntil(async () => {
+			const pendingUnassignments = await toPromise(
+				bob.store.pendingUnassignments,
+			);
+			return pendingUnassignments.length === 1;
+		}, 20_000);
 
 		await waitUntil(async () => {
 			const roleClaims =

@@ -1,5 +1,6 @@
 import {
 	LinkedDevices,
+	LinkedDevicesStore,
 	linkedDevicesStoreContext,
 } from '@darksoil-studio/linked-devices-zome';
 import { LinkedDevicesContext } from '@darksoil-studio/linked-devices-zome/dist/elements/linked-devices-context.js';
@@ -22,6 +23,9 @@ export class RolesContext extends LitElement {
 
 	@consume({ context: appClientContext, subscribe: true })
 	client!: AppClient;
+
+	@consume({ context: linkedDevicesStoreContext, subscribe: true })
+	linkedDevicesStore!: LinkedDevicesStore;
 
 	/// REQUIRED
 	@property()
@@ -71,6 +75,7 @@ export class RolesContext extends LitElement {
 		this.store = new RolesStore(
 			new RolesClient(this.client, this.role, this.zome),
 			this.config,
+			this.linkedDevicesStore?.client,
 		);
 	}
 
