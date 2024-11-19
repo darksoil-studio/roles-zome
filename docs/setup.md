@@ -10,13 +10,10 @@ nix run github:darksoil-studio/roles-zome#scaffold
 ```
 
 This will do the following:
-  - Add the flake input for that repository in your `flake.nix`.
-  - Add the appropriate zome packages to the `dna.nix` that you select.
-  - Add the UI package for @darksoil-studio/roles-zome as a dependency of your UI package.
+  - Add the `github:darksoil-studio/roles-zome` flake input to your `flake.nix`.
+  - Add the `roles` coordinator and integrity zome packages to the `dna.nix` that you select.
+  - Add the UI package for `@darksoil-studio/roles-zome` as a dependency of your UI package.
   - Add the `<roles-context>` element at the top level of your application.
-
-> [!NOTE]
-> You can read more about the context pattern [here](https://darksoil.studio/tnesh-stack/guides/custom-elements#context).
 
 That's it! You have now integrated the `roles` coordinator and integrity zomes and their UI into your app!
 
