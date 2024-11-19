@@ -17,7 +17,7 @@ export default withMermaid({
 		},
 	},
 	base: '/roles-zome',
-	title: '@darksoil-studio/roles-zome',
+	title: 'Roles Zome',
 	description: 'Roles zome for holochain apps',
 	srcExclude: ['public/**/*'],
 	themeConfig: {
