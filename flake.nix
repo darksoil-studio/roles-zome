@@ -93,7 +93,9 @@ rec {
                 --remote-zome-git-url github:darksoil-studio/roles-zome \
                 --remote-npm-package-name @darksoil-studio/roles-zome \
                 --remote-npm-package-path ui \
-                --remote-zome-git-branch main-0.3" 
+                --remote-zome-git-branch main-0.3 \
+                --context-element roles-context \
+                --context-element-import @darksoil-studio/roles-zome/dist/elements/roles-context.js" 
           '';
         };
       };
