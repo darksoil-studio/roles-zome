@@ -65,11 +65,13 @@ export class RolesContext extends LitElement {
 		this.addEventListener('context-provider', e => {
 			if (e.context === linkedDevicesStoreContext) {
 				const context = e.target as LinkedDevicesContext;
-				this.store = new RolesStore(
-					new RolesClient(this.client, this.role, this.zome),
-					this.config,
-					context.store.client,
-				);
+				setTimeout(() => {
+					this.store = new RolesStore(
+						new RolesClient(this.client, this.role, this.zome),
+						this.config,
+						context.store.client,
+					);
+				});
 			}
 		});
 		this.store = new RolesStore(
