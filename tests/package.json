@@ -10,7 +10,7 @@
     "@tnesh-stack/signals": "^0.400.0-rc",
     "@tnesh-stack/utils": "^0.400.0-rc",
     "@holochain/client": "^0.18.0-rc",
-    "@holochain/tryorama": "^0.17.0-dev",
+    "@holochain/tryorama": "^0.17.0-rc",
     "@msgpack/msgpack": "^2.8.0",
     "fflate": "^0.8.2",
     "typescript": "^5.4.5",

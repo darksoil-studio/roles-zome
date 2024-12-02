@@ -38,9 +38,6 @@ export function patchCallZome(appWs: AppWebsocket) {
 			return result;
 		} catch (e) {
 			if (
-				!e
-					.toString()
-					.includes('The type of key must be string or number but object') &&
 				!e.toString().includes('Socket is not open') &&
 				!e.toString().includes('ClientClosedWithPendingRequests')
 			) {

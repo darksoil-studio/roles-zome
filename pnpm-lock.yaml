@@ -84,8 +84,8 @@ importers:
         specifier: ^0.18.0-rc
         version: 0.18.0-rc.1
       '@holochain/tryorama':
-        specifier: ^0.17.0-dev
-        version: 0.17.0-dev.6
+        specifier: ^0.17.0-rc
+        version: 0.17.0-rc.0
       '@msgpack/msgpack':
         specifier: ^2.8.0
         version: 2.8.0
@@ -722,8 +722,8 @@ packages:
   '@holochain/serialization@0.1.0-beta-rc.3':
     resolution: {integrity: sha512-DJx4V2KXHVLciyOGjOYKTM/JLBpBEZ3RsPIRCgf7qmwhQdxXvhi2p+oFFRD51yUT5uC1/MzIVeJCl/R60PwFbw==}
 
-  '@holochain/tryorama@0.17.0-dev.6':
-    resolution: {integrity: sha512-n2EmU4EmjJSx/RLk5aAvqVAkrXmSVb+q1lUzBmbW8nJIUhk68VW6P6cmg0HWF4ZRetMd1MksnmyqBHVSU8rIhA==}
+  '@holochain/tryorama@0.17.0-rc.0':
+    resolution: {integrity: sha512-PgrWA2hk0yCsdISrzHgkEFEhprDP6ncMbgv/0da+bzQyEO0Xv4AwZy7wjoLBUvoOhQGLibbAtKKTisVQer0qmA==}
     engines: {node: '>=18.0.0 || >=20.0.0'}
 
   '@humanwhocodes/config-array@0.13.0':
@@ -3529,7 +3529,7 @@ snapshots:
 
   '@holochain/serialization@0.1.0-beta-rc.3': {}
 
-  '@holochain/tryorama@0.17.0-dev.6':
+  '@holochain/tryorama@0.17.0-rc.0':
     dependencies:
       '@holochain/client': 0.18.0-rc.1
       get-port: 6.1.2
