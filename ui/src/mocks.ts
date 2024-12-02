@@ -42,7 +42,7 @@ import { RoleClaim } from './types.js';
 
 export class RolesZomeMock extends ZomeMock implements AppClient {
 	constructor(myPubKey?: AgentPubKey) {
-		super('roles_test', 'roles', myPubKey);
+		super('roles_test', 'roles', 'rolestest', myPubKey);
 	}
 	/** Role Claim */
 	roleToAssignee: Map<string, Link[]> = new Map();

@@ -2,19 +2,19 @@ rec {
   description = "Template for Holochain app development";
 
   inputs = {
-    holonix.url = "github:holochain/holonix/main-0.3";
+    holonix.url = "github:holochain/holonix/main-0.4";
     nixpkgs.follows = "holonix/nixpkgs";
     flake-parts.follows = "holonix/flake-parts";
     crane.follows = "holonix/crane";
 
-    tnesh-stack.url = "github:darksoil-studio/tnesh-stack/main-0.3";
-    p2p-shipyard.url = "github:darksoil-studio/p2p-shipyard/main-0.3";
+    tnesh-stack.url = "github:darksoil-studio/tnesh-stack/main-0.4";
+    p2p-shipyard.url = "github:darksoil-studio/p2p-shipyard/main-0.4";
 
     linked-devices-zome.url =
-      "github:darksoil-studio/linked-devices-zome/main-0.3";
-    profiles-zome.url = "github:darksoil-studio/profiles-zome/main-0.3";
+      "github:darksoil-studio/linked-devices-zome/main-0.4";
+    profiles-zome.url = "github:darksoil-studio/profiles-zome/main-0.4";
     notifications-zome.url =
-      "github:darksoil-studio/notifications-zome/main-0.3";
+      "github:darksoil-studio/notifications-zome/main-0.4";
   };
 
   nixConfig = {
@@ -78,7 +78,12 @@ rec {
             inputs'.holonix.devShells.default
           ];
 
-          packages = [ inputs'.tnesh-stack.packages.hc-scaffold-zome ];
+          packages = [
+            (inputs'.holonix.packages.holochain.override {
+              cargoExtraArgs = " --features unstable-functions";
+            })
+            inputs'.tnesh-stack.packages.hc-scaffold-zome
+          ];
         };
 
         packages.scaffold = pkgs.symlinkJoin {
@@ -93,7 +98,7 @@ rec {
                 --remote-zome-git-url github:darksoil-studio/roles-zome \
                 --remote-npm-package-name @darksoil-studio/roles-zome \
                 --remote-npm-package-path ui \
-                --remote-zome-git-branch main-0.3 \
+                --remote-zome-git-branch main-0.4 \
                 --context-element roles-context \
                 --context-element-import @darksoil-studio/roles-zome/dist/elements/roles-context.js" 
           '';

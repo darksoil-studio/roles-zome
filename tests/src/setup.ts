@@ -38,6 +38,9 @@ export function patchCallZome(appWs: AppWebsocket) {
 			return result;
 		} catch (e) {
 			if (
+				!e
+					.toString()
+					.includes('The type of key must be string or number but object') &&
 				!e.toString().includes('Socket is not open') &&
 				!e.toString().includes('ClientClosedWithPendingRequests')
 			) {
@@ -48,6 +51,8 @@ export function patchCallZome(appWs: AppWebsocket) {
 }
 
 export async function setup(scenario: Scenario) {
+	scenario.dpkiNetworkSeed = undefined;
+
 	const aliceConductor = await scenario.addConductor();
 	const alicePubKey = await aliceConductor.adminWs().generateAgentPubKey();
 
