@@ -2,7 +2,12 @@ import {
 	LinkedDevicesClient,
 	LinkedDevicesStore,
 } from '@darksoil-studio/linked-devices-zome';
-import { AppBundle, AppWebsocket, encodeHashToBase64 } from '@holochain/client';
+import {
+	AppBundle,
+	AppWebsocket,
+	RoleSettingsMap,
+	encodeHashToBase64,
+} from '@holochain/client';
 import {
 	AgentApp,
 	Scenario,
@@ -29,44 +34,38 @@ export function rolesTestHapp(): AppBundle {
 	return decode(decompressSync(new Uint8Array(appBundleBytes))) as any;
 }
 
-export function patchCallZome(appWs: AppWebsocket) {
-	const callZome = appWs.callZome;
-
-	appWs.callZome = async req => {
-		try {
-			const result = await callZome(req);
-			return result;
-		} catch (e) {
-			if (
-				!e.toString().includes('Socket is not open') &&
-				!e.toString().includes('ClientClosedWithPendingRequests')
-			) {
-				throw e;
-			}
-		}
-	};
-}
-
 export async function setup(scenario: Scenario) {
+	const rolesTestHapp = path.join(__dirname, '../../workdir/roles_test.happ');
+
 	scenario.dpkiNetworkSeed = undefined;
 
 	const aliceConductor = await scenario.addConductor();
 	const alicePubKey = await aliceConductor.adminWs().generateAgentPubKey();
 
-	const appBundle = rolesTestHapp();
-
-	const role = appBundle.manifest.roles.find(r => r.name === 'roles_test')!;
-	role.dna.modifiers = {
-		...role.dna.modifiers,
-		properties: {
-			progenitors: [encodeHashToBase64(alicePubKey)],
-		} as any,
+	const rolesSettings: RoleSettingsMap = {
+		roles_test: {
+			type: 'Provisioned',
+			modifiers: {
+				properties: {
+					progenitors: [encodeHashToBase64(alicePubKey)],
+				} as any,
+			},
+		},
 	};
-	const appBundleSource = { bundle: appBundle };
+
+	// const appBundle = rolesTestHapp();
+
+	// const role = appBundle.manifest.roles.find(r => r.name === 'roles_test')!;
+	// role.dna.modifiers = {
+	// 	...role.dna.modifiers,
+	// 	properties: ,
+	// };
+	const appBundleSource = { path: rolesTestHapp };
 
 	const appInfo = await aliceConductor.installApp(appBundleSource, {
 		agentPubKey: alicePubKey,
 		networkSeed: scenario.networkSeed,
+		rolesSettings,
 	});
 
 	const port = await aliceConductor.attachAppInterface();
@@ -76,8 +75,6 @@ export async function setup(scenario: Scenario) {
 	});
 	const appWs = await aliceConductor.connectAppWs(issued.token, port);
 
-	patchCallZome(appWs);
-
 	const alice: AgentApp = await enableAndGetAgentApp(
 		aliceConductor.adminWs(),
 		appWs,
@@ -86,8 +83,18 @@ export async function setup(scenario: Scenario) {
 	// Add 2 players with the test hApp to the Scenario. The returned players
 	// can be destructured.
 	const [bob, carol] = await scenario.addPlayersWithApps([
-		{ appBundleSource },
-		{ appBundleSource },
+		{
+			appBundleSource,
+			options: {
+				rolesSettings,
+			},
+		},
+		{
+			appBundleSource,
+			options: {
+				rolesSettings,
+			},
+		},
 	]);
 
 	await aliceConductor
@@ -127,9 +134,6 @@ export async function setup(scenario: Scenario) {
 	const aliceLinkedDevicesStore = new LinkedDevicesStore(
 		aliceLinkedDevicesClient,
 	);
-
-	patchCallZome(bob.appWs as AppWebsocket);
-	patchCallZome(carol.appWs as AppWebsocket);
 
 	const bobLinkedDevicesClient = new LinkedDevicesClient(
 		bob.appWs as any,

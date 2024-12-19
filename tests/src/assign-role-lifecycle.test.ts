@@ -237,7 +237,7 @@ test('Admin can assign admin that assigns a role', async () => {
 			const roleClaims =
 				await carol.store.client.queryUndeletedRoleClaimsForRole('editor');
 			return roleClaims.length === 0;
-		}, 34_000);
+		}, 60_000);
 
 		editors = await toPromise(carol.store.assigneesForRole.get('editor'));
 

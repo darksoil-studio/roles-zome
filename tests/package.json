@@ -5,12 +5,12 @@
     "test": "RUST_LOG=error vitest run"
   },
   "dependencies": {
-    "@darksoil-studio/linked-devices-zome": "github:darksoil-studio/linked-devices-zome#19a5184e51f61e6914972e3a605560b5d1019005&path:ui",
-    "@darksoil-studio/profiles-zome": "github:darksoil-studio/profiles-zome#904311fdae9e783ad464c1ba378b7ed6c0c07a9b&path:ui",
-    "@tnesh-stack/signals": "^0.400.0-rc",
-    "@tnesh-stack/utils": "^0.400.0-rc",
-    "@holochain/client": "^0.18.0-rc",
-    "@holochain/tryorama": "^0.17.0-rc",
+    "@darksoil-studio/linked-devices-zome": "github:darksoil-studio/linked-devices-zome#f6fd3e8c60cb355036f3dde32584c03b212f61f5&path:ui",
+    "@darksoil-studio/profiles-zome": "github:darksoil-studio/profiles-zome#457c12cc8e35cdd2be149d9ae7dc7b905d574b24&path:ui",
+    "@tnesh-stack/signals": "^0.400.0",
+    "@tnesh-stack/utils": "^0.400.0",
+    "@holochain/client": "^0.18.0",
+    "@holochain/tryorama": "^0.17.0",
     "@msgpack/msgpack": "^2.8.0",
     "fflate": "^0.8.2",
     "typescript": "^5.4.5",

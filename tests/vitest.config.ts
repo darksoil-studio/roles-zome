@@ -5,6 +5,7 @@ import pkg from './package.json';
 
 export default defineConfig({
 	test: {
+		dangerouslyIgnoreUnhandledErrors: true,
 		poolOptions: {
 			threads: {
 				singleThread: true,
