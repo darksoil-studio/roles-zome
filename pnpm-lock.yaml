@@ -75,11 +75,11 @@ importers:
   tests:
     dependencies:
       '@darksoil-studio/linked-devices-zome':
-        specifier: github:darksoil-studio/linked-devices-zome#75efce06804b842860a6e83b68a91e6e43188206&path:ui
-        version: https://codeload.github.com/darksoil-studio/linked-devices-zome/tar.gz/75efce06804b842860a6e83b68a91e6e43188206#path:ui(@types/react@18.3.12)
+        specifier: 0.400.0-rev.75efce06804b842860a6e83b68a91e6e43188206
+        version: 0.400.0-rev.75efce06804b842860a6e83b68a91e6e43188206(@types/react@18.3.12)
       '@darksoil-studio/profiles-zome':
-        specifier: github:darksoil-studio/profiles-zome#a195fcc45e2e196e316ed4cec98df051a324e23c&path:ui
-        version: https://codeload.github.com/darksoil-studio/profiles-zome/tar.gz/a195fcc45e2e196e316ed4cec98df051a324e23c#path:ui(@types/react@18.3.12)
+        specifier: 0.400.0-rev.a195fcc45e2e196e316ed4cec98df051a324e23c
+        version: 0.400.0-rev.a195fcc45e2e196e316ed4cec98df051a324e23c(@types/react@18.3.12)
       '@holochain/client':
         specifier: ^0.18.0
         version: 0.18.0
@@ -368,10 +368,6 @@ packages:
     resolution: {commit: 055871e8a663402b169691b5b40cdc90751c0628, path: ui, repo: git@github.com:darksoil-studio/linked-devices.git, type: git}
     version: 0.1.0
 
-  '@darksoil-studio/linked-devices-zome@https://codeload.github.com/darksoil-studio/linked-devices-zome/tar.gz/75efce06804b842860a6e83b68a91e6e43188206#path:ui':
-    resolution: {path: ui, tarball: https://codeload.github.com/darksoil-studio/linked-devices-zome/tar.gz/75efce06804b842860a6e83b68a91e6e43188206}
-    version: 0.400.0
-
   '@darksoil-studio/notifications-zome@0.400.0-rev.8b87877180923190e2b0395d0e69caf2e4453ba8':
     resolution: {integrity: sha512-zWE9Da+TZCKtfdx2oLCcbHPAWD4cTo4bt/K/10q9sUJI/5ZhLlnfilPr+p9UbUn061H4Q1L2zxYOpYxAlUswMA==}
 
@@ -381,10 +377,6 @@ packages:
   '@darksoil-studio/profiles-zome@https://codeload.github.com/darksoil-studio/profiles-zome/tar.gz/84b84f677bb8276cc02b14957ccde422f8830a62#path:ui':
     resolution: {path: ui, tarball: https://codeload.github.com/darksoil-studio/profiles-zome/tar.gz/84b84f677bb8276cc02b14957ccde422f8830a62}
     version: 0.300.0
-
-  '@darksoil-studio/profiles-zome@https://codeload.github.com/darksoil-studio/profiles-zome/tar.gz/a195fcc45e2e196e316ed4cec98df051a324e23c#path:ui':
-    resolution: {path: ui, tarball: https://codeload.github.com/darksoil-studio/profiles-zome/tar.gz/a195fcc45e2e196e316ed4cec98df051a324e23c}
-    version: 0.400.0
 
   '@docsearch/css@3.8.0':
     resolution: {integrity: sha512-pieeipSOW4sQ0+bE5UFC51AOZp9NGxg89wAlZ1BAQFaiRAGK1IKUaPQ0UGZeNctJXyqZ1UvBtOQh2HH+U5GtmA==}
@@ -3236,25 +3228,6 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@darksoil-studio/linked-devices-zome@https://codeload.github.com/darksoil-studio/linked-devices-zome/tar.gz/75efce06804b842860a6e83b68a91e6e43188206#path:ui(@types/react@18.3.12)':
-    dependencies:
-      '@holochain/client': 0.18.0
-      '@lit/context': 1.1.3
-      '@lit/localize': 0.12.2
-      '@mdi/js': 7.4.47
-      '@msgpack/msgpack': 2.8.0
-      '@shoelace-style/shoelace': 2.18.0(@types/react@18.3.12)
-      '@tauri-apps/plugin-barcode-scanner': 2.0.0
-      '@tnesh-stack/elements': 0.400.0(@types/react@18.3.12)
-      '@tnesh-stack/signals': 0.400.0
-      '@tnesh-stack/utils': 0.400.0
-      js-base64: 3.7.7
-      lit: 3.2.1
-    transitivePeerDependencies:
-      - '@types/react'
-      - bufferutil
-      - utf-8-validate
-
   '@darksoil-studio/notifications-zome@0.400.0-rev.8b87877180923190e2b0395d0e69caf2e4453ba8(@types/react@18.3.12)':
     dependencies:
       '@darksoil-studio/linked-devices-zome': 0.400.0-rev.75efce06804b842860a6e83b68a91e6e43188206(@types/react@18.3.12)
@@ -3304,24 +3277,6 @@ snapshots:
       '@tnesh-stack/elements': 0.300.5(@types/react@18.3.12)
       '@tnesh-stack/signals': 0.300.1
       '@tnesh-stack/utils': 0.300.0
-      lit: 3.2.1
-    transitivePeerDependencies:
-      - '@types/react'
-      - bufferutil
-      - utf-8-validate
-
-  '@darksoil-studio/profiles-zome@https://codeload.github.com/darksoil-studio/profiles-zome/tar.gz/a195fcc45e2e196e316ed4cec98df051a324e23c#path:ui(@types/react@18.3.12)':
-    dependencies:
-      '@darksoil-studio/linked-devices-zome': 0.400.0-rev.75efce06804b842860a6e83b68a91e6e43188206(@types/react@18.3.12)
-      '@holochain/client': 0.18.0
-      '@lit/context': 1.1.3
-      '@lit/localize': 0.12.2
-      '@mdi/js': 7.4.47
-      '@msgpack/msgpack': 2.8.0
-      '@shoelace-style/shoelace': 2.18.0(@types/react@18.3.12)
-      '@tnesh-stack/elements': 0.400.0(@types/react@18.3.12)
-      '@tnesh-stack/signals': 0.400.0
-      '@tnesh-stack/utils': 0.400.0
       lit: 3.2.1
     transitivePeerDependencies:
       - '@types/react'
