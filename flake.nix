@@ -8,6 +8,7 @@ rec {
     crane.follows = "holonix/crane";
 
     tnesh-stack.url = "github:darksoil-studio/tnesh-stack/main-0.4";
+    playground.url = "github:darksoil-studio/holochain-playground/main-0.4";
     p2p-shipyard.url = "github:darksoil-studio/p2p-shipyard/main-0.4";
 
     linked-devices-zome.url =
@@ -74,17 +75,17 @@ rec {
         devShells.default = pkgs.mkShell {
           inputsFrom = [
             inputs'.tnesh-stack.devShells.synchronized-pnpm
-            inputs'.p2p-shipyard.devShells.holochainTauriDev
             inputs'.holonix.devShells.default
           ];
 
           packages = [
-            (inputs'.holonix.packages.holochain.override {
-              cargoExtraArgs = " --features unstable-functions";
-            })
+            inputs'.tnesh-stack.packages.holochain
             inputs'.tnesh-stack.packages.hc-scaffold-zome
+            inputs'.playground.packages.hc-playground
+            inputs'.p2p-shipyard.packages.hc-pilot
           ];
         };
+        devShells.npm-ci = inputs'.tnesh-stack.devShells.synchronized-pnpm;
 
         packages.scaffold = pkgs.symlinkJoin {
           name = "scaffold-remote-zome";
@@ -97,7 +98,6 @@ rec {
                 --coordinator-zome-name roles \
                 --remote-zome-git-url github:darksoil-studio/roles-zome \
                 --remote-npm-package-name @darksoil-studio/roles-zome \
-                --remote-npm-package-path ui \
                 --remote-zome-git-branch main-0.4 \
                 --context-element roles-context \
                 --context-element-import @darksoil-studio/roles-zome/dist/elements/roles-context.js" 
