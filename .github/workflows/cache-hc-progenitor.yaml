@@ -1,9 +1,9 @@
 name: "Build and cache hc-progenitor"
 on:
   push: 
-    branches: [ main ]
+    branches: [ main, 'main-**' ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, 'main-**' ]
 
 jobs:
   build-and-cache-hc-progenitor:
