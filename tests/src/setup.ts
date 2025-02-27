@@ -37,8 +37,6 @@ export function rolesTestHapp(): AppBundle {
 export async function setup(scenario: Scenario) {
 	const rolesTestHapp = path.join(__dirname, '../../workdir/roles_test.happ');
 
-	scenario.dpkiNetworkSeed = undefined;
-
 	const aliceConductor = await scenario.addConductor();
 	const alicePubKey = await aliceConductor.adminWs().generateAgentPubKey();
 
