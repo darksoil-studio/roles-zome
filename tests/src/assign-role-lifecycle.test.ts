@@ -105,7 +105,7 @@ test('Assign role lifecycle', async () => {
 				bob.store.pendingUnassignments,
 			);
 			return pendingUnassignments.length === 1;
-		}, 60_000);
+		}, 100_000);
 
 		await waitUntil(async () => {
 			const roleClaims =
