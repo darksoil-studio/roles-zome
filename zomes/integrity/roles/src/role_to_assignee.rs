@@ -206,6 +206,7 @@ pub fn validate_delete_link_role_to_assignee(
     let agents_deleted_in_proof: Vec<AgentPubKey> = all_role_claims_deleted_proof
         .role_claims_delete_links_hashes
         .into_keys()
+        .map(|pub_key| AgentPubKey::from(pub_key))
         .collect();
 
     if !agents_deleted_in_proof.contains(&action.author) {

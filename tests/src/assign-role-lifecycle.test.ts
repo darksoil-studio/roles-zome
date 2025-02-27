@@ -229,7 +229,7 @@ test('Admin can assign admin that assigns a role', async () => {
 
 		await waitUntil(
 			async () =>
-				(await toPromise(bob.store.pendingUnassignments)).length === 1,
+				(await toPromise(carol.store.pendingUnassignments)).length === 1,
 			40_000,
 		);
 
@@ -239,9 +239,12 @@ test('Admin can assign admin that assigns a role', async () => {
 			return roleClaims.length === 0;
 		}, 60_000);
 
-		editors = await toPromise(carol.store.assigneesForRole.get('editor'));
-
-		assert.equal(editors.length, 0);
+		await waitUntil(async () => {
+			const editors = await toPromise(
+				carol.store.assigneesForRole.get('editor'),
+			);
+			return editors.length === 0;
+		}, 60_000);
 
 		await expect(() =>
 			createExampleEntryThatOnlyEditorsCanCreate(carol.store),

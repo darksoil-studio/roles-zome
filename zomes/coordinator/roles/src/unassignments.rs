@@ -101,6 +101,7 @@ pub fn unassign_pending_unassignments() -> ExternResult<()> {
     let pending_unassignment_links_for_me = get_pending_unassignment_links_for_me()?;
 
     for my_pending_unassignment_link in pending_unassignment_links_for_me {
+        info!("Found a pending unassignment for one of my roles.");
         unassign_my_role(my_pending_unassignment_link)?;
     }
 
@@ -157,6 +158,7 @@ pub fn unassign_my_role(my_pending_unassignment_link: Link) -> ExternResult<()> 
         .collect();
 
     if role_claims_to_delete.len() == 0 {
+        info!("Tried to unassign a role that I don't have a claim for.");
         return Ok(());
     }
 
@@ -200,6 +202,7 @@ pub fn unassign_my_role(my_pending_unassignment_link: Link) -> ExternResult<()> 
 
     for role_claim_to_delete in role_claims_to_delete {
         delete_link_relaxed(role_claim_to_delete.create_link_hash.clone())?;
+        info!("Unassigning role: deleted role claim link.");
     }
 
     Ok(())
