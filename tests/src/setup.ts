@@ -11,6 +11,7 @@ import {
 import {
 	AgentApp,
 	Scenario,
+	dhtSync,
 	enableAndGetAgentApp,
 	pause,
 } from '@holochain/tryorama';
@@ -150,9 +151,13 @@ export async function setup(scenario: Scenario) {
 	await bobStore.client.getAssigneesForRole('');
 	await carolStore.client.getAssigneesForRole('');
 
+	const alicePlayer = { conductor: aliceConductor, appWs, ...alice };
+
+	await dhtSync([alicePlayer, bob, carol], alice.cells[0].cell_id[0]);
+
 	return {
 		alice: {
-			player: { conductor: aliceConductor, appWs, ...alice },
+			player: alicePlayer,
 			store: aliceStore,
 			linkedDevicesStore: aliceLinkedDevicesStore,
 		},
