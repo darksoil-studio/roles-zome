@@ -54,6 +54,7 @@ pub fn init(_: ()) -> ExternResult<InitCallbackResult> {
 
 #[hdk_extern(infallible)]
 pub fn scheduled_tasks(_schedule: Option<Schedule>) -> Option<Schedule> {
+    // debug!("[scheduled_tasks/begin]");
     if let Err(err) = claim_roles_assigned_to_me() {
         error!("Error calling claim_roles_assigned_to_me: {err:?}");
     }
@@ -103,6 +104,10 @@ pub enum Signal {
 ///Commiting an action to the source chain
 #[hdk_extern(infallible)]
 pub fn post_commit(committed_actions: Vec<SignedActionHashed>) {
+    debug!(
+        "[post_commit/begin] with {:?} actions.",
+        committed_actions.len()
+    );
     for action in committed_actions {
         if let Action::CreateLink(create_link) = &action.hashed.content {
             if let Ok(Some(LinkTypes::RoleToAssignee)) =
@@ -131,6 +136,7 @@ pub fn post_commit(committed_actions: Vec<SignedActionHashed>) {
             if let Ok(LinkTypes::AssigneeRoleClaim) = get_deleted_link_type(delete_link) {
                 if let Ok(agent_info) = agent_info() {
                     if let Ok(zome_info) = zome_info() {
+                        info!("An AssingeeRoleClaim link was just deleted. Attempting to create an AllRoleClaimsDeletedProof.");
                         if let Err(err) = call_remote(
                             agent_info.agent_latest_pubkey,
                             zome_info.name,
@@ -219,6 +225,8 @@ fn send_try_claim_new_role_signal(
 
     let tag: AssigneeToRoleLinkTag = deserialize_tag(assignee_to_role_create_link.tag.clone())?;
 
+    info!("Notifying of a new role assigned to them to assignee {assignee}");
+
     send_remote_signal(
         RolesRemoteSignal::TryClaimNewRole {
             role: tag.role,
@@ -250,6 +258,8 @@ fn notify_pending_unassignment(
         .into_iter()
         .map(|(agent, _)| agent.clone())
         .collect();
+
+    info!("Notifying of a pending unassigment to agents {agents:?}");
 
     send_remote_signal(
         RolesRemoteSignal::NewPendingUnassignment {

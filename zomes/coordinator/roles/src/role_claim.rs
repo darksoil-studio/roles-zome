@@ -35,6 +35,8 @@ pub fn claim_roles_assigned_to_me() -> ExternResult<()> {
             claimed_assign_role_create_links_hashes.contains(&target_assign_role_create_link_hash);
 
         if !already_created {
+            info!("Link for for a new role assigned to me found: creating role claim.");
+
             let tag_bytes = SerializedBytes::from(UnsafeBytes::from(link.tag.clone().into_inner()));
 
             let Ok(tag) = AssigneeToRoleLinkTag::try_from(tag_bytes) else {
@@ -61,6 +63,7 @@ pub fn create_role_claim(
     assignee_to_role_create_link_hash: ActionHash,
     role_to_assignee_create_link_hash: ActionHash,
 ) -> ExternResult<()> {
+    info!("Creating role claim for role {role}");
     let my_pub_key = agent_info()?.agent_latest_pubkey;
 
     let tag = AssigneeRoleClaimLinkTag {

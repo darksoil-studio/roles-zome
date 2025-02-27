@@ -24,6 +24,7 @@ pub fn recv_remote_signal(signal: RolesRemoteSignal) -> ExternResult<()> {
             role,
             assignee_to_role_create_link_hash,
         } => {
+            info!("A TryClaimNewRole remote signal for the role {role} was just received.");
             retry_until(
                 || match get_details(
                     assignee_to_role_create_link_hash.clone(),
@@ -74,6 +75,7 @@ pub fn recv_remote_signal(signal: RolesRemoteSignal) -> ExternResult<()> {
             pending_unassignment_create_link_hash,
             ..
         } => {
+            info!("A NewPendingUnassignment remote signal was just received.");
             retry_until(
                 || match get_details(
                     pending_unassignment_create_link_hash.clone(),
@@ -84,6 +86,7 @@ pub fn recv_remote_signal(signal: RolesRemoteSignal) -> ExternResult<()> {
                 },
                 10,
             )?;
+            debug!("[recv_remote_signal/NewPendingUnassignment] Get details succeeded.");
 
             let Some(Details::Record(record_details)) = get_details(
                 pending_unassignment_create_link_hash.clone(),

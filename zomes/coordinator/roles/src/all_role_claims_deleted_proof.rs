@@ -69,6 +69,7 @@ pub fn create_all_role_claims_deleted_proof_if_possible(
     my_pending_unassignment_link: Link,
     all_my_agents_activity: &BTreeMap<AgentPubKey, AgentActivity>,
 ) -> ExternResult<()> {
+    info!("Attempting to create an AllRoleClaimsDeletedProof for the existing PendingUnassignment link.");
     let Some(assign_role_create_link_hash) = my_pending_unassignment_link.target.into_action_hash()
     else {
         return Err(wasm_error!(WasmErrorInner::Guest(format!(
@@ -80,6 +81,7 @@ pub fn create_all_role_claims_deleted_proof_if_possible(
         let maybe_role_claim_deletes =
             get_deleted_role_claim_for(activity, &assign_role_create_link_hash)?;
         let Some(role_claim_delete) = maybe_role_claim_deletes else {
+            info!("Giving up on trying to create AllRoleClaimsDeletedProof: not all our devices have deleted their role claim.");
             return Ok(());
         };
         role_claims_deletes_hashes.insert(agent.clone().into(), role_claim_delete);

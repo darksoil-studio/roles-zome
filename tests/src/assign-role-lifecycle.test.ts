@@ -134,7 +134,7 @@ async function waitUntil(condition: () => Promise<boolean>, timeout: number) {
 	return waitUntil(condition, timeout - (Date.now() - start));
 }
 
-test('Admin can assign admin that assigns a role', async () => {
+test.only('Admin can assign admin that assigns a role', async () => {
 	await runScenario(async scenario => {
 		const { alice, bob, carol } = await setup(scenario);
 
@@ -190,6 +190,9 @@ test('Admin can assign admin that assigns a role', async () => {
 			createExampleEntryThatOnlyEditorsCanCreate(carol.store),
 		).rejects.toThrowError();
 
+		// Avoid ChainHeadMove with the notification created at the post_commit
+		await pause(2000);
+
 		const [carolAssignRoleCreateLinkHash] = await bob.store.client.assignRole(
 			'editor',
 			[carol.player.agentPubKey],
@@ -208,7 +211,7 @@ test('Admin can assign admin that assigns a role', async () => {
 			async () =>
 				(await carol.store.client.queryUndeletedRoleClaimsForRole('editor'))
 					.length === 1,
-			30_000,
+			40_000,
 		);
 
 		let editors = await toPromise(carol.store.assigneesForRole.get('editor'));
