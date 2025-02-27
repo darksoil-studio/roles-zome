@@ -37,7 +37,6 @@ rec {
         # Just for testing purposes
         ./workdir/dna.nix
         ./workdir/happ.nix
-        ./crates/hc-progenitor
         inputs.tnesh-stack.outputs.flakeModules.builders
       ];
 

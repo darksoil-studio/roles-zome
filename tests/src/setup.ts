@@ -51,13 +51,6 @@ export async function setup(scenario: Scenario) {
 		},
 	};
 
-	// const appBundle = rolesTestHapp();
-
-	// const role = appBundle.manifest.roles.find(r => r.name === 'roles_test')!;
-	// role.dna.modifiers = {
-	// 	...role.dna.modifiers,
-	// 	properties: ,
-	// };
 	const appBundleSource = { path: rolesTestHapp };
 
 	const appInfo = await aliceConductor.installApp(appBundleSource, {
@@ -80,20 +73,12 @@ export async function setup(scenario: Scenario) {
 	);
 	// Add 2 players with the test hApp to the Scenario. The returned players
 	// can be destructured.
-	const [bob, carol] = await scenario.addPlayersWithApps([
-		{
-			appBundleSource,
-			options: {
-				rolesSettings,
-			},
-		},
-		{
-			appBundleSource,
-			options: {
-				rolesSettings,
-			},
-		},
-	]);
+	const bob = await scenario.addPlayerWithApp(appBundleSource, {
+		rolesSettings,
+	});
+	const carol = await scenario.addPlayerWithApp(appBundleSource, {
+		rolesSettings,
+	});
 
 	await aliceConductor
 		.adminWs()
