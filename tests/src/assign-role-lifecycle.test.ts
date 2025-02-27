@@ -134,7 +134,7 @@ async function waitUntil(condition: () => Promise<boolean>, timeout: number) {
 	return waitUntil(condition, timeout - (Date.now() - start));
 }
 
-test.only('Admin can assign admin that assigns a role', async () => {
+test('Admin can assign admin that assigns a role', async () => {
 	await runScenario(async scenario => {
 		const { alice, bob, carol } = await setup(scenario);
 
