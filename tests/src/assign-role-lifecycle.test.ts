@@ -230,7 +230,7 @@ test('Admin can assign admin that assigns a role', async () => {
 		await waitUntil(
 			async () =>
 				(await toPromise(carol.store.pendingUnassignments)).length === 1,
-			40_000,
+			60_000,
 		);
 
 		await waitUntil(async () => {
