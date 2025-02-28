@@ -98,14 +98,12 @@ test('Assign role lifecycle', async () => {
 		pendingUnassigments = await toPromise(alice.store.pendingUnassignments);
 		assert.equal(pendingUnassigments.length, 1);
 
-		await dhtSync([alice.player, bob.player], alice.player.cells[0].cell_id[0]);
-
 		await waitUntil(async () => {
-			const pendingUnassignments = await toPromise(
-				bob.store.pendingUnassignments,
-			);
+			const pendingUnassignments =
+				await bob.store.client.getPendingUnassignments();
+
 			return pendingUnassignments.length === 1;
-		}, 100_000);
+		}, 80_000);
 
 		await waitUntil(async () => {
 			const roleClaims =
@@ -232,7 +230,7 @@ test('Admin can assign admin that assigns a role', async () => {
 
 		await waitUntil(
 			async () =>
-				(await toPromise(carol.store.pendingUnassignments)).length === 1,
+				(await carol.store.client.getPendingUnassignments()).length === 1,
 			60_000,
 		);
 
