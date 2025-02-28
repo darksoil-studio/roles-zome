@@ -18,9 +18,9 @@ pub fn create_all_role_claims_deleted_proofs_if_possible() -> ExternResult<()> {
         .into_iter()
         .map(|record| match record.action() {
             Action::DeleteLink(delete_link) => Ok(delete_link.link_add_address.clone()),
-            _ => Err(wasm_error!(WasmErrorInner::Guest(format!(
-                "DeleteLink record does not include a DeleteLink"
-            )))),
+            _ => Err(wasm_error!(
+                "DeleteLink record does not include a DeleteLink."
+            )),
         })
         .collect::<ExternResult<Vec<ActionHash>>>()?;
     let undeleted_pending_unassignment_links_for_me: Vec<Link> = pending_unassignment_links_for_me
@@ -72,9 +72,9 @@ pub fn create_all_role_claims_deleted_proof_if_possible(
     info!("Attempting to create an AllRoleClaimsDeletedProof for the existing PendingUnassignment link.");
     let Some(assign_role_create_link_hash) = my_pending_unassignment_link.target.into_action_hash()
     else {
-        return Err(wasm_error!(WasmErrorInner::Guest(format!(
+        return Err(wasm_error!(
             "Invalid PendingUnassignment link: must have an ActionHash as its target"
-        ))));
+        ));
     };
     let mut role_claims_deletes_hashes: BTreeMap<AgentPubKeyB64, ActionHash> = BTreeMap::new();
     for (agent, activity) in all_my_agents_activity {
@@ -118,13 +118,10 @@ fn get_deleted_role_claim_for(
     let records = maybe_records
         .into_iter()
         .map(|maybe_details| {
-            let details = maybe_details.ok_or(wasm_error!(WasmErrorInner::Guest(format!(
-                "Could not get Record for my agent activity"
-            ))))?;
+            let details =
+                maybe_details.ok_or(wasm_error!("Could not get Record for my agent activity."))?;
             let Details::Record(RecordDetails { record, .. }) = details else {
-                return Err(wasm_error!(WasmErrorInner::Guest(String::from(
-                    "get_details returned EntryDetails"
-                ))));
+                return Err(wasm_error!("get_details returned EntryDetails."));
             };
             Ok(record)
         })

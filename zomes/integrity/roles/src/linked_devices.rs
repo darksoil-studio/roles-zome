@@ -19,9 +19,9 @@ pub(crate) fn linked_devices_integrity_zome_index() -> ExternResult<Option<ZomeI
         .position(|zome_name| zome_name.eq(&linked_devices_integrity_zome_name));
 
     let Some(linked_devices_index) = maybe_linked_devices_index else {
-        return Err(wasm_error!(WasmErrorInner::Guest(format!(
-            "No zome with name {linked_devices_integrity_zome_name} exists in this DNA"
-        ))));
+        return Err(wasm_error!(
+            "No zome with name {linked_devices_integrity_zome_name} exists in this DNA."
+        ));
     };
 
     Ok(Some(ZomeIndex::new(linked_devices_index as u8)))

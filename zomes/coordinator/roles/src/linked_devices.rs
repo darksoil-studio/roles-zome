@@ -74,9 +74,9 @@ where
             let result: R = result.decode().map_err(|err| wasm_error!(err))?;
             Ok(result)
         }
-        _ => Err(wasm_error!(WasmErrorInner::Guest(format!(
-            "Failed to call {zome_name}/{fn_name}: {response:?}"
-        )))),
+        _ => Err(wasm_error!(
+            "Failed to call {zome_name}/{fn_name}: {response:?}."
+        )),
     }
 }
 

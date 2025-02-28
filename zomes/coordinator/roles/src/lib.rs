@@ -162,9 +162,7 @@ fn get_deleted_link_type(delete_link: &DeleteLink) -> ExternResult<LinkTypes> {
     let Some(Details::Record(record_details)) =
         get_details(delete_link.link_add_address.clone(), GetOptions::default())?
     else {
-        return Err(wasm_error!(WasmErrorInner::Guest(format!(
-            "Invalid get details return value"
-        ))));
+        return Err(wasm_error!("Invalid get details return value"));
     };
     match record_details.record.action() {
         Action::CreateLink(create_link) => {
@@ -173,13 +171,9 @@ fn get_deleted_link_type(delete_link: &DeleteLink) -> ExternResult<LinkTypes> {
             {
                 return Ok(link_type);
             }
-            return Err(wasm_error!(WasmErrorInner::Guest(
-                "Invalid link type".to_string()
-            )));
+            return Err(wasm_error!("Invalid link type"));
         }
-        _ => Err(wasm_error!(WasmErrorInner::Guest(
-            "Create Link should exist".to_string()
-        ))),
+        _ => Err(wasm_error!("Create Link should exist")),
     }
 }
 
@@ -192,9 +186,9 @@ fn notify_new_role_assigned(
         .clone()
         .into_agent_pub_key()
     else {
-        return Err(wasm_error!(WasmErrorInner::Guest(format!(
+        return Err(wasm_error!(
             "Unreachable: RoleToAssignee link does not have an AgentPubKey as its target"
-        ))));
+        ));
     };
 
     let tag: RoleToAssigneeLinkTag = deserialize_tag(role_to_assignee_create_link.tag.clone())?;
@@ -218,9 +212,9 @@ fn send_try_claim_new_role_signal(
         .clone()
         .into_agent_pub_key()
     else {
-        return Err(wasm_error!(WasmErrorInner::Guest(format!(
+        return Err(wasm_error!(
             "Unreachable: AssigneeToRole link does not have an AgentPubKey as its base"
-        ))));
+        ));
     };
 
     let tag: AssigneeToRoleLinkTag = deserialize_tag(assignee_to_role_create_link.tag.clone())?;
@@ -247,9 +241,9 @@ fn notify_pending_unassignment(
         .clone()
         .into_action_hash()
     else {
-        return Err(wasm_error!(WasmErrorInner::Guest(format!(
-            "Unreachable: RoleToAssignee link does not point to an ActionHash"
-        ))));
+        return Err(wasm_error!(
+            "Unreachable: RoleToAssignee link does not point to an ActionHash."
+        ));
     };
     let tag: PendingUnassignmentLinkTag =
         deserialize_tag(pending_unassignment_create_link.tag.clone())?;
@@ -320,11 +314,8 @@ fn signal_action(action: SignedActionHashed) -> ExternResult<()> {
             Ok(())
         }
         Action::DeleteLink(delete_link) => {
-            let record = get(delete_link.link_add_address.clone(), GetOptions::default())?.ok_or(
-                wasm_error!(WasmErrorInner::Guest(
-                    "Failed to fetch CreateLink action".to_string()
-                )),
-            )?;
+            let record = get(delete_link.link_add_address.clone(), GetOptions::default())?
+                .ok_or(wasm_error!("Failed to fetch CreateLink action."))?;
             match record.action() {
                 Action::CreateLink(create_link) => {
                     if let Ok(Some(link_type)) =
@@ -338,9 +329,7 @@ fn signal_action(action: SignedActionHashed) -> ExternResult<()> {
                     }
                     Ok(())
                 }
-                _ => Err(wasm_error!(WasmErrorInner::Guest(
-                    "Create Link should exist".to_string()
-                ))),
+                _ => Err(wasm_error!("Create Link should exist")),
             }
         }
         _ => Ok(()),

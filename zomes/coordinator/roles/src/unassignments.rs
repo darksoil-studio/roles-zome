@@ -33,15 +33,13 @@ pub fn request_unassign_role(input: RequestUnassignRoleInput) -> ExternResult<()
         GetOptions::default(),
     )?
     else {
-        return Err(wasm_error!(WasmErrorInner::Guest(format!(
-            "RoleToAssignee link not found"
-        ))));
+        return Err(wasm_error!("RoleToAssignee link not found."));
     };
 
     let Action::CreateLink(role_to_assignee_create_link) = role_to_assignee_link.action() else {
-        return Err(wasm_error!(WasmErrorInner::Guest(format!(
-            "Invalid RoleToAssignee link hash: not a CreateLink action"
-        ))));
+        return Err(wasm_error!(
+            "Invalid RoleToAssignee link hash: not a CreateLink action."
+        ));
     };
 
     let Some(assignee) = role_to_assignee_create_link
@@ -49,9 +47,9 @@ pub fn request_unassign_role(input: RequestUnassignRoleInput) -> ExternResult<()
         .clone()
         .into_agent_pub_key()
     else {
-        return Err(wasm_error!(WasmErrorInner::Guest(format!(
-            "Invalid RoleToAssignee link hash: does not point to an AgentPubKey"
-        ))));
+        return Err(wasm_error!(
+            "Invalid RoleToAssignee link hash: does not point to an AgentPubKey."
+        ));
     };
 
     let mut all_agents = match linked_devices_zome_name() {
@@ -71,13 +69,10 @@ pub fn request_unassign_role(input: RequestUnassignRoleInput) -> ExternResult<()
                 ChainQueryFilter::new(),
                 ActivityRequest::Full,
             )?;
-            let (_, chain_top) =
-                activity
-                    .valid_activity
-                    .last()
-                    .ok_or(wasm_error!(WasmErrorInner::Guest(format!(
-                        "This agent has no source chain activity"
-                    ))))?;
+            let (_, chain_top) = activity
+                .valid_activity
+                .last()
+                .ok_or(wasm_error!("This agent has no source chain activity."))?;
             Ok((agent, chain_top.clone()))
         })
         .collect::<ExternResult<Vec<(AgentPubKey, ActionHash)>>>()?;
@@ -136,9 +131,9 @@ pub fn unassign_my_role(my_pending_unassignment_link: Link) -> ExternResult<()> 
         .clone()
         .into_action_hash()
     else {
-        return Err(wasm_error!(WasmErrorInner::Guest(format!(
-            "Invalid PendingUnassignment link: target is not an ActionHash"
-        ))));
+        return Err(wasm_error!(
+            "Invalid PendingUnassignment link: target is not an ActionHash."
+        ));
     };
     let tag: PendingUnassignmentLinkTag =
         deserialize_tag(my_pending_unassignment_link.tag.clone())?;

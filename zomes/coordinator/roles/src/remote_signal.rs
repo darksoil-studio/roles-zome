@@ -44,25 +44,21 @@ pub fn recv_remote_signal(signal: RolesRemoteSignal) -> ExternResult<()> {
             };
 
             let Action::CreateLink(create_link) = record_details.record.action() else {
-                return Err(wasm_error!(WasmErrorInner::Guest(format!(
-                    "Invalid AssigneeToRole link"
-                ))));
+                return Err(wasm_error!("Invalid AssigneeToRole link"));
             };
 
             let Ok(Some(LinkTypes::AssigneeToRole)) =
                 LinkTypes::from_type(create_link.zome_index, create_link.link_type)
             else {
-                return Err(wasm_error!(WasmErrorInner::Guest(format!(
-                    "Invalid AssigneeToRole link"
-                ))));
+                return Err(wasm_error!("Invalid AssigneeToRole link"));
             };
 
             let Some(target_role_to_assignee_create_link_hash) =
                 create_link.target_address.clone().into_action_hash()
             else {
-                return Err(wasm_error!(WasmErrorInner::Guest(format!(
+                return Err(wasm_error!(
                     "Invalid AssigneeToRole link: no ActionHash as its target"
-                ))));
+                ));
             };
 
             create_role_claim(
@@ -93,17 +89,15 @@ pub fn recv_remote_signal(signal: RolesRemoteSignal) -> ExternResult<()> {
                 GetOptions::default(),
             )?
             else {
-                return Err(wasm_error!(WasmErrorInner::Guest(format!(
-                    "Could not find PendingUnassignment link"
-                ))));
+                return Err(wasm_error!("Could not find PendingUnassignment link."));
             };
 
             let Action::CreateLink(pending_unassignment_create_link) =
                 record_details.record.action()
             else {
-                return Err(wasm_error!(WasmErrorInner::Guest(format!(
-                    "Invalid PendingUnassignment record: not a CreateLink"
-                ))));
+                return Err(wasm_error!(
+                    "Invalid PendingUnassignment record: not a CreateLink."
+                ));
             };
             return unassign_my_role(create_link_to_link(
                 pending_unassignment_create_link_hash,

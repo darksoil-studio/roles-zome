@@ -16,10 +16,7 @@ where
 {
     let tag_bytes = SerializedBytes::from(UnsafeBytes::from(tag.0));
 
-    let t = T::try_from(tag_bytes).map_err(|err| {
-        wasm_error!(WasmErrorInner::Guest(format!(
-            "Error deserializing tag: {err:?}"
-        )))
-    })?;
+    let t =
+        T::try_from(tag_bytes).map_err(|err| wasm_error!("Error deserializing tag: {err:?}."))?;
     Ok(t)
 }
