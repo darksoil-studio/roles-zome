@@ -1,20 +1,20 @@
 {
-  "name": "tests",
-  "private": true,
-  "scripts": {
-    "test": "RUST_LOG=error vitest run"
-  },
-  "dependencies": {
-    "@darksoil-studio/linked-devices-zome": "github:darksoil-studio/linked-devices-zome#75efce06804b842860a6e83b68a91e6e43188206&path:ui",
-    "@darksoil-studio/profiles-zome": "github:darksoil-studio/profiles-zome#a195fcc45e2e196e316ed4cec98df051a324e23c&path:ui",
-    "@tnesh-stack/signals": "^0.400.0",
-    "@tnesh-stack/utils": "^0.400.0",
-    "@holochain/client": "^0.18.0",
-    "@holochain/tryorama": "^0.17.0",
-    "@msgpack/msgpack": "^2.8.0",
-    "fflate": "^0.8.2",
-    "typescript": "^5.4.5",
-    "vitest": "^1.4.0"
-  },
-  "type": "module"
+	"name": "tests",
+	"private": true,
+	"scripts": {
+		"test": "WASM_LOG=debug vitest run"
+	},
+	"dependencies": {
+		"@darksoil-studio/linked-devices-zome": "0.400.0-rev.23d64f1ce59822d7e1849d75c2d978cb6a0d62c8",
+		"@darksoil-studio/profiles-zome": "0.400.0-rev.cca82532f957ff1656da8cf2be3d7d6a9c9d4c68",
+		"@tnesh-stack/signals": "^0.400.0",
+		"@tnesh-stack/utils": "^0.400.0",
+		"@holochain/client": "^0.18.0",
+		"@holochain/tryorama": "^0.17.0",
+		"@msgpack/msgpack": "^2.8.0",
+		"fflate": "^0.8.2",
+		"typescript": "^5.4.5",
+		"vitest": "^1.4.0"
+	},
+	"type": "module"
 }

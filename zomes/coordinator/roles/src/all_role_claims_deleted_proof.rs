@@ -18,9 +18,9 @@ pub fn create_all_role_claims_deleted_proofs_if_possible() -> ExternResult<()> {
         .into_iter()
         .map(|record| match record.action() {
             Action::DeleteLink(delete_link) => Ok(delete_link.link_add_address.clone()),
-            _ => Err(wasm_error!(WasmErrorInner::Guest(format!(
-                "DeleteLink record does not include a DeleteLink"
-            )))),
+            _ => Err(wasm_error!(
+                "DeleteLink record does not include a DeleteLink."
+            )),
         })
         .collect::<ExternResult<Vec<ActionHash>>>()?;
     let undeleted_pending_unassignment_links_for_me: Vec<Link> = pending_unassignment_links_for_me
@@ -69,20 +69,22 @@ pub fn create_all_role_claims_deleted_proof_if_possible(
     my_pending_unassignment_link: Link,
     all_my_agents_activity: &BTreeMap<AgentPubKey, AgentActivity>,
 ) -> ExternResult<()> {
+    info!("Attempting to create an AllRoleClaimsDeletedProof for the existing PendingUnassignment link.");
     let Some(assign_role_create_link_hash) = my_pending_unassignment_link.target.into_action_hash()
     else {
-        return Err(wasm_error!(WasmErrorInner::Guest(format!(
+        return Err(wasm_error!(
             "Invalid PendingUnassignment link: must have an ActionHash as its target"
-        ))));
+        ));
     };
-    let mut role_claims_deletes_hashes: BTreeMap<AgentPubKey, ActionHash> = BTreeMap::new();
+    let mut role_claims_deletes_hashes: BTreeMap<AgentPubKeyB64, ActionHash> = BTreeMap::new();
     for (agent, activity) in all_my_agents_activity {
         let maybe_role_claim_deletes =
             get_deleted_role_claim_for(activity, &assign_role_create_link_hash)?;
         let Some(role_claim_delete) = maybe_role_claim_deletes else {
+            info!("Giving up on trying to create AllRoleClaimsDeletedProof: not all our devices have deleted their role claim.");
             return Ok(());
         };
-        role_claims_deletes_hashes.insert(agent.clone(), role_claim_delete);
+        role_claims_deletes_hashes.insert(agent.clone().into(), role_claim_delete);
     }
 
     let proof = AllRoleClaimsDeletedProof {
@@ -96,6 +98,7 @@ pub fn create_all_role_claims_deleted_proof_if_possible(
     create_relaxed(EntryTypes::AllRoleClaimsDeletedProof(proof))?;
     delete_link_relaxed(assign_role_create_link_hash)?;
     delete_link_relaxed(my_pending_unassignment_link.create_link_hash)?;
+    info!("Unassigning role: created an AllRoleClaimsDeletedProof and deleted the assignment and the pending unassignment links.");
 
     Ok(())
 }
@@ -115,13 +118,10 @@ fn get_deleted_role_claim_for(
     let records = maybe_records
         .into_iter()
         .map(|maybe_details| {
-            let details = maybe_details.ok_or(wasm_error!(WasmErrorInner::Guest(format!(
-                "Could not get Record for my agent activity"
-            ))))?;
+            let details =
+                maybe_details.ok_or(wasm_error!("Could not get Record for my agent activity."))?;
             let Details::Record(RecordDetails { record, .. }) = details else {
-                return Err(wasm_error!(WasmErrorInner::Guest(String::from(
-                    "get_details returned EntryDetails"
-                ))));
+                return Err(wasm_error!("get_details returned EntryDetails."));
             };
             Ok(record)
         })

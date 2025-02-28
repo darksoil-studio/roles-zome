@@ -35,9 +35,10 @@ fn assign_role_to(role: String, assignee: AgentPubKey) -> ExternResult<ActionHas
                 ChainQueryFilter::new(),
                 ActivityRequest::Full,
             )?;
-            let (_, chain_top) = assignee_activity.valid_activity.last().ok_or(wasm_error!(
-                WasmErrorInner::Guest(format!("This agent has no source chain activity"))
-            ))?;
+            let (_, chain_top) = assignee_activity
+                .valid_activity
+                .last()
+                .ok_or(wasm_error!("This agent has no source chain activity."))?;
 
             let linked_devices = get_linked_devices_for(zome_name, assignee.clone())?;
             Some(AssigneeLinkedDevices {
@@ -119,16 +120,11 @@ pub fn get_all_roles_strings() -> ExternResult<Vec<String>> {
         .map(|path| {
             let components: Vec<Component> = path.path.into();
             let Some(component) = components.last() else {
-                return Err(wasm_error!(WasmErrorInner::Guest(format!(
-                    "Invalid path: no components"
-                ))));
+                return Err(wasm_error!("Invalid path: no components."));
             };
 
-            let component_str = String::try_from(component).map_err(|_err| {
-                wasm_error!(WasmErrorInner::Guest(format!(
-                    "Invalid path: last component is not a string"
-                )))
-            })?;
+            let component_str = String::try_from(component)
+                .map_err(|_err| wasm_error!("Invalid path: last component is not a string."))?;
             Ok(component_str)
         })
         .collect::<ExternResult<Vec<String>>>()?;

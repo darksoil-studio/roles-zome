@@ -35,12 +35,14 @@ pub fn claim_roles_assigned_to_me() -> ExternResult<()> {
             claimed_assign_role_create_links_hashes.contains(&target_assign_role_create_link_hash);
 
         if !already_created {
+            info!("Link for for a new role assigned to me found: creating role claim.");
+
             let tag_bytes = SerializedBytes::from(UnsafeBytes::from(link.tag.clone().into_inner()));
 
             let Ok(tag) = AssigneeToRoleLinkTag::try_from(tag_bytes) else {
-                return Err(wasm_error!(WasmErrorInner::Guest(format!(
-                    "RoleToAssignee links must contain the role in their LinkTag",
-                ))));
+                return Err(wasm_error!(
+                    "RoleToAssignee links must contain the role in their LinkTag.",
+                ));
             };
 
             create_role_claim(
@@ -61,6 +63,7 @@ pub fn create_role_claim(
     assignee_to_role_create_link_hash: ActionHash,
     role_to_assignee_create_link_hash: ActionHash,
 ) -> ExternResult<()> {
+    info!("Creating role claim for role {role}.");
     let my_pub_key = agent_info()?.agent_latest_pubkey;
 
     let tag = AssigneeRoleClaimLinkTag {
@@ -158,9 +161,7 @@ pub fn query_undeleted_role_claims() -> ExternResult<Vec<Link>> {
         .into_iter()
         .map(|r| match r.action() {
             Action::DeleteLink(d) => Ok(d.link_add_address.clone()),
-            _ => Err(wasm_error!(WasmErrorInner::Guest(String::from(
-                "Invalid DeleteLink action"
-            )))),
+            _ => Err(wasm_error!("Invalid DeleteLink action")),
         })
         .collect::<ExternResult<Vec<ActionHash>>>()?;
 

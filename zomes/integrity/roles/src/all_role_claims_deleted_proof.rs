@@ -38,7 +38,7 @@ pub struct AllRoleClaimsDeletedProof {
     pub pending_unassignment_create_link_hash: ActionHash,
     // This will point to the `DeleteLinks` actions for the AssigneeRoleClaim links for all the agents
     // associated with the initial assignee for the role
-    pub role_claims_delete_links_hashes: BTreeMap<AgentPubKey, ActionHash>,
+    pub role_claims_delete_links_hashes: BTreeMap<AgentPubKeyB64, ActionHash>,
     pub lost_agents: Vec<AgentPubKey>,
 }
 
@@ -50,10 +50,10 @@ pub fn validate_create_all_role_claims_deleted_proof(
 ) -> ExternResult<ValidateCallbackResult> {
     if !all_role_claims_deleted_proof
         .role_claims_delete_links_hashes
-        .contains_key(action.author())
+        .contains_key(&AgentPubKeyB64::from(action.author().clone()))
     {
         return Ok(ValidateCallbackResult::Invalid(format!(
-            "The author's RoleClaim delete hash was not inclued in `role_claims_deletes_hashes`"
+            "The author's RoleClaim delete hash was not inclued in `role_claims_deletes_hashes`."
         )));
     }
 
@@ -64,6 +64,7 @@ pub fn validate_create_all_role_claims_deleted_proof(
                 .role_claims_delete_links_hashes
                 .clone()
                 .into_iter()
+                .map(|(pub_key, action_hash)| (AgentPubKey::from(pub_key), action_hash))
                 .collect(),
             linked_devices_integrity_zome_name.clone(),
         )?;
@@ -79,7 +80,7 @@ pub fn validate_create_all_role_claims_deleted_proof(
     let Action::CreateLink(pending_unassignment_create_link) = pending_unassignment_record.action()
     else {
         return Ok(ValidateCallbackResult::Invalid(format!(
-            "The pending_unassignment_create_link_hash does not point to a CreateLink"
+            "The pending_unassignment_create_link_hash does not point to a CreateLink."
         )));
     };
     let Ok(Some(LinkTypes::PendingUnassignments)) = LinkTypes::from_type(
@@ -87,7 +88,7 @@ pub fn validate_create_all_role_claims_deleted_proof(
         pending_unassignment_create_link.link_type,
     ) else {
         return Ok(ValidateCallbackResult::Invalid(format!(
-            "The pending_unassignment_create_link_hash does not point to a CreateLink with a PendingUnassigment link type"
+            "The pending_unassignment_create_link_hash does not point to a CreateLink with a PendingUnassigment link type."
         )));
     };
 
@@ -105,13 +106,13 @@ pub fn validate_create_all_role_claims_deleted_proof(
         let delete_role_claim_record = must_get_valid_record(delete_role_claim_hash.clone())?;
         let Action::DeleteLink(delete_link) = delete_role_claim_record.action().clone() else {
             return Ok(ValidateCallbackResult::Invalid(format!(
-                "The role_claim_deletes_hashes for agent {agent:?} does not point to a DeleteLink action"               
+                "The role_claim_deletes_hashes for agent {agent:?} does not point to a DeleteLink action."
             )));
         };
         let role_claim_record = must_get_valid_record(delete_link.link_add_address)?;
         let Action::CreateLink(role_claim_create_link) = role_claim_record.action().clone() else {
             return Ok(ValidateCallbackResult::Invalid(format!(
-                "The role_claim_deletes_hashes for agent {agent:?} points to a DeleteLink action that is not for a CreateLink action"
+                "The role_claim_deletes_hashes for agent {agent:?} points to a DeleteLink action that is not for a CreateLink action."
             )));
         };
 
@@ -146,7 +147,7 @@ pub fn validate_create_all_role_claims_deleted_proof(
         };
 
         let filter = ChainFilter::new(delete_role_claim_hash);
-        let activity_vec = must_get_agent_activity(agent.clone(), filter)?;
+        let activity_vec = must_get_agent_activity(agent.clone().into(), filter)?;
 
         for activity in activity_vec {
             let action = activity.action.hashed.content;
@@ -162,9 +163,7 @@ pub fn validate_create_all_role_claims_deleted_proof(
                             .target_address
                             .clone()
                             .into_agent_pub_key()
-                            .ok_or(wasm_error!(WasmErrorInner::Guest(format!(
-                                "Base of AgentToProfile link is not an agent"
-                            ))))?;
+                            .ok_or(wasm_error!("Base of AgentToProfile link is not an agent."))?;
                         all_agents_referenced_in_the_chains.insert(linked_device);
                     }
                 }
@@ -176,7 +175,7 @@ pub fn validate_create_all_role_claims_deleted_proof(
     for agent_referenced in all_agents_referenced_in_the_chains {
         let has_delete_role_claim = all_role_claims_deleted_proof
             .role_claims_delete_links_hashes
-            .contains_key(&agent_referenced);
+            .contains_key(&agent_referenced.clone().into());
         let is_declared_lost = all_role_claims_deleted_proof
             .lost_agents
             .iter()
@@ -200,7 +199,7 @@ pub fn validate_update_all_role_claims_deleted_proof(
     _original_all_role_claims_deleted_proof: AllRoleClaimsDeletedProof,
 ) -> ExternResult<ValidateCallbackResult> {
     Ok(ValidateCallbackResult::Invalid(
-        "Role Claims cannot be updated".to_string(),
+        "Role Claims cannot be updated.".to_string(),
     ))
 }
 
@@ -211,6 +210,6 @@ pub fn validate_delete_all_role_claims_deleted_proof(
     _original_all_role_claims_deleted_proof: AllRoleClaimsDeletedProof,
 ) -> ExternResult<ValidateCallbackResult> {
     Ok(ValidateCallbackResult::Invalid(
-        "AllRoleClaimsDeletedProofs cannot be deleted".to_string(),
+        "AllRoleClaimsDeletedProofs cannot be deleted.".to_string(),
     ))
 }

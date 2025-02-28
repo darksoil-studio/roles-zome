@@ -11,6 +11,7 @@ import {
 import {
 	AgentApp,
 	Scenario,
+	dhtSync,
 	enableAndGetAgentApp,
 	pause,
 } from '@holochain/tryorama';
@@ -37,8 +38,6 @@ export function rolesTestHapp(): AppBundle {
 export async function setup(scenario: Scenario) {
 	const rolesTestHapp = path.join(__dirname, '../../workdir/roles_test.happ');
 
-	scenario.dpkiNetworkSeed = undefined;
-
 	const aliceConductor = await scenario.addConductor();
 	const alicePubKey = await aliceConductor.adminWs().generateAgentPubKey();
 
@@ -53,13 +52,6 @@ export async function setup(scenario: Scenario) {
 		},
 	};
 
-	// const appBundle = rolesTestHapp();
-
-	// const role = appBundle.manifest.roles.find(r => r.name === 'roles_test')!;
-	// role.dna.modifiers = {
-	// 	...role.dna.modifiers,
-	// 	properties: ,
-	// };
 	const appBundleSource = { path: rolesTestHapp };
 
 	const appInfo = await aliceConductor.installApp(appBundleSource, {
@@ -80,36 +72,11 @@ export async function setup(scenario: Scenario) {
 		appWs,
 		appInfo,
 	);
-	// Add 2 players with the test hApp to the Scenario. The returned players
-	// can be destructured.
-	const [bob, carol] = await scenario.addPlayersWithApps([
-		{
-			appBundleSource,
-			options: {
-				rolesSettings,
-			},
-		},
-		{
-			appBundleSource,
-			options: {
-				rolesSettings,
-			},
-		},
-	]);
-
 	await aliceConductor
 		.adminWs()
 		.authorizeSigningCredentials(
 			(Object.values(appInfo.cell_info)[0][0] as any).provisioned.cell_id,
 		);
-
-	await bob.conductor
-		.adminWs()
-		.authorizeSigningCredentials(bob.cells[0].cell_id);
-
-	await carol.conductor
-		.adminWs()
-		.authorizeSigningCredentials(carol.cells[0].cell_id);
 
 	const config: RolesStoreConfig = {
 		roles_config: [
@@ -134,7 +101,14 @@ export async function setup(scenario: Scenario) {
 	const aliceLinkedDevicesStore = new LinkedDevicesStore(
 		aliceLinkedDevicesClient,
 	);
+	await aliceStore.client.getAssigneesForRole('');
 
+	const bob = await scenario.addPlayerWithApp(appBundleSource, {
+		rolesSettings,
+	});
+	await bob.conductor
+		.adminWs()
+		.authorizeSigningCredentials(bob.cells[0].cell_id);
 	const bobLinkedDevicesClient = new LinkedDevicesClient(
 		bob.appWs as any,
 		'roles_test',
@@ -145,7 +119,15 @@ export async function setup(scenario: Scenario) {
 		bobLinkedDevicesClient,
 	);
 	const bobLinkedDevicesStore = new LinkedDevicesStore(bobLinkedDevicesClient);
+	await bobStore.client.getAssigneesForRole('');
 
+	const carol = await scenario.addPlayerWithApp(appBundleSource, {
+		rolesSettings,
+	});
+
+	await carol.conductor
+		.adminWs()
+		.authorizeSigningCredentials(carol.cells[0].cell_id);
 	const carolLinkedDevicesClient = new LinkedDevicesClient(
 		carol.appWs as any,
 		'roles_test',
@@ -158,18 +140,19 @@ export async function setup(scenario: Scenario) {
 	const carolLinkedDevicesStore = new LinkedDevicesStore(
 		carolLinkedDevicesClient,
 	);
+	await carolStore.client.getAssigneesForRole('');
 
 	// Shortcut peer discovery through gossip and register all agents in every
 	// conductor of the scenario.
 	await scenario.shareAllAgents();
 
-	await aliceStore.client.getAssigneesForRole('');
-	await bobStore.client.getAssigneesForRole('');
-	await carolStore.client.getAssigneesForRole('');
+	const alicePlayer = { conductor: aliceConductor, appWs, ...alice };
+
+	await dhtSync([alicePlayer, bob, carol], alice.cells[0].cell_id[0]);
 
 	return {
 		alice: {
-			player: { conductor: aliceConductor, appWs, ...alice },
+			player: alicePlayer,
 			store: aliceStore,
 			linkedDevicesStore: aliceLinkedDevicesStore,
 		},
@@ -184,4 +167,16 @@ export async function setup(scenario: Scenario) {
 			linkedDevicesStore: carolLinkedDevicesStore,
 		},
 	};
+}
+
+export async function waitUntil(
+	condition: () => Promise<boolean>,
+	timeout: number,
+) {
+	const start = Date.now();
+	const isDone = await condition();
+	if (isDone) return;
+	if (timeout <= 0) throw new Error('timeout');
+	await pause(1000);
+	return waitUntil(condition, timeout - (Date.now() - start));
 }

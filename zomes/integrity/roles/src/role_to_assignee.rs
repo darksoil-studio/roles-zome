@@ -44,14 +44,14 @@ pub fn validate_create_link_role_to_assignee(
     let tag_bytes = SerializedBytes::from(UnsafeBytes::from(tag.clone().into_inner()));
 
     let Ok(tag) = RoleToAssigneeLinkTag::try_from(tag_bytes) else {
-        return Err(wasm_error!(WasmErrorInner::Guest(format!(
-            "RoleToAssignee links must contain the role in their LinkTag",
-        ))));
+        return Err(wasm_error!(
+            "RoleToAssignee links must contain the role in their LinkTag.",
+        ));
     };
 
     let Some(base_entry_hash) = base_address.into_entry_hash() else {
         return Ok(ValidateCallbackResult::Invalid(
-            "No entry hash associated with the base of the link".to_string(),
+            "No entry hash associated with the base of the link.".to_string(),
         ));
     };
 
@@ -60,14 +60,14 @@ pub fn validate_create_link_role_to_assignee(
         .eq(&base_entry_hash)
     {
         return Ok(ValidateCallbackResult::Invalid(
-            "Invalid path entry hash at the base".to_string(),
+            "Invalid path entry hash at the base.".to_string(),
         ));
     };
 
     if let Some(linked_devices) = tag.linked_devices {
         let Some(linked_devices_integrity_zome_name) = linked_devices_integrity_zome_name() else {
             return Ok(ValidateCallbackResult::Invalid(
-            "No linked_devices zome was configured but there are linked devices in the RoleToAssignee link tag".to_string(),
+            "No linked_devices zome was configured but there are linked devices in the RoleToAssignee link tag.".to_string(),
         ));
         };
         for linked_device in linked_devices.linked_devices {
@@ -79,7 +79,7 @@ pub fn validate_create_link_role_to_assignee(
             )?;
             let ValidateCallbackResult::Valid = result else {
                 return Ok(ValidateCallbackResult::Invalid(
-            "Device in the linked_devices of the RoleToAssignee link tag has not linked devices".to_string(),
+            "Device in the linked_devices of the RoleToAssignee link tag has not linked devices.".to_string(),
         ));
             };
         }
@@ -88,7 +88,7 @@ pub fn validate_create_link_role_to_assignee(
     if let RoleToAssigneeLinkMode::ProgenitorClaimingAdminAtInit = tag.mode {
         if tag.role.as_str() != ADMIN_ROLE {
             return Ok(ValidateCallbackResult::Invalid(format!(
-                "ProgenitorClaimingAdminAtInit link for some role other than admin"
+                "ProgenitorClaimingAdminAtInit link for some role other than admin."
             )));
         }
 
@@ -154,7 +154,7 @@ pub fn validate_create_link_role_to_assignee(
 }
 
 pub fn validate_delete_link_role_to_assignee(
-    action_hash: ActionHash,
+    _action_hash: ActionHash,
     action: DeleteLink,
     original_action: CreateLink,
     _base: AnyLinkableHash,
@@ -163,7 +163,7 @@ pub fn validate_delete_link_role_to_assignee(
 ) -> ExternResult<ValidateCallbackResult> {
     let Some(assignee) = original_action.target_address.into_agent_pub_key() else {
         return Ok(ValidateCallbackResult::Invalid(String::from(
-            "RoleToAssignee must point to an AgentPubKey",
+            "RoleToAssignee must point to an AgentPubKey.",
         )));
     };
 
@@ -206,6 +206,7 @@ pub fn validate_delete_link_role_to_assignee(
     let agents_deleted_in_proof: Vec<AgentPubKey> = all_role_claims_deleted_proof
         .role_claims_delete_links_hashes
         .into_keys()
+        .map(|pub_key| AgentPubKey::from(pub_key))
         .collect();
 
     if !agents_deleted_in_proof.contains(&action.author) {
