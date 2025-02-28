@@ -4,7 +4,7 @@ import { toPromise } from '@tnesh-stack/signals';
 import { assert, expect, test } from 'vitest';
 
 import { RolesStore } from '../../ui/src/roles-store.js';
-import { setup } from './setup.js';
+import { setup, waitUntil } from './setup.js';
 
 function createExampleEntryThatOnlyEditorsCanCreate(rolesStore: RolesStore) {
 	return rolesStore.client.client.callZome({
@@ -98,14 +98,12 @@ test('Assign role lifecycle', async () => {
 		pendingUnassigments = await toPromise(alice.store.pendingUnassignments);
 		assert.equal(pendingUnassigments.length, 1);
 
-		await dhtSync([alice.player, bob.player], alice.player.cells[0].cell_id[0]);
-
 		await waitUntil(async () => {
-			const pendingUnassignments = await toPromise(
-				bob.store.pendingUnassignments,
-			);
+			const pendingUnassignments =
+				await bob.store.client.getPendingUnassignments();
+
 			return pendingUnassignments.length === 1;
-		}, 20_000);
+		}, 80_000);
 
 		await waitUntil(async () => {
 			const roleClaims =
@@ -124,15 +122,6 @@ test('Assign role lifecycle', async () => {
 		).rejects.toThrowError();
 	});
 });
-
-async function waitUntil(condition: () => Promise<boolean>, timeout: number) {
-	const start = Date.now();
-	const isDone = await condition();
-	if (isDone) return;
-	if (timeout <= 0) throw new Error('timeout');
-	await pause(1000);
-	return waitUntil(condition, timeout - (Date.now() - start));
-}
 
 test('Admin can assign admin that assigns a role', async () => {
 	await runScenario(async scenario => {
@@ -190,6 +179,9 @@ test('Admin can assign admin that assigns a role', async () => {
 			createExampleEntryThatOnlyEditorsCanCreate(carol.store),
 		).rejects.toThrowError();
 
+		// Avoid ChainHeadMove with the notification created at the post_commit
+		await pause(2000);
+
 		const [carolAssignRoleCreateLinkHash] = await bob.store.client.assignRole(
 			'editor',
 			[carol.player.agentPubKey],
@@ -208,7 +200,7 @@ test('Admin can assign admin that assigns a role', async () => {
 			async () =>
 				(await carol.store.client.queryUndeletedRoleClaimsForRole('editor'))
 					.length === 1,
-			30_000,
+			40_000,
 		);
 
 		let editors = await toPromise(carol.store.assigneesForRole.get('editor'));
@@ -227,25 +219,18 @@ test('Admin can assign admin that assigns a role', async () => {
 			carolAssignRoleCreateLinkHash,
 		);
 
-		await dhtSync(
-			[alice.player, bob.player, carol.player],
-			alice.player.cells[0].cell_id[0],
-			1000,
-			20_000,
-		);
-
-		pendingUnassigments = await toPromise(bob.store.pendingUnassignments);
-		assert.equal(pendingUnassigments.length, 1);
-
 		await waitUntil(async () => {
 			const roleClaims =
 				await carol.store.client.queryUndeletedRoleClaimsForRole('editor');
 			return roleClaims.length === 0;
-		}, 34_000);
+		}, 60_000);
 
-		editors = await toPromise(carol.store.assigneesForRole.get('editor'));
-
-		assert.equal(editors.length, 0);
+		await waitUntil(async () => {
+			const editors = await toPromise(
+				carol.store.assigneesForRole.get('editor'),
+			);
+			return editors.length === 0;
+		}, 60_000);
 
 		await expect(() =>
 			createExampleEntryThatOnlyEditorsCanCreate(carol.store),

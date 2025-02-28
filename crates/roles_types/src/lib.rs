@@ -89,9 +89,9 @@ pub fn validate_agent_had_undeleted_role_claim_at_the_time_with_zome_index(
             SerializedBytes::from(UnsafeBytes::from(undeleted_create.tag.clone().into_inner()));
 
         let Ok(assignee_role_claim_link_tag) = AssigneeRoleClaimLinkTag::try_from(tag_bytes) else {
-            return Err(wasm_error!(WasmErrorInner::Guest(format!(
-                "AssigneeRoleClaim links must contain an AssignRoleClaimLinkTag in their LinkTag",
-            ))));
+            return Err(wasm_error!(
+                "AssigneeRoleClaim links must contain an AssignRoleClaimLinkTag in their LinkTag.",
+            ));
         };
         let undeleted_role_claim_role = assignee_role_claim_link_tag.role;
 

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "scripts": {
     "start": "vite --clearScreen false --port $UI_PORT",
-    "build": "pnpm lint && tsc && pnpm analyze",
+    "build": "pnpm lint && tsc && pnpm localize:build && pnpm analyze",
     "lint": "eslint src && prettier \"src/**/*.ts\" --check --ignore-path .gitignore",
     "format": "eslint src --fix && prettier \"src/**/*.ts\" --write --ignore-path .gitignore",
     "localize:extract": "lit-localize extract",
@@ -21,7 +21,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/darksoil-studio/roles.git"
+    "url": "git+https://github.com/darksoil-studio/roles-zome.git"
   },
   "exports": {
     ".": "./dist/index.js",
@@ -29,13 +29,13 @@
     "./locales/*": "./locales/*"
   },
   "dependencies": {
-    "@darksoil-studio/linked-devices-zome": "github:darksoil-studio/linked-devices-zome#5bf7466cc8091d1a69b3c4be07a2f2367c1eb65e&path:ui",
-    "@darksoil-studio/notifications-zome": "github:darksoil-studio/notifications-zome#f2c4952d07a9885fbdae6a886044b809f056aa16&path:ui",
-    "@darksoil-studio/profiles-zome": "github:darksoil-studio/profiles-zome#29848ca2dd5f9ecff3196281f9e2eb932316baf3&path:ui",
-    "@holochain/client": "^0.17.1",
-    "@tnesh-stack/elements": "^0.300.5",
-    "@tnesh-stack/signals": "^0.300.0",
-    "@tnesh-stack/utils": "^0.300.0",
+    "@darksoil-studio/linked-devices-zome": "0.400.0-rev.23d64f1ce59822d7e1849d75c2d978cb6a0d62c8",
+    "@darksoil-studio/notifications-zome": "0.400.0-rev.63011f80235fe42c5e31130ca72f8560c2d8c7b7",
+    "@darksoil-studio/profiles-zome": "0.400.0-rev.cca82532f957ff1656da8cf2be3d7d6a9c9d4c68",
+    "@holochain/client": "^0.18.0",
+    "@tnesh-stack/elements": "^0.400.0",
+    "@tnesh-stack/signals": "^0.400.0",
+    "@tnesh-stack/utils": "^0.400.0",
     "@lit/context": "^1.0.0",
     "@lit/localize": "^0.12.0",
     "@mdi/js": "^7.2.0",

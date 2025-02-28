@@ -2,6 +2,7 @@ use all_role_claims_deleted_proof::create_all_role_claims_deleted_proofs_if_poss
 use hc_zome_trait_notifications::NotificationsZomeTrait;
 use hc_zome_traits::implemented_zome_traits;
 use hdk::prelude::*;
+use linked_devices::get_my_other_devices;
 use notifications::{send_roles_notification, RolesNotification, RolesNotifications};
 use progenitors::claim_admin_role_as_progenitor;
 use remote_signal::RolesRemoteSignal;
@@ -54,6 +55,7 @@ pub fn init(_: ()) -> ExternResult<InitCallbackResult> {
 
 #[hdk_extern(infallible)]
 pub fn scheduled_tasks(_schedule: Option<Schedule>) -> Option<Schedule> {
+    // debug!("[scheduled_tasks/begin]");
     if let Err(err) = claim_roles_assigned_to_me() {
         error!("Error calling claim_roles_assigned_to_me: {err:?}");
     }
@@ -103,6 +105,10 @@ pub enum Signal {
 ///Commiting an action to the source chain
 #[hdk_extern(infallible)]
 pub fn post_commit(committed_actions: Vec<SignedActionHashed>) {
+    debug!(
+        "[post_commit/begin] with {:?} actions.",
+        committed_actions.len()
+    );
     for action in committed_actions {
         if let Action::CreateLink(create_link) = &action.hashed.content {
             if let Ok(Some(LinkTypes::RoleToAssignee)) =
@@ -129,20 +135,10 @@ pub fn post_commit(committed_actions: Vec<SignedActionHashed>) {
         }
         if let Action::DeleteLink(delete_link) = action.action() {
             if let Ok(LinkTypes::AssigneeRoleClaim) = get_deleted_link_type(delete_link) {
-                if let Ok(agent_info) = agent_info() {
-                    if let Ok(zome_info) = zome_info() {
-                        if let Err(err) = call_remote(
-                            agent_info.agent_latest_pubkey,
-                            zome_info.name,
-                            "create_all_role_claims_deleted_proofs_if_possible".into(),
-                            None,
-                            (),
-                        ) {
-                            error!(
-                                "Error calling create_all_role_claims_deleted_proofs_if_possible: {err:?}"
-                            );
-                        }
-                    }
+                if let Err(err) =
+                    attempt_create_all_role_claims_deleted_proof(action.hashed.hash.clone())
+                {
+                    error!("Could not create an AllRoleClaimsDeletedProof: {:?}", err);
                 }
             }
         }
@@ -152,13 +148,39 @@ pub fn post_commit(committed_actions: Vec<SignedActionHashed>) {
     }
 }
 
+pub fn attempt_create_all_role_claims_deleted_proof(
+    deleted_role_claim_hash: ActionHash,
+) -> ExternResult<()> {
+    let agent_info = agent_info()?;
+    let zome_info = zome_info()?;
+    info!("An AssingeeRoleClaim link was just deleted. Attempting to create an AllRoleClaimsDeletedProof.");
+    if let Err(err) = call_remote(
+        agent_info.agent_latest_pubkey,
+        zome_info.name,
+        "create_all_role_claims_deleted_proofs_if_possible".into(),
+        None,
+        (),
+    ) {
+        error!("Error calling create_all_role_claims_deleted_proofs_if_possible: {err:?}");
+    }
+
+    let my_other_devices = get_my_other_devices()?;
+
+    send_remote_signal(
+        RolesRemoteSignal::TryCreateAllRoleClaimsDeletedProof {
+            deleted_role_claim_hash,
+        },
+        my_other_devices,
+    )?;
+
+    Ok(())
+}
+
 fn get_deleted_link_type(delete_link: &DeleteLink) -> ExternResult<LinkTypes> {
     let Some(Details::Record(record_details)) =
         get_details(delete_link.link_add_address.clone(), GetOptions::default())?
     else {
-        return Err(wasm_error!(WasmErrorInner::Guest(format!(
-            "Invalid get details return value"
-        ))));
+        return Err(wasm_error!("Invalid get details return value"));
     };
     match record_details.record.action() {
         Action::CreateLink(create_link) => {
@@ -167,13 +189,9 @@ fn get_deleted_link_type(delete_link: &DeleteLink) -> ExternResult<LinkTypes> {
             {
                 return Ok(link_type);
             }
-            return Err(wasm_error!(WasmErrorInner::Guest(
-                "Invalid link type".to_string()
-            )));
+            return Err(wasm_error!("Invalid link type"));
         }
-        _ => Err(wasm_error!(WasmErrorInner::Guest(
-            "Create Link should exist".to_string()
-        ))),
+        _ => Err(wasm_error!("Create Link should exist")),
     }
 }
 
@@ -186,9 +204,9 @@ fn notify_new_role_assigned(
         .clone()
         .into_agent_pub_key()
     else {
-        return Err(wasm_error!(WasmErrorInner::Guest(format!(
+        return Err(wasm_error!(
             "Unreachable: RoleToAssignee link does not have an AgentPubKey as its target"
-        ))));
+        ));
     };
 
     let tag: RoleToAssigneeLinkTag = deserialize_tag(role_to_assignee_create_link.tag.clone())?;
@@ -212,12 +230,14 @@ fn send_try_claim_new_role_signal(
         .clone()
         .into_agent_pub_key()
     else {
-        return Err(wasm_error!(WasmErrorInner::Guest(format!(
+        return Err(wasm_error!(
             "Unreachable: AssigneeToRole link does not have an AgentPubKey as its base"
-        ))));
+        ));
     };
 
     let tag: AssigneeToRoleLinkTag = deserialize_tag(assignee_to_role_create_link.tag.clone())?;
+
+    info!("Notifying of a new role assigned to them to assignee {assignee}");
 
     send_remote_signal(
         RolesRemoteSignal::TryClaimNewRole {
@@ -239,9 +259,9 @@ fn notify_pending_unassignment(
         .clone()
         .into_action_hash()
     else {
-        return Err(wasm_error!(WasmErrorInner::Guest(format!(
-            "Unreachable: RoleToAssignee link does not point to an ActionHash"
-        ))));
+        return Err(wasm_error!(
+            "Unreachable: RoleToAssignee link does not point to an ActionHash."
+        ));
     };
     let tag: PendingUnassignmentLinkTag =
         deserialize_tag(pending_unassignment_create_link.tag.clone())?;
@@ -250,6 +270,8 @@ fn notify_pending_unassignment(
         .into_iter()
         .map(|(agent, _)| agent.clone())
         .collect();
+
+    info!("Notifying of a pending unassigment to agents {agents:?}");
 
     send_remote_signal(
         RolesRemoteSignal::NewPendingUnassignment {
@@ -310,11 +332,8 @@ fn signal_action(action: SignedActionHashed) -> ExternResult<()> {
             Ok(())
         }
         Action::DeleteLink(delete_link) => {
-            let record = get(delete_link.link_add_address.clone(), GetOptions::default())?.ok_or(
-                wasm_error!(WasmErrorInner::Guest(
-                    "Failed to fetch CreateLink action".to_string()
-                )),
-            )?;
+            let record = get(delete_link.link_add_address.clone(), GetOptions::default())?
+                .ok_or(wasm_error!("Failed to fetch CreateLink action."))?;
             match record.action() {
                 Action::CreateLink(create_link) => {
                     if let Ok(Some(link_type)) =
@@ -328,9 +347,7 @@ fn signal_action(action: SignedActionHashed) -> ExternResult<()> {
                     }
                     Ok(())
                 }
-                _ => Err(wasm_error!(WasmErrorInner::Guest(
-                    "Create Link should exist".to_string()
-                ))),
+                _ => Err(wasm_error!("Create Link should exist")),
             }
         }
         _ => Ok(()),

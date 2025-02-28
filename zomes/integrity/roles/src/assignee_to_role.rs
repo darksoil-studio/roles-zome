@@ -31,21 +31,21 @@ pub fn validate_create_link_assignee_to_role(
     let tag_bytes = SerializedBytes::from(UnsafeBytes::from(tag.clone().into_inner()));
 
     let Ok(assignee_to_role_tag) = AssigneeToRoleLinkTag::try_from(tag_bytes) else {
-        return Err(wasm_error!(WasmErrorInner::Guest(format!(
-            "RoleToAssignee links must contain the role in their LinkTag",
-        ))));
+        return Err(wasm_error!(
+            "RoleToAssignee links must contain the role in their LinkTag.",
+        ));
     };
 
     let Some(assignee) = base_address.into_agent_pub_key() else {
         return Ok(ValidateCallbackResult::Invalid(
-            "No entry hash associated with the base of the link".to_string(),
+            "No entry hash associated with the base of the link.".to_string(),
         ));
     };
 
     // Check the entry type for the given action hash
     let Some(role_to_assignee_create_link_hash) = target_address.into_action_hash() else {
         return Ok(ValidateCallbackResult::Invalid(
-            "No ActionHash associated with the target of an AssigneeToRole link".to_string(),
+            "No ActionHash associated with the target of an AssigneeToRole link.".to_string(),
         ));
     };
 
@@ -73,15 +73,15 @@ pub fn validate_create_link_assignee_to_role(
     ));
 
     let Ok(role_to_assignee_tag) = RoleToAssigneeLinkTag::try_from(tag_bytes) else {
-        return Err(wasm_error!(WasmErrorInner::Guest(format!(
-            "RoleToAssignee links must contain the role in their LinkTag",
-        ))));
+        return Err(wasm_error!(
+            "RoleToAssignee links must contain the role in their LinkTag.",
+        ));
     };
 
     if role_to_assignee_tag.role.ne(&assignee_to_role_tag.role) {
-        return Err(wasm_error!(WasmErrorInner::Guest(format!(
-            "Role in the RoleToAssignee link tag is not the same as the role in the AssigneeToRole link tag",
-        ))));
+        return Err(wasm_error!(
+            "Role in the RoleToAssignee link tag is not the same as the role in the AssigneeToRole link tag.",
+        ));
     }
 
     // Either this link was committed by the admin and the assignee must be in the list of linked devices in the RoleToAssignee link tag,

@@ -2,19 +2,20 @@ rec {
   description = "Template for Holochain app development";
 
   inputs = {
-    holonix.url = "github:holochain/holonix/main-0.3";
+    holonix.url = "github:holochain/holonix/main-0.4";
     nixpkgs.follows = "holonix/nixpkgs";
     flake-parts.follows = "holonix/flake-parts";
     crane.follows = "holonix/crane";
 
-    tnesh-stack.url = "github:darksoil-studio/tnesh-stack/main-0.3";
-    p2p-shipyard.url = "github:darksoil-studio/p2p-shipyard/main-0.3";
+    tnesh-stack.url = "github:darksoil-studio/tnesh-stack/main-0.4";
+    playground.url = "github:darksoil-studio/holochain-playground/main-0.4";
+    p2p-shipyard.url = "github:darksoil-studio/p2p-shipyard/main-0.4";
 
     linked-devices-zome.url =
-      "github:darksoil-studio/linked-devices-zome/main-0.3";
-    profiles-zome.url = "github:darksoil-studio/profiles-zome/main-0.3";
+      "github:darksoil-studio/linked-devices-zome/main-0.4";
+    profiles-zome.url = "github:darksoil-studio/profiles-zome/main-0.4";
     notifications-zome.url =
-      "github:darksoil-studio/notifications-zome/main-0.3";
+      "github:darksoil-studio/notifications-zome/main-0.4";
   };
 
   nixConfig = {
@@ -36,7 +37,6 @@ rec {
         # Just for testing purposes
         ./workdir/dna.nix
         ./workdir/happ.nix
-        ./crates/hc-progenitor
         inputs.tnesh-stack.outputs.flakeModules.builders
       ];
 
@@ -74,12 +74,17 @@ rec {
         devShells.default = pkgs.mkShell {
           inputsFrom = [
             inputs'.tnesh-stack.devShells.synchronized-pnpm
-            inputs'.p2p-shipyard.devShells.holochainTauriDev
             inputs'.holonix.devShells.default
           ];
 
-          packages = [ inputs'.tnesh-stack.packages.hc-scaffold-zome ];
+          packages = [
+            inputs'.tnesh-stack.packages.holochain
+            inputs'.tnesh-stack.packages.hc-scaffold-zome
+            inputs'.playground.packages.hc-playground
+            inputs'.p2p-shipyard.packages.hc-pilot
+          ];
         };
+        devShells.npm-ci = inputs'.tnesh-stack.devShells.synchronized-pnpm;
 
         packages.scaffold = pkgs.symlinkJoin {
           name = "scaffold-remote-zome";
@@ -92,8 +97,7 @@ rec {
                 --coordinator-zome-name roles \
                 --remote-zome-git-url github:darksoil-studio/roles-zome \
                 --remote-npm-package-name @darksoil-studio/roles-zome \
-                --remote-npm-package-path ui \
-                --remote-zome-git-branch main-0.3 \
+                --remote-zome-git-branch main-0.4 \
                 --context-element roles-context \
                 --context-element-import @darksoil-studio/roles-zome/dist/elements/roles-context.js" 
           '';

@@ -37,9 +37,9 @@ pub fn validate_create_link_agent_role_claim(
     let tag_bytes = SerializedBytes::from(UnsafeBytes::from(tag.clone().into_inner()));
 
     let Ok(assignee_role_claim_link_tag) = AssigneeRoleClaimLinkTag::try_from(tag_bytes) else {
-        return Err(wasm_error!(WasmErrorInner::Guest(format!(
-            "AssigneeRoleClaim links must contain an AssignRoleClaimLinkTag in their LinkTag",
-        ))));
+        return Err(wasm_error!(
+            "AssigneeRoleClaim links must contain an AssignRoleClaimLinkTag in their LinkTag.",
+        ));
     };
 
     let result =
@@ -99,9 +99,9 @@ pub fn validate_create_link_agent_role_claim(
     ));
 
     let Ok(role_to_assignee_link_tag) = RoleToAssigneeLinkTag::try_from(tag_bytes) else {
-        return Err(wasm_error!(WasmErrorInner::Guest(format!(
-            "RoleToAssignee links must contain a RoleToAssigneeLinkTag in their LinkTag",
-        ))));
+        return Err(wasm_error!(
+            "RoleToAssignee links must contain a RoleToAssigneeLinkTag in their LinkTag.",
+        ));
     };
     if role_to_assignee_link_tag
         .role
@@ -256,9 +256,9 @@ fn validate_agent_has_not_previously_committed_a_role_claim_for_this_role_to_ass
         let Ok(previous_assignee_role_claim_link_tag) =
             AssigneeRoleClaimLinkTag::try_from(tag_bytes)
         else {
-            return Err(wasm_error!(WasmErrorInner::Guest(format!(
-                "AssigneeRoleClaim links must contain an AssignRoleClaimLinkTag in their LinkTag",
-            ))));
+            return Err(wasm_error!(
+                "AssigneeRoleClaim links must contain an AssignRoleClaimLinkTag in their LinkTag.",
+            ));
         };
 
         let is_deleted = deleted_hashes.contains(&create_action_hash);
