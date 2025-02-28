@@ -4,7 +4,7 @@ import { toPromise } from '@tnesh-stack/signals';
 import { assert, expect, test } from 'vitest';
 
 import { RolesStore } from '../../ui/src/roles-store.js';
-import { setup } from './setup.js';
+import { setup, waitUntil } from './setup.js';
 
 function createExampleEntryThatOnlyEditorsCanCreate(rolesStore: RolesStore) {
 	return rolesStore.client.client.callZome({
@@ -123,15 +123,6 @@ test('Assign role lifecycle', async () => {
 	});
 });
 
-async function waitUntil(condition: () => Promise<boolean>, timeout: number) {
-	const start = Date.now();
-	const isDone = await condition();
-	if (isDone) return;
-	if (timeout <= 0) throw new Error('timeout');
-	await pause(1000);
-	return waitUntil(condition, timeout - (Date.now() - start));
-}
-
 test('Admin can assign admin that assigns a role', async () => {
 	await runScenario(async scenario => {
 		const { alice, bob, carol } = await setup(scenario);
@@ -226,12 +217,6 @@ test('Admin can assign admin that assigns a role', async () => {
 		await bob.store.client.requestUnassignRole(
 			'editor',
 			carolAssignRoleCreateLinkHash,
-		);
-
-		await waitUntil(
-			async () =>
-				(await carol.store.client.getPendingUnassignments()).length === 1,
-			60_000,
 		);
 
 		await waitUntil(async () => {

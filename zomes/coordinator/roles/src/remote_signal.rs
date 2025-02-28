@@ -2,7 +2,9 @@ use hdk::prelude::*;
 use roles_integrity::LinkTypes;
 
 use crate::{
-    role_claim::create_role_claim, unassignments::unassign_my_role, utils::create_link_to_link,
+    all_role_claims_deleted_proof::create_all_role_claims_deleted_proofs_if_possible,
+    linked_devices::get_my_other_devices, role_claim::create_role_claim,
+    unassignments::unassign_my_role, utils::create_link_to_link,
 };
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -14,6 +16,9 @@ pub enum RolesRemoteSignal {
     NewPendingUnassignment {
         role: String,
         pending_unassignment_create_link_hash: ActionHash,
+    },
+    TryCreateAllRoleClaimsDeletedProof {
+        deleted_role_claim_hash: ActionHash,
     },
 }
 
@@ -103,6 +108,39 @@ pub fn recv_remote_signal(signal: RolesRemoteSignal) -> ExternResult<()> {
                 pending_unassignment_create_link_hash,
                 pending_unassignment_create_link.clone(),
             ));
+        }
+        RolesRemoteSignal::TryCreateAllRoleClaimsDeletedProof {
+            deleted_role_claim_hash,
+        } => {
+            let my_other_devices = get_my_other_devices()?;
+            let provenance = call_info()?.provenance;
+
+            if !my_other_devices.contains(&provenance) {
+                return Err(wasm_error!("A TryCreateAllRoleClaimsDeletedProof remote signal was received from an agent that is not in our linked devices list."));
+            }
+            info!("Received a TryCreateAllRoleClaimsDeletedProof remote signal from one of our devices.");
+            retry_until(
+                || {
+                    let Ok(activity) = get_agent_activity(
+                        provenance.clone(),
+                        ChainQueryFilter::new().action_type(ActionType::DeleteLink),
+                        ActivityRequest::Full,
+                    ) else {
+                        return false;
+                    };
+
+                    activity
+                        .valid_activity
+                        .iter()
+                        .find(|(_seq_num, action_hash)| action_hash.eq(&deleted_role_claim_hash))
+                        .is_some()
+                },
+                10,
+            )?;
+            info!("Found the activity for the new AssignRoleClaim DeleteLink: attempting to create an AllRoleClaimsDeletedProof.");
+
+            create_all_role_claims_deleted_proofs_if_possible(())?;
+            Ok(())
         }
     }
 }

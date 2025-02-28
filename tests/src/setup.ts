@@ -168,3 +168,15 @@ export async function setup(scenario: Scenario) {
 		},
 	};
 }
+
+export async function waitUntil(
+	condition: () => Promise<boolean>,
+	timeout: number,
+) {
+	const start = Date.now();
+	const isDone = await condition();
+	if (isDone) return;
+	if (timeout <= 0) throw new Error('timeout');
+	await pause(1000);
+	return waitUntil(condition, timeout - (Date.now() - start));
+}

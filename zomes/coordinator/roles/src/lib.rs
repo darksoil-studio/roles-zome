@@ -2,6 +2,7 @@ use all_role_claims_deleted_proof::create_all_role_claims_deleted_proofs_if_poss
 use hc_zome_trait_notifications::NotificationsZomeTrait;
 use hc_zome_traits::implemented_zome_traits;
 use hdk::prelude::*;
+use linked_devices::get_my_other_devices;
 use notifications::{send_roles_notification, RolesNotification, RolesNotifications};
 use progenitors::claim_admin_role_as_progenitor;
 use remote_signal::RolesRemoteSignal;
@@ -134,21 +135,10 @@ pub fn post_commit(committed_actions: Vec<SignedActionHashed>) {
         }
         if let Action::DeleteLink(delete_link) = action.action() {
             if let Ok(LinkTypes::AssigneeRoleClaim) = get_deleted_link_type(delete_link) {
-                if let Ok(agent_info) = agent_info() {
-                    if let Ok(zome_info) = zome_info() {
-                        info!("An AssingeeRoleClaim link was just deleted. Attempting to create an AllRoleClaimsDeletedProof.");
-                        if let Err(err) = call_remote(
-                            agent_info.agent_latest_pubkey,
-                            zome_info.name,
-                            "create_all_role_claims_deleted_proofs_if_possible".into(),
-                            None,
-                            (),
-                        ) {
-                            error!(
-                                "Error calling create_all_role_claims_deleted_proofs_if_possible: {err:?}"
-                            );
-                        }
-                    }
+                if let Err(err) =
+                    attempt_create_all_role_claims_deleted_proof(action.hashed.hash.clone())
+                {
+                    error!("Could not create an AllRoleClaimsDeletedProof: {:?}", err);
                 }
             }
         }
@@ -156,6 +146,34 @@ pub fn post_commit(committed_actions: Vec<SignedActionHashed>) {
             error!("Error signaling new action: {:?}", err);
         }
     }
+}
+
+pub fn attempt_create_all_role_claims_deleted_proof(
+    deleted_role_claim_hash: ActionHash,
+) -> ExternResult<()> {
+    let agent_info = agent_info()?;
+    let zome_info = zome_info()?;
+    info!("An AssingeeRoleClaim link was just deleted. Attempting to create an AllRoleClaimsDeletedProof.");
+    if let Err(err) = call_remote(
+        agent_info.agent_latest_pubkey,
+        zome_info.name,
+        "create_all_role_claims_deleted_proofs_if_possible".into(),
+        None,
+        (),
+    ) {
+        error!("Error calling create_all_role_claims_deleted_proofs_if_possible: {err:?}");
+    }
+
+    let my_other_devices = get_my_other_devices()?;
+
+    send_remote_signal(
+        RolesRemoteSignal::TryCreateAllRoleClaimsDeletedProof {
+            deleted_role_claim_hash,
+        },
+        my_other_devices,
+    )?;
+
+    Ok(())
 }
 
 fn get_deleted_link_type(delete_link: &DeleteLink) -> ExternResult<LinkTypes> {

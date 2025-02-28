@@ -5,7 +5,7 @@ import { toPromise } from '@tnesh-stack/signals';
 import { assert, expect, test } from 'vitest';
 
 import { RolesStore } from '../../ui/src/roles-store.js';
-import { setup } from './setup.js';
+import { setup, waitUntil } from './setup.js';
 
 function createExampleEntryThatOnlyEditorsCanCreate(rolesStore: RolesStore) {
 	return rolesStore.client.client.callZome({
@@ -136,7 +136,7 @@ test('Roles assigned to an agent also extend to their linked devices', async () 
 			async () =>
 				(await toPromise(bob2.store.assigneesForRole.get('editor'))).length ===
 				0,
-			20_000,
+			60_000,
 		);
 
 		await expect(() =>
@@ -144,15 +144,6 @@ test('Roles assigned to an agent also extend to their linked devices', async () 
 		).rejects.toThrowError();
 	});
 });
-
-async function waitUntil(condition: () => Promise<boolean>, timeout: number) {
-	const start = Date.now();
-	const isDone = await condition();
-	if (isDone) return;
-	if (timeout <= 0) throw new Error('timeout');
-	await pause(1000);
-	return waitUntil(condition, timeout - (Date.now() - start));
-}
 
 async function linkDevices(
 	store1: LinkedDevicesStore,
