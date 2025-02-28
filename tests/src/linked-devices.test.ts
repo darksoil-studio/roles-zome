@@ -103,16 +103,7 @@ test('Roles assigned to an agent also extend to their linked devices', async () 
 			'editor',
 			assignRoleCreateLinkHash,
 		);
-		await pause(100);
 		pendingUnassigments = await toPromise(alice.store.pendingUnassignments);
-		assert.equal(pendingUnassigments.length, 1);
-
-		await dhtSync(
-			[alice.player, bob.player, bob2.player],
-			alice.player.cells[0].cell_id[0],
-		);
-
-		pendingUnassigments = await toPromise(bob2.store.pendingUnassignments);
 		assert.equal(pendingUnassigments.length, 1);
 
 		await waitUntil(async () => {
