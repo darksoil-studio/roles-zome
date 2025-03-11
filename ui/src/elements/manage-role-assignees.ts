@@ -1,10 +1,10 @@
 import {
-	ProfilesStore,
-	profilesStoreContext,
-} from '@darksoil-studio/profiles-zome';
-import '@darksoil-studio/profiles-zome/dist/elements/profile-list-item.js';
-import '@darksoil-studio/profiles-zome/dist/elements/search-profiles.js';
-import { SearchProfiles } from '@darksoil-studio/profiles-zome/dist/elements/search-profiles.js';
+	ProfilesProvider,
+	profilesProviderContext,
+} from '@darksoil-studio/profiles-provider';
+import '@darksoil-studio/profiles-provider/dist/elements/profile-list-item.js';
+import '@darksoil-studio/profiles-provider/dist/elements/search-users.js';
+import { SearchUsers } from '@darksoil-studio/profiles-provider/dist/elements/search-users.js';
 import {
 	ActionHash,
 	AgentPubKey,
@@ -12,7 +12,7 @@ import {
 	encodeHashToBase64,
 } from '@holochain/client';
 import { consume } from '@lit/context';
-import { msg, str } from '@lit/localize';
+import { localized, msg, str } from '@lit/localize';
 import { mdiDelete, mdiInformationOutline } from '@mdi/js';
 import { decode } from '@msgpack/msgpack';
 import { SlDialog } from '@shoelace-style/shoelace';
@@ -35,6 +35,7 @@ import { RoleConfig, adminRoleConfig } from '../role-config.js';
 import { RolesStore } from '../roles-store.js';
 import { PendingUnassignmentLinkTag } from '../types.js';
 
+@localized()
 @customElement('manage-role-assignees')
 export class ManageRoleAssignees extends SignalWatcher(LitElement) {
 	@property()
@@ -44,28 +45,17 @@ export class ManageRoleAssignees extends SignalWatcher(LitElement) {
 	@property()
 	store!: RolesStore;
 
-	/**
-	 * @internal
-	 */
-	@consume({ context: profilesStoreContext, subscribe: true })
-	profilesStore!: ProfilesStore;
-
 	@state()
 	committing = false;
 
 	@state()
 	removingRole = false;
 
-	async addMembersToRole(role: string, profilesHashes: ActionHash[]) {
+	async addMembersToRole(role: string, users: AgentPubKey[][]) {
 		try {
 			this.committing = true;
-			const allAgents = await Promise.all(
-				profilesHashes.map(profileHash =>
-					toPromise(this.profilesStore.agentsForProfile.get(profileHash)),
-				),
-			);
 
-			const firstAgents = allAgents.map(agents => agents[0]);
+			const firstAgents = users.map(agents => agents[0]);
 
 			await this.store.client.assignRole(role, firstAgents);
 
@@ -75,7 +65,6 @@ export class ManageRoleAssignees extends SignalWatcher(LitElement) {
 					bubbles: true,
 					detail: {
 						role,
-						assigneesProfilesHashes: profilesHashes,
 						assignees: firstAgents,
 					},
 				}),
@@ -126,18 +115,24 @@ export class ManageRoleAssignees extends SignalWatcher(LitElement) {
 		this.removingRole = false;
 	}
 
-	name(profileHash: ActionHash): string | undefined {
-		const profile = this.profilesStore.profiles
-			.get(profileHash)
-			.latestVersion.get();
+	/**
+	 * Profiles provider
+	 */
+	@consume({ context: profilesProviderContext, subscribe: true })
+	@property()
+	profilesProvider!: ProfilesProvider;
+
+	name(agent: AgentPubKey): string | undefined {
+		const profile = this.profilesProvider.currentProfileForAgent
+			.get(agent)
+			.get();
 		if (profile.status !== 'completed') return undefined;
-		return profile.value?.entry.nickname;
+		return profile.value?.name;
 	}
 
 	renderRemoveRoleAction(
 		roleConfig: RoleConfig,
 		assigneeLink: Link,
-		assigneeProfileHash: ActionHash,
 		assigneesCount: number,
 	) {
 		const pendingUnassignments = this.store.pendingUnassignments.get();
@@ -168,13 +163,13 @@ export class ManageRoleAssignees extends SignalWatcher(LitElement) {
 						hoist
 						.label=${msg(`Remove role`)}
 						id="remove-role-${roleConfig.role}-for-${encodeHashToBase64(
-							assigneeProfileHash,
+							assigneeLink.target,
 						)}"
 					>
 						<div class="column" style="gap: 12px">
 							<span
 								>${msg(
-									str`Are you sure you want to request ${this.name(assigneeProfileHash)} to remove its ${roleConfig.singular_name} role?`,
+									str`Are you sure you want to request ${this.name(retype(assigneeLink.target, HashType.AGENT))} to remove its ${roleConfig.singular_name} role?`,
 								)}</span
 							>
 							<span
@@ -188,7 +183,7 @@ export class ManageRoleAssignees extends SignalWatcher(LitElement) {
 							@click=${() =>
 								(
 									this.shadowRoot!.getElementById(
-										`remove-role-${roleConfig.role}-for-${encodeHashToBase64(assigneeProfileHash)}`,
+										`remove-role-${roleConfig.role}-for-${encodeHashToBase64(assigneeLink.target)}`,
 									) as SlDialog
 								).hide()}
 							>${msg('Cancel')}</sl-button
@@ -200,7 +195,7 @@ export class ManageRoleAssignees extends SignalWatcher(LitElement) {
 							@click=${() => {
 								this.removeRole(
 									roleConfig.role,
-									assigneeProfileHash,
+									retype(assigneeLink.target, HashType.AGENT),
 									assigneeLink.create_link_hash,
 								);
 							}}
@@ -215,7 +210,7 @@ export class ManageRoleAssignees extends SignalWatcher(LitElement) {
 						@click=${() => {
 							(
 								this.shadowRoot?.getElementById(
-									`remove-role-${roleConfig.role}-for-${encodeHashToBase64(assigneeProfileHash)}`,
+									`remove-role-${roleConfig.role}-for-${encodeHashToBase64(assigneeLink.target)}`,
 								) as SlDialog
 							).show();
 						}}
@@ -228,19 +223,20 @@ export class ManageRoleAssignees extends SignalWatcher(LitElement) {
 		roleConfig: RoleConfig,
 		assigneesLinks: Link[],
 		iAmAdmin: boolean,
-		profilesHashesForAgents: ReadonlyMap<AgentPubKey, ActionHash | undefined>,
 	) {
 		return html` <sl-dialog
 				id="add-members-${roleConfig.role}"
 				.label=${msg(str`Add members as ${roleConfig.plural_name}`)}
 			>
-				<search-profiles
-					.excludedProfiles=${Array.from(profilesHashesForAgents.values())}
-					id="search-profiles-${roleConfig.role}"
-					.fieldLabel=${msg('Search Member')}
+				<search-users
+					.excludedUsers=${assigneesLinks.map(link =>
+						retype(link.target, HashType.AGENT),
+					)}
+					id="search-users-${roleConfig.role}"
+					.label=${msg('Search Member')}
 					.emptyListPlaceholder=${msg('No members selected yet.')}
-					@profiles-changed=${() => this.requestUpdate()}
-				></search-profiles>
+					@users-changed=${() => this.requestUpdate()}
+				></search-users>
 				<sl-button
 					slot="footer"
 					@click=${() =>
@@ -257,18 +253,18 @@ export class ManageRoleAssignees extends SignalWatcher(LitElement) {
 					.disabled=${!(
 						(
 							this.shadowRoot?.getElementById(
-								`search-profiles-${roleConfig.role}`,
-							) as SearchProfiles
+								`search-users-${roleConfig.role}`,
+							) as SearchUsers
 						)?.value.length > 0
 					)}
 					.loading=${this.committing}
 					@click=${() => {
-						const profilesHashes = (
+						const users = (
 							this.shadowRoot?.getElementById(
-								`search-profiles-${roleConfig.role}`,
-							) as SearchProfiles
+								`search-users-${roleConfig.role}`,
+							) as SearchUsers
 						).value;
-						this.addMembersToRole(roleConfig.role, profilesHashes);
+						this.addMembersToRole(roleConfig.role, users);
 					}}
 					>${msg('Add Members')}</sl-button
 				>
@@ -309,33 +305,22 @@ export class ManageRoleAssignees extends SignalWatcher(LitElement) {
 									>
 								</div>
 							`
-						: assigneesLinks.map(link =>
-								profilesHashesForAgents.get(link.target)
-									? html`
-											<div class="row" style="align-items: center;">
-												<profile-list-item
-													.profileHash=${profilesHashesForAgents.get(
-														link.target,
-													)}
-												></profile-list-item>
-												<span style="flex: 1"></span>
-												${iAmAdmin
-													? this.renderRemoveRoleAction(
-															roleConfig,
-															link,
-															profilesHashesForAgents.get(link.target)!,
-															assigneesLinks.length,
-														)
-													: html``}
-											</div>
-										`
-									: html`
-											<div class="row" style="align-items: center;">
-												<span class="placeholder"
-													>${msg('Profile not found')}</span
-												>
-											</div>
-										`,
+						: assigneesLinks.map(
+								link => html`
+									<div class="row" style="align-items: center;">
+										<profile-list-item
+											.agentPubKey=${retype(link.target, HashType.AGENT)}
+										></profile-list-item>
+										<span style="flex: 1"></span>
+										${iAmAdmin
+											? this.renderRemoveRoleAction(
+													roleConfig,
+													link,
+													assigneesLinks.length,
+												)
+											: html``}
+									</div>
+								`,
 							)}
 				</div>
 			</div>`;
@@ -347,32 +332,12 @@ export class ManageRoleAssignees extends SignalWatcher(LitElement) {
 		if (assignees.status !== 'completed') return assignees;
 		if (myRoles.status !== 'completed') return myRoles;
 
-		const profilesHashesForAgents = joinAsyncMap(
-			mapValues(
-				slice(
-					this.profilesStore.profileForAgent,
-					assignees.value.map(l => l.target),
-				),
-				value => {
-					const profile = value.get();
-					if (profile.status !== 'completed') return profile;
-					return {
-						status: 'completed' as const,
-						value: profile.value?.profileHash,
-					};
-				},
-			),
-		);
-		if (profilesHashesForAgents.status !== 'completed')
-			return profilesHashesForAgents;
-
 		const iAmAdmin = myRoles.value.includes(adminRoleConfig.role);
 		return {
 			status: 'completed' as const,
 			value: {
 				assignees: assignees.value,
 				iAmAdmin,
-				profilesHashesForAgents: profilesHashesForAgents.value,
 			},
 		};
 	}
@@ -402,7 +367,6 @@ export class ManageRoleAssignees extends SignalWatcher(LitElement) {
 					config,
 					assigneesAndIAmAdmin.value.assignees,
 					assigneesAndIAmAdmin.value.iAmAdmin,
-					assigneesAndIAmAdmin.value.profilesHashesForAgents,
 				);
 		}
 	}
