@@ -1,6 +1,6 @@
 import { ActionHash, AgentPubKey } from '@holochain/client';
 import { consume } from '@lit/context';
-import { msg } from '@lit/localize';
+import { localized, msg } from '@lit/localize';
 import '@shoelace-style/shoelace/dist/components/tag/tag.js';
 import { hashProperty, sharedStyles } from '@tnesh-stack/elements';
 import '@tnesh-stack/elements/dist/elements/display-error.js';
@@ -12,10 +12,7 @@ import { rolesStoreContext } from '../context.js';
 import { adminRoleConfig } from '../role-config.js';
 import { RolesStore } from '../roles-store.js';
 
-function flatten<T>(strings: T[][]): T[] {
-	return ([] as T[]).concat(...strings);
-}
-
+@localized()
 @customElement('roles-for-agent')
 export class RolesForAgent extends SignalWatcher(LitElement) {
 	@property(hashProperty('agent'))

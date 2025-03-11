@@ -50,7 +50,7 @@ rec {
 
             runtimeInputs = [
               happ
-              (outputs inputs).packages.${system}.hc-progenitor
+              # (outputs inputs).packages.${system}.hc-progenitor
               inputs.p2p-shipyard.outputs.packages.${system}.hc-pilot
             ];
 
