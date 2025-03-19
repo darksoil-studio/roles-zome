@@ -30,7 +30,7 @@
   "dependencies": {
     "@darksoil-studio/linked-devices-zome": "0.400.0-rev.d8e80faab6453f91bdc58855e13cb7cf9b2fc9f8",
     "@darksoil-studio/profiles-provider": "^0.400.0",
-    "@darksoil-studio/notifications-zome": "0.400.0-rev.2b0f7e8f5748aff8a98952173e1f515f43e4ef8b",
+    "@darksoil-studio/notifications-zome": "0.400.0-rev.df5651be9c836b8034dcfda1931bf9c9026ee472",
     "@holochain/client": "^0.18.0",
     "@tnesh-stack/elements": "^0.400.0",
     "@tnesh-stack/signals": "^0.400.0",
