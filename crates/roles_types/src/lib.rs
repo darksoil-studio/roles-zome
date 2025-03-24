@@ -7,6 +7,9 @@ pub struct Properties {
     pub progenitors: Vec<AgentPubKeyB64>,
 }
 
+///Hardcoded admin role need for creating other roles
+pub const ADMIN_ROLE: &'static str = "admin";
+
 pub const ROLE_CLAIM_LINK_TYPE_INDEX: u8 = 3;
 
 #[derive(Serialize, Deserialize, Debug, SerializedBytes)]
