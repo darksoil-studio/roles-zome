@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["config_file_path","get_config","wait_for_config"],"struct":["Config"]};

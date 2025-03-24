@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["Signal"],"fn":["init","post_commit","scheduled_tasks"],"mod":["all_role_claims_deleted_proof","assignees","linked_devices","notifications","progenitors","remote_signal","role_claim","unassignments","utils"]};
+window.SIDEBAR_ITEMS = {"enum":["Signal"],"fn":["attempt_create_all_role_claims_deleted_proof","init","post_commit","scheduled_tasks"],"mod":["all_role_claims_deleted_proof","assignees","linked_devices","notifications","progenitors","remote_signal","role_claim","unassignments","utils"]};

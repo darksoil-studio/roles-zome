@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `zomes/coordinator/roles/src/remote_signal.rs`."><title>remote_signal.rs - source</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-e935ef01ae1c1829.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="roles" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0 (9b00956e5 2024-04-29)" data-channel="1.78.0" data-search-js="search-42d8da7a6b9792c2.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-12cf3b4f4f9dc36d.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
-            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
-    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../roles/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `zomes/coordinator/roles/src/remote_signal.rs`."><title>remote_signal.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="roles" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0 (eeb90cda1 2024-09-04)" data-channel="1.81.0" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -133,11 +131,48 @@
 <a href="#131" id="131">131</a>
 <a href="#132" id="132">132</a>
 <a href="#133" id="133">133</a>
+<a href="#134" id="134">134</a>
+<a href="#135" id="135">135</a>
+<a href="#136" id="136">136</a>
+<a href="#137" id="137">137</a>
+<a href="#138" id="138">138</a>
+<a href="#139" id="139">139</a>
+<a href="#140" id="140">140</a>
+<a href="#141" id="141">141</a>
+<a href="#142" id="142">142</a>
+<a href="#143" id="143">143</a>
+<a href="#144" id="144">144</a>
+<a href="#145" id="145">145</a>
+<a href="#146" id="146">146</a>
+<a href="#147" id="147">147</a>
+<a href="#148" id="148">148</a>
+<a href="#149" id="149">149</a>
+<a href="#150" id="150">150</a>
+<a href="#151" id="151">151</a>
+<a href="#152" id="152">152</a>
+<a href="#153" id="153">153</a>
+<a href="#154" id="154">154</a>
+<a href="#155" id="155">155</a>
+<a href="#156" id="156">156</a>
+<a href="#157" id="157">157</a>
+<a href="#158" id="158">158</a>
+<a href="#159" id="159">159</a>
+<a href="#160" id="160">160</a>
+<a href="#161" id="161">161</a>
+<a href="#162" id="162">162</a>
+<a href="#163" id="163">163</a>
+<a href="#164" id="164">164</a>
+<a href="#165" id="165">165</a>
+<a href="#166" id="166">166</a>
+<a href="#167" id="167">167</a>
+<a href="#168" id="168">168</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>hdk::prelude::<span class="kw-2">*</span>;
 <span class="kw">use </span>roles_integrity::LinkTypes;
 
 <span class="kw">use crate</span>::{
-    role_claim::create_role_claim, unassignments::unassign_my_role, utils::create_link_to_link,
+    all_role_claims_deleted_proof::create_all_role_claims_deleted_proofs_if_possible,
+    linked_devices::get_my_other_devices, role_claim::create_role_claim,
+    unassignments::unassign_my_role, utils::create_link_to_link,
 };
 
 <span class="attr">#[derive(Serialize, Deserialize, Debug)]
@@ -150,6 +185,9 @@
         role: String,
         pending_unassignment_create_link_hash: ActionHash,
     },
+    TryCreateAllRoleClaimsDeletedProof {
+        deleted_role_claim_hash: ActionHash,
+    },
 }
 
 <span class="attr">#[hdk_extern]
@@ -159,6 +197,7 @@
             role,
             assignee_to_role_create_link_hash,
         } =&gt; {
+            <span class="macro">info!</span>(<span class="string">"A TryClaimNewRole remote signal for the role {role} was just received."</span>);
             retry_until(
                 || <span class="kw">match </span>get_details(
                     assignee_to_role_create_link_hash.clone(),
@@ -178,25 +217,21 @@
             };
 
             <span class="kw">let </span>Action::CreateLink(create_link) = record_details.record.action() <span class="kw">else </span>{
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="macro">wasm_error!</span>(WasmErrorInner::Guest(<span class="macro">format!</span>(
-                    <span class="string">"Invalid AssigneeToRole link"
-                </span>))));
+                <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="macro">wasm_error!</span>(<span class="string">"Invalid AssigneeToRole link"</span>));
             };
 
             <span class="kw">let </span><span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(LinkTypes::AssigneeToRole)) =
                 LinkTypes::from_type(create_link.zome_index, create_link.link_type)
             <span class="kw">else </span>{
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="macro">wasm_error!</span>(WasmErrorInner::Guest(<span class="macro">format!</span>(
-                    <span class="string">"Invalid AssigneeToRole link"
-                </span>))));
+                <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="macro">wasm_error!</span>(<span class="string">"Invalid AssigneeToRole link"</span>));
             };
 
             <span class="kw">let </span><span class="prelude-val">Some</span>(target_role_to_assignee_create_link_hash) =
                 create_link.target_address.clone().into_action_hash()
             <span class="kw">else </span>{
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="macro">wasm_error!</span>(WasmErrorInner::Guest(<span class="macro">format!</span>(
+                <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="macro">wasm_error!</span>(
                     <span class="string">"Invalid AssigneeToRole link: no ActionHash as its target"
-                </span>))));
+                </span>));
             };
 
             create_role_claim(
@@ -209,6 +244,7 @@
             pending_unassignment_create_link_hash,
             ..
         } =&gt; {
+            <span class="macro">info!</span>(<span class="string">"A NewPendingUnassignment remote signal was just received."</span>);
             retry_until(
                 || <span class="kw">match </span>get_details(
                     pending_unassignment_create_link_hash.clone(),
@@ -219,28 +255,60 @@
                 },
                 <span class="number">10</span>,
             )<span class="question-mark">?</span>;
+            <span class="macro">debug!</span>(<span class="string">"[recv_remote_signal/NewPendingUnassignment] Get details succeeded."</span>);
 
             <span class="kw">let </span><span class="prelude-val">Some</span>(Details::Record(record_details)) = get_details(
                 pending_unassignment_create_link_hash.clone(),
                 GetOptions::default(),
             )<span class="question-mark">?
             </span><span class="kw">else </span>{
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="macro">wasm_error!</span>(WasmErrorInner::Guest(<span class="macro">format!</span>(
-                    <span class="string">"Could not find PendingUnassignment link"
-                </span>))));
+                <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="macro">wasm_error!</span>(<span class="string">"Could not find PendingUnassignment link."</span>));
             };
 
             <span class="kw">let </span>Action::CreateLink(pending_unassignment_create_link) =
                 record_details.record.action()
             <span class="kw">else </span>{
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="macro">wasm_error!</span>(WasmErrorInner::Guest(<span class="macro">format!</span>(
-                    <span class="string">"Invalid PendingUnassignment record: not a CreateLink"
-                </span>))));
+                <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="macro">wasm_error!</span>(
+                    <span class="string">"Invalid PendingUnassignment record: not a CreateLink."
+                </span>));
             };
             <span class="kw">return </span>unassign_my_role(create_link_to_link(
                 pending_unassignment_create_link_hash,
                 pending_unassignment_create_link.clone(),
             ));
+        }
+        RolesRemoteSignal::TryCreateAllRoleClaimsDeletedProof {
+            deleted_role_claim_hash,
+        } =&gt; {
+            <span class="kw">let </span>my_other_devices = get_my_other_devices()<span class="question-mark">?</span>;
+            <span class="kw">let </span>provenance = call_info()<span class="question-mark">?</span>.provenance;
+
+            <span class="kw">if </span>!my_other_devices.contains(<span class="kw-2">&amp;</span>provenance) {
+                <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="macro">wasm_error!</span>(<span class="string">"A TryCreateAllRoleClaimsDeletedProof remote signal was received from an agent that is not in our linked devices list."</span>));
+            }
+            <span class="macro">info!</span>(<span class="string">"Received a TryCreateAllRoleClaimsDeletedProof remote signal from one of our devices."</span>);
+            retry_until(
+                || {
+                    <span class="kw">let </span><span class="prelude-val">Ok</span>(activity) = get_agent_activity(
+                        provenance.clone(),
+                        ChainQueryFilter::new().action_type(ActionType::DeleteLink),
+                        ActivityRequest::Full,
+                    ) <span class="kw">else </span>{
+                        <span class="kw">return </span><span class="bool-val">false</span>;
+                    };
+
+                    activity
+                        .valid_activity
+                        .iter()
+                        .find(|(_seq_num, action_hash)| action_hash.eq(<span class="kw-2">&amp;</span>deleted_role_claim_hash))
+                        .is_some()
+                },
+                <span class="number">10</span>,
+            )<span class="question-mark">?</span>;
+            <span class="macro">info!</span>(<span class="string">"Found the activity for the new AssignRoleClaim DeleteLink: attempting to create an AllRoleClaimsDeletedProof."</span>);
+
+            create_all_role_claims_deleted_proofs_if_possible(())<span class="question-mark">?</span>;
+            <span class="prelude-val">Ok</span>(())
         }
     }
 }

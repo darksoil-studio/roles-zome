@@ -1,1 +1,0 @@
-{"rustc":1059629350237521597,"features":"","declared_features":"","target":0,"profile":0,"path":0,"deps":[[14057244974472306947,"build_script_build",false,16821071850310150719]],"local":[{"RerunIfChanged":{"output":"release/build/tx5-go-pion-turn-cbce7b81d97d3701/output","paths":["go.mod","go.sum","main.go","vendor.zip"]}}],"rustflags":[],"metadata":0,"config":0,"compile_kind":0}

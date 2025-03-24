@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `zomes/coordinator/roles/src/lib.rs`."><title>lib.rs - source</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-e935ef01ae1c1829.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="roles" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0 (9b00956e5 2024-04-29)" data-channel="1.78.0" data-search-js="search-42d8da7a6b9792c2.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-12cf3b4f4f9dc36d.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
-            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
-    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../roles/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `zomes/coordinator/roles/src/lib.rs`."><title>lib.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="roles" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0 (eeb90cda1 2024-09-04)" data-channel="1.81.0" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -359,10 +357,28 @@
 <a href="#357" id="357">357</a>
 <a href="#358" id="358">358</a>
 <a href="#359" id="359">359</a>
+<a href="#360" id="360">360</a>
+<a href="#361" id="361">361</a>
+<a href="#362" id="362">362</a>
+<a href="#363" id="363">363</a>
+<a href="#364" id="364">364</a>
+<a href="#365" id="365">365</a>
+<a href="#366" id="366">366</a>
+<a href="#367" id="367">367</a>
+<a href="#368" id="368">368</a>
+<a href="#369" id="369">369</a>
+<a href="#370" id="370">370</a>
+<a href="#371" id="371">371</a>
+<a href="#372" id="372">372</a>
+<a href="#373" id="373">373</a>
+<a href="#374" id="374">374</a>
+<a href="#375" id="375">375</a>
+<a href="#376" id="376">376</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>all_role_claims_deleted_proof::create_all_role_claims_deleted_proofs_if_possible;
 <span class="kw">use </span>hc_zome_trait_notifications::NotificationsZomeTrait;
 <span class="kw">use </span>hc_zome_traits::implemented_zome_traits;
 <span class="kw">use </span>hdk::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>linked_devices::get_my_other_devices;
 <span class="kw">use </span>notifications::{send_roles_notification, RolesNotification, RolesNotifications};
 <span class="kw">use </span>progenitors::claim_admin_role_as_progenitor;
 <span class="kw">use </span>remote_signal::RolesRemoteSignal;
@@ -415,7 +431,8 @@
 
 <span class="attr">#[hdk_extern(infallible)]
 </span><span class="kw">pub fn </span>scheduled_tasks(_schedule: <span class="prelude-ty">Option</span>&lt;Schedule&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;Schedule&gt; {
-    <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = claim_roles_assigned_to_me() {
+    <span class="comment">// debug!("[scheduled_tasks/begin]");
+    </span><span class="kw">if let </span><span class="prelude-val">Err</span>(err) = claim_roles_assigned_to_me() {
         <span class="macro">error!</span>(<span class="string">"Error calling claim_roles_assigned_to_me: {err:?}"</span>);
     }
     <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = assign_my_roles_to_linked_devices_which_havent_claimed_it_yet() {
@@ -464,6 +481,10 @@
 <span class="doccomment">///Commiting an action to the source chain
 </span><span class="attr">#[hdk_extern(infallible)]
 </span><span class="kw">pub fn </span>post_commit(committed_actions: Vec&lt;SignedActionHashed&gt;) {
+    <span class="macro">debug!</span>(
+        <span class="string">"[post_commit/begin] with {:?} actions."</span>,
+        committed_actions.len()
+    );
     <span class="kw">for </span>action <span class="kw">in </span>committed_actions {
         <span class="kw">if let </span>Action::CreateLink(create_link) = <span class="kw-2">&amp;</span>action.hashed.content {
             <span class="kw">if let </span><span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(LinkTypes::RoleToAssignee)) =
@@ -490,20 +511,10 @@
         }
         <span class="kw">if let </span>Action::DeleteLink(delete_link) = action.action() {
             <span class="kw">if let </span><span class="prelude-val">Ok</span>(LinkTypes::AssigneeRoleClaim) = get_deleted_link_type(delete_link) {
-                <span class="kw">if let </span><span class="prelude-val">Ok</span>(agent_info) = agent_info() {
-                    <span class="kw">if let </span><span class="prelude-val">Ok</span>(zome_info) = zome_info() {
-                        <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = call_remote(
-                            agent_info.agent_latest_pubkey,
-                            zome_info.name,
-                            <span class="string">"create_all_role_claims_deleted_proofs_if_possible"</span>.into(),
-                            <span class="prelude-val">None</span>,
-                            (),
-                        ) {
-                            <span class="macro">error!</span>(
-                                <span class="string">"Error calling create_all_role_claims_deleted_proofs_if_possible: {err:?}"
-                            </span>);
-                        }
-                    }
+                <span class="kw">if let </span><span class="prelude-val">Err</span>(err) =
+                    attempt_create_all_role_claims_deleted_proof(action.hashed.hash.clone())
+                {
+                    <span class="macro">error!</span>(<span class="string">"Could not create an AllRoleClaimsDeletedProof: {:?}"</span>, err);
                 }
             }
         }
@@ -513,13 +524,39 @@
     }
 }
 
+<span class="kw">pub fn </span>attempt_create_all_role_claims_deleted_proof(
+    deleted_role_claim_hash: ActionHash,
+) -&gt; ExternResult&lt;()&gt; {
+    <span class="kw">let </span>agent_info = agent_info()<span class="question-mark">?</span>;
+    <span class="kw">let </span>zome_info = zome_info()<span class="question-mark">?</span>;
+    <span class="macro">info!</span>(<span class="string">"An AssingeeRoleClaim link was just deleted. Attempting to create an AllRoleClaimsDeletedProof."</span>);
+    <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = call_remote(
+        agent_info.agent_latest_pubkey,
+        zome_info.name,
+        <span class="string">"create_all_role_claims_deleted_proofs_if_possible"</span>.into(),
+        <span class="prelude-val">None</span>,
+        (),
+    ) {
+        <span class="macro">error!</span>(<span class="string">"Error calling create_all_role_claims_deleted_proofs_if_possible: {err:?}"</span>);
+    }
+
+    <span class="kw">let </span>my_other_devices = get_my_other_devices()<span class="question-mark">?</span>;
+
+    send_remote_signal(
+        RolesRemoteSignal::TryCreateAllRoleClaimsDeletedProof {
+            deleted_role_claim_hash,
+        },
+        my_other_devices,
+    )<span class="question-mark">?</span>;
+
+    <span class="prelude-val">Ok</span>(())
+}
+
 <span class="kw">fn </span>get_deleted_link_type(delete_link: <span class="kw-2">&amp;</span>DeleteLink) -&gt; ExternResult&lt;LinkTypes&gt; {
     <span class="kw">let </span><span class="prelude-val">Some</span>(Details::Record(record_details)) =
         get_details(delete_link.link_add_address.clone(), GetOptions::default())<span class="question-mark">?
     </span><span class="kw">else </span>{
-        <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="macro">wasm_error!</span>(WasmErrorInner::Guest(<span class="macro">format!</span>(
-            <span class="string">"Invalid get details return value"
-        </span>))));
+        <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="macro">wasm_error!</span>(<span class="string">"Invalid get details return value"</span>));
     };
     <span class="kw">match </span>record_details.record.action() {
         Action::CreateLink(create_link) =&gt; {
@@ -528,13 +565,9 @@
             {
                 <span class="kw">return </span><span class="prelude-val">Ok</span>(link_type);
             }
-            <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="macro">wasm_error!</span>(WasmErrorInner::Guest(
-                <span class="string">"Invalid link type"</span>.to_string()
-            )));
+            <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="macro">wasm_error!</span>(<span class="string">"Invalid link type"</span>));
         }
-        <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(<span class="macro">wasm_error!</span>(WasmErrorInner::Guest(
-            <span class="string">"Create Link should exist"</span>.to_string()
-        ))),
+        <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(<span class="macro">wasm_error!</span>(<span class="string">"Create Link should exist"</span>)),
     }
 }
 
@@ -547,9 +580,9 @@
         .clone()
         .into_agent_pub_key()
     <span class="kw">else </span>{
-        <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="macro">wasm_error!</span>(WasmErrorInner::Guest(<span class="macro">format!</span>(
+        <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="macro">wasm_error!</span>(
             <span class="string">"Unreachable: RoleToAssignee link does not have an AgentPubKey as its target"
-        </span>))));
+        </span>));
     };
 
     <span class="kw">let </span>tag: RoleToAssigneeLinkTag = deserialize_tag(role_to_assignee_create_link.tag.clone())<span class="question-mark">?</span>;
@@ -573,12 +606,14 @@
         .clone()
         .into_agent_pub_key()
     <span class="kw">else </span>{
-        <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="macro">wasm_error!</span>(WasmErrorInner::Guest(<span class="macro">format!</span>(
+        <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="macro">wasm_error!</span>(
             <span class="string">"Unreachable: AssigneeToRole link does not have an AgentPubKey as its base"
-        </span>))));
+        </span>));
     };
 
     <span class="kw">let </span>tag: AssigneeToRoleLinkTag = deserialize_tag(assignee_to_role_create_link.tag.clone())<span class="question-mark">?</span>;
+
+    <span class="macro">info!</span>(<span class="string">"Notifying of a new role assigned to them to assignee {assignee}"</span>);
 
     send_remote_signal(
         RolesRemoteSignal::TryClaimNewRole {
@@ -600,9 +635,9 @@
         .clone()
         .into_action_hash()
     <span class="kw">else </span>{
-        <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="macro">wasm_error!</span>(WasmErrorInner::Guest(<span class="macro">format!</span>(
-            <span class="string">"Unreachable: RoleToAssignee link does not point to an ActionHash"
-        </span>))));
+        <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="macro">wasm_error!</span>(
+            <span class="string">"Unreachable: RoleToAssignee link does not point to an ActionHash."
+        </span>));
     };
     <span class="kw">let </span>tag: PendingUnassignmentLinkTag =
         deserialize_tag(pending_unassignment_create_link.tag.clone())<span class="question-mark">?</span>;
@@ -611,6 +646,8 @@
         .into_iter()
         .map(|(agent, <span class="kw">_</span>)| agent.clone())
         .collect();
+
+    <span class="macro">info!</span>(<span class="string">"Notifying of a pending unassigment to agents {agents:?}"</span>);
 
     send_remote_signal(
         RolesRemoteSignal::NewPendingUnassignment {
@@ -671,11 +708,8 @@
             <span class="prelude-val">Ok</span>(())
         }
         Action::DeleteLink(delete_link) =&gt; {
-            <span class="kw">let </span>record = get(delete_link.link_add_address.clone(), GetOptions::default())<span class="question-mark">?</span>.ok_or(
-                <span class="macro">wasm_error!</span>(WasmErrorInner::Guest(
-                    <span class="string">"Failed to fetch CreateLink action"</span>.to_string()
-                )),
-            )<span class="question-mark">?</span>;
+            <span class="kw">let </span>record = get(delete_link.link_add_address.clone(), GetOptions::default())<span class="question-mark">?
+                </span>.ok_or(<span class="macro">wasm_error!</span>(<span class="string">"Failed to fetch CreateLink action."</span>))<span class="question-mark">?</span>;
             <span class="kw">match </span>record.action() {
                 Action::CreateLink(create_link) =&gt; {
                     <span class="kw">if let </span><span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(link_type)) =
@@ -689,9 +723,7 @@
                     }
                     <span class="prelude-val">Ok</span>(())
                 }
-                <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(<span class="macro">wasm_error!</span>(WasmErrorInner::Guest(
-                    <span class="string">"Create Link should exist"</span>.to_string()
-                ))),
+                <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(<span class="macro">wasm_error!</span>(<span class="string">"Create Link should exist"</span>)),
             }
         }
         <span class="kw">_ </span>=&gt; <span class="prelude-val">Ok</span>(()),

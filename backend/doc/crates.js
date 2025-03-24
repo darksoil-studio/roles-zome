@@ -1,1 +1,1 @@
-window.ALL_CRATES = ["example","example_integrity","hc_progenitor","roles","roles_integrity","roles_types"];
+window.ALL_CRATES = ["example","example_integrity","roles","roles_integrity","roles_types"];

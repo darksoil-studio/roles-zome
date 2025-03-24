@@ -4,62 +4,6 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "locales/locales.js",
-      "declarations": [
-        {
-          "kind": "variable",
-          "name": "sourceLocale",
-          "default": "`en`",
-          "description": "The locale code that templates in this source code are written in."
-        },
-        {
-          "kind": "variable",
-          "name": "targetLocales",
-          "type": {
-            "text": "array"
-          },
-          "default": "[\n  ,\n]",
-          "description": "The other locale codes that this application is localized into. Sorted\nlexicographically."
-        },
-        {
-          "kind": "variable",
-          "name": "allLocales",
-          "type": {
-            "text": "array"
-          },
-          "default": "[\n  `en`,\n]",
-          "description": "All valid project locale codes. Sorted lexicographically."
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "sourceLocale",
-          "declaration": {
-            "name": "sourceLocale",
-            "module": "locales/locales.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "targetLocales",
-          "declaration": {
-            "name": "targetLocales",
-            "module": "locales/locales.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "allLocales",
-          "declaration": {
-            "name": "allLocales",
-            "module": "locales/locales.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/context.ts",
       "declarations": [
         {
@@ -791,9 +735,9 @@
                   }
                 },
                 {
-                  "name": "profilesHashes",
+                  "name": "users",
                   "type": {
-                    "text": "ActionHash[]"
+                    "text": "AgentPubKey[][]"
                   }
                 }
               ]
@@ -823,6 +767,15 @@
               ]
             },
             {
+              "kind": "field",
+              "name": "profilesProvider",
+              "type": {
+                "text": "ProfilesProvider"
+              },
+              "description": "Profiles provider",
+              "attribute": "profilesProvider"
+            },
+            {
               "kind": "method",
               "name": "name",
               "return": {
@@ -832,9 +785,9 @@
               },
               "parameters": [
                 {
-                  "name": "profileHash",
+                  "name": "agent",
                   "type": {
-                    "text": "ActionHash"
+                    "text": "AgentPubKey"
                   }
                 }
               ]
@@ -853,12 +806,6 @@
                   "name": "assigneeLink",
                   "type": {
                     "text": "Link"
-                  }
-                },
-                {
-                  "name": "assigneeProfileHash",
-                  "type": {
-                    "text": "ActionHash"
                   }
                 },
                 {
@@ -889,12 +836,6 @@
                   "name": "iAmAdmin",
                   "type": {
                     "text": "boolean"
-                  }
-                },
-                {
-                  "name": "profilesHashesForAgents",
-                  "type": {
-                    "text": "ReadonlyMap<AgentPubKey, ActionHash | undefined>"
                   }
                 }
               ]
@@ -932,6 +873,14 @@
                 "text": "RolesStore"
               },
               "fieldName": "store"
+            },
+            {
+              "name": "profilesProvider",
+              "type": {
+                "text": "ProfilesProvider"
+              },
+              "description": "Profiles provider",
+              "fieldName": "profilesProvider"
             }
           ],
           "mixins": [
@@ -983,6 +932,45 @@
                 "text": "RolesStore"
               },
               "attribute": "store"
+            },
+            {
+              "kind": "field",
+              "name": "client",
+              "type": {
+                "text": "AppClient"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "linkedDevicesStore",
+              "type": {
+                "text": "LinkedDevicesStore"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "config",
+              "type": {
+                "text": "RolesStoreConfig"
+              },
+              "attribute": "config"
+            },
+            {
+              "kind": "field",
+              "name": "role",
+              "type": {
+                "text": "string"
+              },
+              "attribute": "role"
+            },
+            {
+              "kind": "field",
+              "name": "zome",
+              "type": {
+                "text": "string"
+              },
+              "default": "'roles'",
+              "attribute": "zome"
             }
           ],
           "attributes": [
@@ -992,6 +980,28 @@
                 "text": "RolesStore"
               },
               "fieldName": "store"
+            },
+            {
+              "name": "config",
+              "type": {
+                "text": "RolesStoreConfig"
+              },
+              "fieldName": "config"
+            },
+            {
+              "name": "role",
+              "type": {
+                "text": "string"
+              },
+              "fieldName": "role"
+            },
+            {
+              "name": "zome",
+              "type": {
+                "text": "string"
+              },
+              "default": "'roles'",
+              "fieldName": "zome"
             }
           ],
           "superclass": {
