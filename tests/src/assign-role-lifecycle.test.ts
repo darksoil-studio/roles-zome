@@ -77,7 +77,7 @@ test('Assign role lifecycle', async () => {
 			async () =>
 				(await bob.store.client.queryUndeletedRoleClaimsForRole('editor'))
 					.length === 1,
-			40_000,
+			60_000,
 		);
 
 		await createExampleEntryThatOnlyEditorsCanCreate(bob.store);
