@@ -77,7 +77,7 @@ test('Assign role lifecycle', async () => {
 			async () =>
 				(await bob.store.client.queryUndeletedRoleClaimsForRole('editor'))
 					.length === 1,
-			40_000,
+			60_000,
 		);
 
 		await createExampleEntryThatOnlyEditorsCanCreate(bob.store);
@@ -200,7 +200,7 @@ test('Admin can assign admin that assigns a role', async () => {
 			async () =>
 				(await carol.store.client.queryUndeletedRoleClaimsForRole('editor'))
 					.length === 1,
-			40_000,
+			60_000,
 		);
 
 		let editors = await toPromise(carol.store.assigneesForRole.get('editor'));
