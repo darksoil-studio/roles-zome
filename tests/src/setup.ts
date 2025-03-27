@@ -72,6 +72,7 @@ export async function setup(scenario: Scenario) {
 		appWs,
 		appInfo,
 	);
+	const alicePlayer = { conductor: aliceConductor, appWs, ...alice };
 	await aliceConductor
 		.adminWs()
 		.authorizeSigningCredentials(
@@ -145,8 +146,6 @@ export async function setup(scenario: Scenario) {
 	// Shortcut peer discovery through gossip and register all agents in every
 	// conductor of the scenario.
 	await scenario.shareAllAgents();
-
-	const alicePlayer = { conductor: aliceConductor, appWs, ...alice };
 
 	await dhtSync([alicePlayer, bob, carol], alice.cells[0].cell_id[0]);
 
