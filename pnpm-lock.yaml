@@ -42,8 +42,8 @@ importers:
         specifier: 1.0.0-pre.10
         version: 1.0.0-pre.10
       '@darksoil-studio/profiles-zome':
-        specifier: 0.400.0-rev.0e6b1cd53ee4182a6e1cb5fd850d7f826f5662db
-        version: 0.400.0-rev.0e6b1cd53ee4182a6e1cb5fd850d7f826f5662db(@types/react@18.3.12)
+        specifier: 0.400.0-rev.15c8dfa92555d4ef4f35cc40faa201bb03d25f99
+        version: 0.400.0-rev.15c8dfa92555d4ef4f35cc40faa201bb03d25f99(@types/react@18.3.12)
       '@darksoil-studio/roles-zome':
         specifier: workspace:*
         version: link:../ui
@@ -75,11 +75,11 @@ importers:
   tests:
     dependencies:
       '@darksoil-studio/linked-devices-zome':
-        specifier: 0.400.0-rev.681dfa4183284292d9e40832c517a52f2200ba9f
-        version: 0.400.0-rev.681dfa4183284292d9e40832c517a52f2200ba9f(@types/react@18.3.12)
+        specifier: 0.400.0-rev.9ec0b1c9b0e0c546b1118b7bbdac129bb901ae38
+        version: 0.400.0-rev.9ec0b1c9b0e0c546b1118b7bbdac129bb901ae38(@types/react@18.3.12)
       '@darksoil-studio/profiles-zome':
-        specifier: 0.400.0-rev.0e6b1cd53ee4182a6e1cb5fd850d7f826f5662db
-        version: 0.400.0-rev.0e6b1cd53ee4182a6e1cb5fd850d7f826f5662db(@types/react@18.3.12)
+        specifier: 0.400.0-rev.15c8dfa92555d4ef4f35cc40faa201bb03d25f99
+        version: 0.400.0-rev.15c8dfa92555d4ef4f35cc40faa201bb03d25f99(@types/react@18.3.12)
       '@holochain/client':
         specifier: ^0.18.0
         version: 0.18.0
@@ -108,11 +108,11 @@ importers:
   ui:
     dependencies:
       '@darksoil-studio/linked-devices-zome':
-        specifier: 0.400.0-rev.681dfa4183284292d9e40832c517a52f2200ba9f
-        version: 0.400.0-rev.681dfa4183284292d9e40832c517a52f2200ba9f(@types/react@18.3.12)
+        specifier: 0.400.0-rev.9ec0b1c9b0e0c546b1118b7bbdac129bb901ae38
+        version: 0.400.0-rev.9ec0b1c9b0e0c546b1118b7bbdac129bb901ae38(@types/react@18.3.12)
       '@darksoil-studio/notifications-zome':
-        specifier: 0.400.0-rev.d15ff75fd4cd747ffa098ce5891189c54c8f3c25
-        version: 0.400.0-rev.d15ff75fd4cd747ffa098ce5891189c54c8f3c25(@types/react@18.3.12)
+        specifier: 0.400.0-rev.b4ac42112099ba5d21fcd0aa0bfd724c29f4f7bf
+        version: 0.400.0-rev.b4ac42112099ba5d21fcd0aa0bfd724c29f4f7bf(@types/react@18.3.12)
       '@darksoil-studio/profiles-provider':
         specifier: ^0.400.0
         version: 0.400.0(@types/react@18.3.12)
@@ -151,8 +151,8 @@ importers:
         specifier: ^0.9.4
         version: 0.9.9
       '@darksoil-studio/profiles-zome':
-        specifier: 0.400.0-rev.0e6b1cd53ee4182a6e1cb5fd850d7f826f5662db
-        version: 0.400.0-rev.0e6b1cd53ee4182a6e1cb5fd850d7f826f5662db(@types/react@18.3.12)
+        specifier: 0.400.0-rev.15c8dfa92555d4ef4f35cc40faa201bb03d25f99
+        version: 0.400.0-rev.15c8dfa92555d4ef4f35cc40faa201bb03d25f99(@types/react@18.3.12)
       '@lit/localize-tools':
         specifier: ^0.6.3
         version: 0.6.10
@@ -364,11 +364,11 @@ packages:
   '@dabh/diagnostics@2.0.3':
     resolution: {integrity: sha512-hrlQOIi7hAfzsMqlGSFyVucrx38O+j6wiGOf//H2ecvIEqYN4ADBSS2iLMh5UFyDunCNniUIPk/q3riFv45xRA==}
 
-  '@darksoil-studio/linked-devices-zome@0.400.0-rev.681dfa4183284292d9e40832c517a52f2200ba9f':
-    resolution: {integrity: sha512-xhTgsE4q0zHAMiz+zvLyOPlD0UhdlLjbGmeAOBO9KnCCFfLQ7jh1XCgG4rBdqajI2bzpije+nL1x9ykeycKX6w==}
+  '@darksoil-studio/linked-devices-zome@0.400.0-rev.9ec0b1c9b0e0c546b1118b7bbdac129bb901ae38':
+    resolution: {integrity: sha512-pU80j2glS6mVV6JKsU7WyjXVBQylGedmGnlDvgRbJ87qNFb5qf0+PCqbAiuc5gxCTY+71o2Xj7agem/raZ/Chw==}
 
-  '@darksoil-studio/notifications-zome@0.400.0-rev.d15ff75fd4cd747ffa098ce5891189c54c8f3c25':
-    resolution: {integrity: sha512-6W3UWoBQAoeMSIk2qfLohSwkJhtF8Rg9IAHAn/Nupp8Awuoy98E3L1g5DMZH/f5oxgMGDsvj4D8IisfwMWuBfg==}
+  '@darksoil-studio/notifications-zome@0.400.0-rev.b4ac42112099ba5d21fcd0aa0bfd724c29f4f7bf':
+    resolution: {integrity: sha512-T8w5oAtzmR9PAF3AMUI8OetLpK3HczfzxGMYKHAU3eKDoap7K2iiHFsGkbCguKMcWAgenC3vL6RxbhZJqeBe+w==}
 
   '@darksoil-studio/profiles-provider@0.400.0':
     resolution: {integrity: sha512-X95UsxJU7MLCe81ge9lPuOktaI8PYcQnqV5mAIAaIjixYvOQOLYBi4TTypQh3e5CrlnYHFf1Ek24EiZBmXcKCA==}
@@ -376,8 +376,8 @@ packages:
   '@darksoil-studio/profiles-provider@0.400.3':
     resolution: {integrity: sha512-/hrA5i5cxy3Uf+E63SnCdk5kP7oPazGcfalTIyUMaDlpWuqrMAST/dMrKmUtBfRlFfspRmRx4hgDlwc7mWtUVw==}
 
-  '@darksoil-studio/profiles-zome@0.400.0-rev.0e6b1cd53ee4182a6e1cb5fd850d7f826f5662db':
-    resolution: {integrity: sha512-fMuFdSZBuefndGNYJRNuiGGfHa8p4ndYbukwNhLYdh0YsralMxFdyGuKjxXdnxRNdci7VxyHx/COW+HjAu/hCA==}
+  '@darksoil-studio/profiles-zome@0.400.0-rev.15c8dfa92555d4ef4f35cc40faa201bb03d25f99':
+    resolution: {integrity: sha512-C8OOg3p+xWeeADLBQT1hTBqzHJJO15fHjY1NhnEhPv9PiKOZbDJEI3NuYvgw0UNmJKhIodEZbFFt1PXeKsAYsQ==}
 
   '@docsearch/css@3.8.0':
     resolution: {integrity: sha512-pieeipSOW4sQ0+bE5UFC51AOZp9NGxg89wAlZ1BAQFaiRAGK1IKUaPQ0UGZeNctJXyqZ1UvBtOQh2HH+U5GtmA==}
@@ -3184,7 +3184,7 @@ snapshots:
       enabled: 2.0.0
       kuler: 2.0.0
 
-  '@darksoil-studio/linked-devices-zome@0.400.0-rev.681dfa4183284292d9e40832c517a52f2200ba9f(@types/react@18.3.12)':
+  '@darksoil-studio/linked-devices-zome@0.400.0-rev.9ec0b1c9b0e0c546b1118b7bbdac129bb901ae38(@types/react@18.3.12)':
     dependencies:
       '@holochain/client': 0.18.0
       '@lit/context': 1.1.3
@@ -3203,7 +3203,7 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@darksoil-studio/notifications-zome@0.400.0-rev.d15ff75fd4cd747ffa098ce5891189c54c8f3c25(@types/react@18.3.12)':
+  '@darksoil-studio/notifications-zome@0.400.0-rev.b4ac42112099ba5d21fcd0aa0bfd724c29f4f7bf(@types/react@18.3.12)':
     dependencies:
       '@holochain/client': 0.18.0
       '@lit/context': 1.1.3
@@ -3254,9 +3254,9 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@darksoil-studio/profiles-zome@0.400.0-rev.0e6b1cd53ee4182a6e1cb5fd850d7f826f5662db(@types/react@18.3.12)':
+  '@darksoil-studio/profiles-zome@0.400.0-rev.15c8dfa92555d4ef4f35cc40faa201bb03d25f99(@types/react@18.3.12)':
     dependencies:
-      '@darksoil-studio/linked-devices-zome': 0.400.0-rev.681dfa4183284292d9e40832c517a52f2200ba9f(@types/react@18.3.12)
+      '@darksoil-studio/linked-devices-zome': 0.400.0-rev.9ec0b1c9b0e0c546b1118b7bbdac129bb901ae38(@types/react@18.3.12)
       '@darksoil-studio/profiles-provider': 0.400.3(@types/react@18.3.12)
       '@holochain/client': 0.18.0
       '@lit/context': 1.1.3
