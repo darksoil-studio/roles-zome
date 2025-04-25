@@ -5372,11 +5372,11 @@
     "hc-scaffold_105": {
       "flake": false,
       "locked": {
-        "lastModified": 1745567727,
-        "narHash": "sha256-XNYIm1jyLbUkckDSO5VBT0mXmdmxAckNDVBnD/R/gZM=",
+        "lastModified": 1745582453,
+        "narHash": "sha256-DYyXdH8wq+zRRIFR940+1pEjbbLu8zgNv/2Qkd2fLq8=",
         "owner": "holochain",
         "repo": "scaffolding",
-        "rev": "6dfeee83ffc43a070131aa925a31144e458d5047",
+        "rev": "2c1ef8b57702eb84281353b1049ab0b431f09eed",
         "type": "github"
       },
       "original": {
@@ -24971,11 +24971,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1745582617,
-        "narHash": "sha256-jGr2iLcntH1q0ZQEuwyOlX18JXuyB/2JBWho2jQjcN0=",
+        "lastModified": 1745583316,
+        "narHash": "sha256-Qy0a5zywxJ3r3suCWjhoTf4xkanVXJNmAjwzRJRfVng=",
         "owner": "darksoil-studio",
         "repo": "scaffolding",
-        "rev": "0cb27f566e67650895bb680bd398a30752b9c205",
+        "rev": "ba9c6fdb40ec9af6f3c5b220edbc7a45aeafad76",
         "type": "github"
       },
       "original": {
