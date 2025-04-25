@@ -4,10 +4,9 @@
   perSystem = { inputs', system, self', ... }: rec {
     builders.roles = { notifications_coordinator_zome_name
       , linked_devices_coordinator_zome_name }:
-      inputs.tnesh-stack.outputs.builders.${system}.rustZome {
+      inputs.holochain-nix-builders.outputs.builders.${system}.rustZome {
         workspacePath = inputs.self.outPath;
         crateCargoToml = ./Cargo.toml;
-        cargoArtifacts = inputs'.tnesh-stack.packages.zomeCargoArtifacts;
         zomeEnvironmentVars = {
           NOTIFICATIONS_COORDINATOR_ZOME_NAME =
             notifications_coordinator_zome_name;

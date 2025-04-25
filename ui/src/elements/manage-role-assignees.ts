@@ -1,3 +1,19 @@
+import { sharedStyles } from '@darksoil-studio/holochain-elements';
+import {
+	notifyError,
+	wrapPathInSvg,
+} from '@darksoil-studio/holochain-elements';
+import {
+	SignalWatcher,
+	joinAsyncMap,
+	toPromise,
+} from '@darksoil-studio/holochain-signals';
+import {
+	HashType,
+	mapValues,
+	retype,
+	slice,
+} from '@darksoil-studio/holochain-utils';
 import {
 	ProfilesProvider,
 	profilesProviderContext,
@@ -23,10 +39,6 @@ import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 import '@shoelace-style/shoelace/dist/components/icon/icon.js';
 import '@shoelace-style/shoelace/dist/components/spinner/spinner.js';
 import '@shoelace-style/shoelace/dist/components/tag/tag.js';
-import { sharedStyles } from '@tnesh-stack/elements';
-import { notifyError, wrapPathInSvg } from '@tnesh-stack/elements';
-import { SignalWatcher, joinAsyncMap, toPromise } from '@tnesh-stack/signals';
-import { HashType, mapValues, retype, slice } from '@tnesh-stack/utils';
 import { LitElement, css, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 

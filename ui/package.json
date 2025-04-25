@@ -28,13 +28,13 @@
     "./locales/*": "./locales/*"
   },
   "dependencies": {
-    "@darksoil-studio/linked-devices-zome": "0.400.0-rev.9ec0b1c9b0e0c546b1118b7bbdac129bb901ae38",
-    "@darksoil-studio/profiles-provider": "^0.400.0",
-    "@darksoil-studio/notifications-zome": "0.400.0-rev.b4ac42112099ba5d21fcd0aa0bfd724c29f4f7bf",
-    "@holochain/client": "^0.18.0",
-    "@tnesh-stack/elements": "^0.400.0",
-    "@tnesh-stack/signals": "^0.400.0",
-    "@tnesh-stack/utils": "^0.400.0",
+    "@darksoil-studio/linked-devices-zome": "0.500.0-rev.5a9b78aed28fcc3a2cfcb62441440301ab9b80fb",
+    "@darksoil-studio/profiles-provider": "^0.500.0",
+    "@darksoil-studio/notifications-zome": "0.500.0-rev.a334a1bdd1ed05afa86dd146a077ddf37f98143a",
+    "@holochain/client": "^0.19.0",
+    "@darksoil-studio/holochain-elements": "^0.500.0",
+    "@darksoil-studio/holochain-signals": "^0.500.0",
+    "@darksoil-studio/holochain-utils": "^0.500.0",
     "@lit/context": "^1.0.0",
     "@lit/localize": "^0.12.0",
     "@mdi/js": "^7.2.0",
@@ -43,7 +43,7 @@
     "lit": "^3.0.0"
   },
   "devDependencies": {
-    "@darksoil-studio/profiles-zome": "0.400.0-rev.15c8dfa92555d4ef4f35cc40faa201bb03d25f99",
+    "@darksoil-studio/profiles-zome": "0.500.0-rev.550b9e14f1cf232bea72d1972fe1519934e2136e",
     "@custom-elements-manifest/analyzer": "^0.9.4",
     "@lit/localize-tools": "^0.6.3",
     "typescript": "^5.4.5",

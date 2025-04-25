@@ -43,16 +43,18 @@ export async function setup(scenario: Scenario) {
 
 	const rolesSettings: RoleSettingsMap = {
 		roles_test: {
-			type: 'Provisioned',
-			modifiers: {
-				properties: {
-					progenitors: [encodeHashToBase64(alicePubKey)],
-				} as any,
+			type: 'provisioned',
+			value: {
+				modifiers: {
+					properties: {
+						progenitors: [encodeHashToBase64(alicePubKey)],
+					} as any,
+				},
 			},
 		},
 	};
 
-	const appBundleSource = { path: rolesTestHapp };
+	const appBundleSource = { type: 'path' as const, value: rolesTestHapp };
 
 	const appInfo = await aliceConductor.installApp(appBundleSource, {
 		agentPubKey: alicePubKey,
@@ -76,7 +78,7 @@ export async function setup(scenario: Scenario) {
 	await aliceConductor
 		.adminWs()
 		.authorizeSigningCredentials(
-			(Object.values(appInfo.cell_info)[0][0] as any).provisioned.cell_id,
+			(Object.values(appInfo.cell_info)[0][0] as any).value.cell_id,
 		);
 
 	const config: RolesStoreConfig = {

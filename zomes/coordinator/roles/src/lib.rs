@@ -34,7 +34,7 @@ pub fn init(_: ()) -> ExternResult<InitCallbackResult> {
     let agent_info = agent_info()?;
     let progenitors = progenitors(())?;
 
-    if progenitors.contains(&agent_info.agent_latest_pubkey) {
+    if progenitors.contains(&agent_info.agent_initial_pubkey) {
         claim_admin_role_as_progenitor()?;
     }
 
@@ -155,7 +155,7 @@ pub fn attempt_create_all_role_claims_deleted_proof(
     let zome_info = zome_info()?;
     info!("An AssingeeRoleClaim link was just deleted. Attempting to create an AllRoleClaimsDeletedProof.");
     if let Err(err) = call_remote(
-        agent_info.agent_latest_pubkey,
+        agent_info.agent_initial_pubkey,
         zome_info.name,
         "create_all_role_claims_deleted_proofs_if_possible".into(),
         None,
