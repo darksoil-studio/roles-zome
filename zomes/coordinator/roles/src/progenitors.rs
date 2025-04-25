@@ -5,7 +5,7 @@ use roles_integrity::{
 };
 
 pub fn claim_admin_role_as_progenitor() -> ExternResult<()> {
-    let my_pub_key = agent_info()?.agent_latest_pubkey;
+    let my_pub_key = agent_info()?.agent_initial_pubkey;
 
     let path = role_path(&ADMIN_ROLE.to_string())?;
     path.ensure()?;

@@ -1,3 +1,4 @@
+import { EntryRecord, ZomeClient } from '@darksoil-studio/holochain-utils';
 import {
 	ActionHash,
 	AgentPubKey,
@@ -8,7 +9,6 @@ import {
 	Record,
 	SignedActionHashed,
 } from '@holochain/client';
-import { EntryRecord, ZomeClient } from '@tnesh-stack/utils';
 
 import { RoleClaim, RolesSignal } from './types.js';
 

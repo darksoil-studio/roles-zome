@@ -1,10 +1,17 @@
+import {
+	hashProperty,
+	sharedStyles,
+} from '@darksoil-studio/holochain-elements';
+import '@darksoil-studio/holochain-elements/dist/elements/display-error.js';
+import {
+	AsyncResult,
+	SignalWatcher,
+	joinAsync,
+} from '@darksoil-studio/holochain-signals';
 import { ActionHash, AgentPubKey } from '@holochain/client';
 import { consume } from '@lit/context';
 import { localized, msg } from '@lit/localize';
 import '@shoelace-style/shoelace/dist/components/tag/tag.js';
-import { hashProperty, sharedStyles } from '@tnesh-stack/elements';
-import '@tnesh-stack/elements/dist/elements/display-error.js';
-import { AsyncResult, SignalWatcher, joinAsync } from '@tnesh-stack/signals';
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 

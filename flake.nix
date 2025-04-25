@@ -1,21 +1,23 @@
-rec {
+{
   description = "Template for Holochain app development";
 
   inputs = {
-    holonix.url = "github:holochain/holonix/main-0.4";
+    holonix.url = "github:holochain/holonix/main-0.5";
     nixpkgs.follows = "holonix/nixpkgs";
     flake-parts.follows = "holonix/flake-parts";
     crane.follows = "holonix/crane";
 
-    tnesh-stack.url = "github:darksoil-studio/tnesh-stack/main-0.4";
-    playground.url = "github:darksoil-studio/holochain-playground/main-0.4";
-    p2p-shipyard.url = "github:darksoil-studio/p2p-shipyard/main-0.4";
+    scaffolding.url = "github:darksoil-studio/scaffolding/main-0.5";
+    holochain-nix-builders.url =
+      "github:darksoil-studio/holochain-nix-builders/main-0.5";
+    playground.url = "github:darksoil-studio/holochain-playground/main-0.5";
+    p2p-shipyard.url = "github:darksoil-studio/p2p-shipyard/main-0.5";
 
     linked-devices-zome.url =
-      "github:darksoil-studio/linked-devices-zome/main-0.4";
-    profiles-zome.url = "github:darksoil-studio/profiles-zome/main-0.4";
+      "github:darksoil-studio/linked-devices-zome/main-0.5";
+    profiles-zome.url = "github:darksoil-studio/profiles-zome/main-0.5";
     notifications-zome.url =
-      "github:darksoil-studio/notifications-zome/main-0.4";
+      "github:darksoil-studio/notifications-zome/main-0.5";
   };
 
   nixConfig = {
@@ -37,7 +39,7 @@ rec {
         # Just for testing purposes
         ./workdir/dna.nix
         ./workdir/happ.nix
-        inputs.tnesh-stack.outputs.flakeModules.builders
+        inputs.holochain-nix-builders.outputs.flakeModules.builders
       ];
 
       flake = {
@@ -73,22 +75,22 @@ rec {
 
         devShells.default = pkgs.mkShell {
           inputsFrom = [
-            inputs'.tnesh-stack.devShells.synchronized-pnpm
+            inputs'.scaffolding.devShells.synchronized-pnpm
             inputs'.holonix.devShells.default
           ];
 
           packages = [
-            inputs'.tnesh-stack.packages.holochain
-            inputs'.tnesh-stack.packages.hc-scaffold-zome
+            inputs'.holochain-nix-builders.packages.holochain
+            inputs'.scaffolding.packages.hc-scaffold-zome
             inputs'.playground.packages.hc-playground
             inputs'.p2p-shipyard.packages.hc-pilot
           ];
         };
-        devShells.npm-ci = inputs'.tnesh-stack.devShells.synchronized-pnpm;
+        devShells.npm-ci = inputs'.scaffolding.devShells.synchronized-pnpm;
 
         packages.scaffold = pkgs.symlinkJoin {
           name = "scaffold-remote-zome";
-          paths = [ inputs'.tnesh-stack.packages.scaffold-remote-zome ];
+          paths = [ inputs'.scaffolding.packages.scaffold-remote-zome ];
           buildInputs = [ pkgs.makeWrapper ];
           postBuild = ''
             wrapProgram $out/bin/scaffold-remote-zome \
@@ -97,7 +99,7 @@ rec {
                 --coordinator-zome-name roles \
                 --remote-zome-git-url github:darksoil-studio/roles-zome \
                 --remote-npm-package-name @darksoil-studio/roles-zome \
-                --remote-zome-git-branch main-0.4 \
+                --remote-zome-git-branch main-0.5 \
                 --context-element roles-context \
                 --context-element-import @darksoil-studio/roles-zome/dist/elements/roles-context.js" 
           '';

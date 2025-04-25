@@ -1,5 +1,3 @@
-import { HoloHash, Link } from '@holochain/client';
-import { encode } from '@msgpack/msgpack';
 import {
 	AsyncResult,
 	AsyncSignal,
@@ -9,7 +7,7 @@ import {
 	joinAsync,
 	sortLinksByTimestampAscending,
 	uniquifyLinks,
-} from '@tnesh-stack/signals';
+} from '@darksoil-studio/holochain-signals';
 import {
 	ActionCommittedSignal,
 	EntryRecord,
@@ -19,7 +17,9 @@ import {
 	ZomeClient,
 	getHashType,
 	retype,
-} from '@tnesh-stack/utils';
+} from '@darksoil-studio/holochain-utils';
+import { HoloHash, Link } from '@holochain/client';
+import { encode } from '@msgpack/msgpack';
 
 export function mapValues<K extends string, V, U>(
 	map: ReadonlyMap<K, V>,

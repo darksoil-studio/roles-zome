@@ -5,12 +5,12 @@
     "test": "WASM_LOG=debug vitest run"
   },
   "dependencies": {
-    "@darksoil-studio/linked-devices-zome": "0.400.0-rev.681dfa4183284292d9e40832c517a52f2200ba9f",
-    "@darksoil-studio/profiles-zome": "0.400.0-rev.0e6b1cd53ee4182a6e1cb5fd850d7f826f5662db",
-    "@tnesh-stack/signals": "^0.400.0",
-    "@tnesh-stack/utils": "^0.400.0",
-    "@holochain/client": "^0.18.0",
-    "@holochain/tryorama": "^0.17.0",
+    "@darksoil-studio/linked-devices-zome": "0.500.0-rev.5a9b78aed28fcc3a2cfcb62441440301ab9b80fb",
+    "@darksoil-studio/profiles-zome": "0.500.0-rev.550b9e14f1cf232bea72d1972fe1519934e2136e",
+    "@darksoil-studio/holochain-signals": "^0.500.0",
+    "@darksoil-studio/holochain-utils": "^0.500.0",
+    "@holochain/client": "^0.19.0",
+    "@holochain/tryorama": "^0.18.0-rc",
     "@msgpack/msgpack": "^2.8.0",
     "fflate": "^0.8.2",
     "typescript": "^5.4.5",

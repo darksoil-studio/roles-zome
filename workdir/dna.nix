@@ -3,19 +3,18 @@
 {
   perSystem = { inputs', self', lib, system, ... }: {
     packages.roles_test_dna =
-      inputs.tnesh-stack.outputs.builders.${system}.dna {
+      inputs.holochain-nix-builders.outputs.builders.${system}.dna {
         dnaManifest = ./dna.yaml;
         zomes = let
-          example = inputs.tnesh-stack.outputs.builders.${system}.rustZome {
-            workspacePath = inputs.self.outPath;
-            crateCargoToml = ../zomes/coordinator/example/Cargo.toml;
-            cargoArtifacts = inputs'.tnesh-stack.packages.zomeCargoArtifacts;
-          };
+          example =
+            inputs.holochain-nix-builders.outputs.builders.${system}.rustZome {
+              workspacePath = inputs.self.outPath;
+              crateCargoToml = ../zomes/coordinator/example/Cargo.toml;
+            };
           example_integrity =
-            inputs.tnesh-stack.outputs.builders.${system}.rustZome {
+            inputs.holochain-nix-builders.outputs.builders.${system}.rustZome {
               workspacePath = inputs.self.outPath;
               crateCargoToml = ../zomes/integrity/example/Cargo.toml;
-              cargoArtifacts = inputs'.tnesh-stack.packages.zomeCargoArtifacts;
             };
         in {
           inherit example example_integrity;

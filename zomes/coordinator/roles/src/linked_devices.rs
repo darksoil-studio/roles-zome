@@ -62,7 +62,7 @@ where
     R: DeserializeOwned + std::fmt::Debug,
 {
     let response = call_remote(
-        agent_info()?.agent_latest_pubkey,
+        agent_info()?.agent_initial_pubkey,
         zome_name.clone(),
         fn_name.clone(),
         None,
@@ -119,7 +119,7 @@ pub fn query_my_linked_devices(
 }
 
 pub fn get_all_my_agents() -> ExternResult<Vec<AgentPubKey>> {
-    let my_pub_key = agent_info()?.agent_latest_pubkey;
+    let my_pub_key = agent_info()?.agent_initial_pubkey;
     let mut my_agents = get_my_other_devices()?;
     my_agents.push(my_pub_key);
 

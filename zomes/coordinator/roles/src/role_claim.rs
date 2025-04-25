@@ -16,7 +16,7 @@ pub fn get_assignee_to_role_links_for(agent: AgentPubKey) -> ExternResult<Vec<Li
 
 /** If I am assigned to the role but haven't claimed it, do so */
 pub fn claim_roles_assigned_to_me() -> ExternResult<()> {
-    let my_pub_key = agent_info()?.agent_latest_pubkey;
+    let my_pub_key = agent_info()?.agent_initial_pubkey;
     let links = get_assignee_to_role_links_for(my_pub_key)?;
 
     let role_claim_creates = query_role_claim_creates()?;
@@ -64,7 +64,7 @@ pub fn create_role_claim(
     role_to_assignee_create_link_hash: ActionHash,
 ) -> ExternResult<()> {
     info!("Creating role claim for role {role}.");
-    let my_pub_key = agent_info()?.agent_latest_pubkey;
+    let my_pub_key = agent_info()?.agent_initial_pubkey;
 
     let tag = AssigneeRoleClaimLinkTag {
         role,

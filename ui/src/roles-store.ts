@@ -1,14 +1,19 @@
-import { LinkedDevicesClient } from '@darksoil-studio/linked-devices-zome';
-import { AgentPubKey } from '@holochain/client';
-import { decode } from '@msgpack/msgpack';
 import {
 	collectionSignal,
 	fromPromise,
 	liveLinksSignal,
 	mapCompleted,
 	pipe,
-} from '@tnesh-stack/signals';
-import { HashType, MemoHoloHashMap, MemoMap, retype } from '@tnesh-stack/utils';
+} from '@darksoil-studio/holochain-signals';
+import {
+	HashType,
+	MemoHoloHashMap,
+	MemoMap,
+	retype,
+} from '@darksoil-studio/holochain-utils';
+import { LinkedDevicesClient } from '@darksoil-studio/linked-devices-zome';
+import { AgentPubKey } from '@holochain/client';
+import { decode } from '@msgpack/msgpack';
 
 import { RoleConfig } from './role-config.js';
 import { RolesClient } from './roles-client.js';

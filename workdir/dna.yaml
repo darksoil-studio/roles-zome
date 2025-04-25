@@ -4,7 +4,6 @@ name: roles_test
 integrity:
   network_seed: ~
   properties: ~
-  origin_time: 1676140846503210
   zomes:
     - name: roles_integrity
       hash: ~
