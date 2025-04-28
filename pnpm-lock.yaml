@@ -117,10 +117,10 @@ importers:
         specifier: ^0.500.0
         version: 0.500.0
       '@darksoil-studio/linked-devices-zome':
-        specifier: 0.500.0-rev.5a9b78aed28fcc3a2cfcb62441440301ab9b80fb
+        specifier: ^0.500.0-rev
         version: 0.500.0-rev.5a9b78aed28fcc3a2cfcb62441440301ab9b80fb(@types/react@18.3.12)
       '@darksoil-studio/notifications-zome':
-        specifier: 0.500.0-rev.a334a1bdd1ed05afa86dd146a077ddf37f98143a
+        specifier: ^0.500.0-rev
         version: 0.500.0-rev.a334a1bdd1ed05afa86dd146a077ddf37f98143a(@types/react@18.3.12)
       '@darksoil-studio/profiles-provider':
         specifier: ^0.500.0
@@ -151,7 +151,7 @@ importers:
         specifier: ^0.9.4
         version: 0.9.9
       '@darksoil-studio/profiles-zome':
-        specifier: 0.500.0-rev.550b9e14f1cf232bea72d1972fe1519934e2136e
+        specifier: ^0.500.0-rev
         version: 0.500.0-rev.550b9e14f1cf232bea72d1972fe1519934e2136e(@types/react@18.3.12)
       '@lit/localize-tools':
         specifier: ^0.6.3
