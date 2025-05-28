@@ -1,10 +1,11 @@
-import { encodeHashToBase64 } from '@holochain/client';
-import { dhtSync, pause, runScenario } from '@holochain/tryorama';
 import { toPromise } from '@darksoil-studio/holochain-signals';
+import { encodeHashToBase64 } from '@holochain/client';
+import { pause, runScenario } from '@holochain/tryorama';
 import { assert, expect, test } from 'vitest';
 
 import { RolesStore } from '../../ui/src/roles-store.js';
 import { setup, waitUntil } from './setup.js';
+import { dhtSync } from './sync.js';
 
 function createExampleEntryThatOnlyEditorsCanCreate(rolesStore: RolesStore) {
 	return rolesStore.client.client.callZome({
@@ -113,6 +114,8 @@ test('Assign role lifecycle', async () => {
 
 		await dhtSync([alice.player, bob.player], alice.player.cells[0].cell_id[0]);
 
+		await pause(1000);
+
 		editors = await toPromise(bob.store.assigneesForRole.get('editor'));
 
 		assert.equal(editors.length, 0);
@@ -180,7 +183,7 @@ test('Admin can assign admin that assigns a role', async () => {
 		).rejects.toThrowError();
 
 		// Avoid ChainHeadMove with the notification created at the post_commit
-		await pause(2000);
+		await pause(5000);
 
 		const [carolAssignRoleCreateLinkHash] = await bob.store.client.assignRole(
 			'editor',
