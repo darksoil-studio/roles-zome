@@ -11,7 +11,8 @@
     holochain-nix-builders.url =
       "github:darksoil-studio/holochain-nix-builders/main-0.5";
     playground.url = "github:darksoil-studio/holochain-playground/main-0.5";
-    p2p-shipyard.url = "github:darksoil-studio/p2p-shipyard/main-0.5";
+    tauri-plugin-holochain.url =
+      "github:darksoil-studio/tauri-plugin-holochain/main-0.5";
 
     linked-devices-zome.url =
       "github:darksoil-studio/linked-devices-zome/main-0.5";
@@ -53,7 +54,7 @@
             runtimeInputs = [
               happ
               # (outputs inputs).packages.${system}.hc-progenitor
-              inputs.p2p-shipyard.outputs.packages.${system}.hc-pilot
+              inputs.tauri-plugin-holochain.outputs.packages.${system}.hc-pilot
             ];
 
             text = ''
@@ -83,7 +84,7 @@
             inputs'.holochain-nix-builders.packages.holochain
             inputs'.scaffolding.packages.hc-scaffold-zome
             inputs'.playground.packages.hc-playground
-            inputs'.p2p-shipyard.packages.hc-pilot
+            inputs'.tauri-plugin-holochain.packages.hc-pilot
           ];
         };
         devShells.npm-ci = inputs'.scaffolding.devShells.synchronized-pnpm;
