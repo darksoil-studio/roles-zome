@@ -1,10 +1,11 @@
-import { encodeHashToBase64 } from '@holochain/client';
-import { dhtSync, pause, runScenario } from '@holochain/tryorama';
 import { toPromise } from '@darksoil-studio/holochain-signals';
+import { encodeHashToBase64 } from '@holochain/client';
+import { pause, runScenario } from '@holochain/tryorama';
 import { assert, expect, test } from 'vitest';
 
 import { RolesStore } from '../../ui/src/roles-store.js';
 import { setup, waitUntil } from './setup.js';
+import { dhtSync } from './sync.js';
 
 function createExampleEntryThatOnlyEditorsCanCreate(rolesStore: RolesStore) {
 	return rolesStore.client.client.callZome({
