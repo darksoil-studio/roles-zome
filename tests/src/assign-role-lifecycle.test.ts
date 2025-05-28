@@ -181,7 +181,7 @@ test('Admin can assign admin that assigns a role', async () => {
 		).rejects.toThrowError();
 
 		// Avoid ChainHeadMove with the notification created at the post_commit
-		await pause(2000);
+		await pause(5000);
 
 		const [carolAssignRoleCreateLinkHash] = await bob.store.client.assignRole(
 			'editor',
