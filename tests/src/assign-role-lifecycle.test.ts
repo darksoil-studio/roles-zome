@@ -114,6 +114,8 @@ test('Assign role lifecycle', async () => {
 
 		await dhtSync([alice.player, bob.player], alice.player.cells[0].cell_id[0]);
 
+		await pause(1000);
+
 		editors = await toPromise(bob.store.assigneesForRole.get('editor'));
 
 		assert.equal(editors.length, 0);
