@@ -56,10 +56,13 @@ export async function setup(scenario: Scenario) {
 
 	const appBundleSource = { type: 'path' as const, value: rolesTestHapp };
 
-	const appInfo = await aliceConductor.installApp(appBundleSource, {
-		agentPubKey: alicePubKey,
-		networkSeed: scenario.networkSeed,
-		rolesSettings,
+	const appInfo = await aliceConductor.installApp({
+		appBundleSource,
+		options: {
+			agentPubKey: alicePubKey,
+			networkSeed: scenario.networkSeed,
+			rolesSettings,
+		},
 	});
 
 	const port = await aliceConductor.attachAppInterface();
@@ -106,8 +109,11 @@ export async function setup(scenario: Scenario) {
 	);
 	await aliceStore.client.getAssigneesForRole('');
 
-	const bob = await scenario.addPlayerWithApp(appBundleSource, {
-		rolesSettings,
+	const bob = await scenario.addPlayerWithApp({
+		appBundleSource,
+		options: {
+			rolesSettings,
+		},
 	});
 	await bob.conductor
 		.adminWs()
@@ -124,8 +130,11 @@ export async function setup(scenario: Scenario) {
 	const bobLinkedDevicesStore = new LinkedDevicesStore(bobLinkedDevicesClient);
 	await bobStore.client.getAssigneesForRole('');
 
-	const carol = await scenario.addPlayerWithApp(appBundleSource, {
-		rolesSettings,
+	const carol = await scenario.addPlayerWithApp({
+		appBundleSource,
+		options: {
+			rolesSettings,
+		},
 	});
 
 	await carol.conductor
