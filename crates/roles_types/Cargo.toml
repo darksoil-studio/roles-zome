@@ -9,6 +9,7 @@ name = "roles_types"
 
 [dependencies]
 hdi = { workspace = true }
-holo_hash = { version = "0.4.0", features = ["encoding"] }
+holo_hash = { version = "0.5", features = ["encoding"] }
 
+holochain_serialized_bytes = { workspace = true }
 serde = { workspace = true }
