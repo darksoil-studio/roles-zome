@@ -10,6 +10,7 @@ name = "roles"
 [dependencies]
 hdk = { workspace = true }
 
+holochain_serialized_bytes = { workspace = true }
 serde = { workspace = true }
 
 notifications_types = { git = "https://github.com/darksoil-studio/notifications-zome", branch = "main-0.5" }
