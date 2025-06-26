@@ -10,5 +10,6 @@ name = "example_integrity"
 [dependencies]
 hdi = { workspace = true }
 
+holochain_serialized_bytes = { workspace = true }
 serde = { workspace = true }
 roles_types = {path ="../../../crates/roles_types"}
