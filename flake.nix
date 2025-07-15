@@ -55,7 +55,7 @@
             runtimeInputs = [
               happ
               # (outputs inputs).packages.${system}.hc-progenitor
-              inputs.tauri-plugin-holochain.outputs.packages.${system}.hc-pilot
+              inputs.holochain-utils.outputs.packages.${system}.hc-pilot
             ];
 
             text = ''
