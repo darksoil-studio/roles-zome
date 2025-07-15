@@ -158,7 +158,12 @@ export async function setup(scenario: Scenario) {
 	// conductor of the scenario.
 	await scenario.shareAllAgents();
 
-	await dhtSync([alicePlayer, bob, carol], alice.cells[0].cell_id[0]);
+	await dhtSync(
+		[alicePlayer, bob, carol],
+		alice.cells[0].cell_id[0],
+		1000,
+		120_000,
+	);
 
 	return {
 		alice: {
