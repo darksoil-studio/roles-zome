@@ -4,21 +4,22 @@
   inputs = {
     holonix.url = "github:holochain/holonix/main-0.5";
     nixpkgs.follows = "holonix/nixpkgs";
-    flake-parts.follows = "holonix/flake-parts";
-    crane.follows = "holonix/crane";
 
-    scaffolding.url = "github:darksoil-studio/scaffolding/main-0.5";
-    holochain-nix-builders.url =
-      "github:darksoil-studio/holochain-nix-builders/main-0.5";
-    playground.url = "github:darksoil-studio/holochain-playground/main-0.5";
-    tauri-plugin-holochain.url =
-      "github:darksoil-studio/tauri-plugin-holochain/main-0.5";
+    holochain-utils.url = "github:darksoil-studio/holochain-utils/main-0.5";
+    holochain-utils.inputs.holonix.follows = "holonix";
 
-    linked-devices-zome.url =
-      "github:darksoil-studio/linked-devices-zome/main-0.5";
-    profiles-zome.url = "github:darksoil-studio/profiles-zome/main-0.5";
+    linked-devices-zome.follows = "profiles-zome/linked-devices-zome";
+    linked-devices-zome.inputs.holochain-utils.follows = "holochain-utils";
+    linked-devices-zome.inputs.holonix.follows = "holonix";
+
+    profiles-zome.follows = "notifications-zome/profiles-zome";
+    profiles-zome.inputs.holochain-utils.follows = "holochain-utils";
+    profiles-zome.inputs.holonix.follows = "holonix";
+
     notifications-zome.url =
       "github:darksoil-studio/notifications-zome/main-0.5";
+    notifications-zome.inputs.holochain-utils.follows = "holochain-utils";
+    notifications-zome.inputs.holonix.follows = "holonix";
   };
 
   nixConfig = {
@@ -33,14 +34,14 @@
   };
 
   outputs = inputs:
-    inputs.flake-parts.lib.mkFlake { inherit inputs; } rec {
+    inputs.holonix.inputs.flake-parts.lib.mkFlake { inherit inputs; } rec {
       imports = [
         ./zomes/integrity/roles/zome.nix
         ./zomes/coordinator/roles/zome.nix
         # Just for testing purposes
         ./workdir/dna.nix
         ./workdir/happ.nix
-        inputs.holochain-nix-builders.outputs.flakeModules.builders
+        inputs.holochain-utils.outputs.flakeModules.builders
       ];
 
       flake = {
@@ -76,22 +77,22 @@
 
         devShells.default = pkgs.mkShell {
           inputsFrom = [
-            inputs'.scaffolding.devShells.synchronized-pnpm
+            inputs'.holochain-utils.devShells.synchronized-pnpm
             inputs'.holonix.devShells.default
           ];
 
           packages = [
-            inputs'.holochain-nix-builders.packages.holochain
-            inputs'.scaffolding.packages.hc-scaffold-zome
-            inputs'.playground.packages.hc-playground
-            inputs'.tauri-plugin-holochain.packages.hc-pilot
+            inputs'.holochain-utils.packages.holochain
+            inputs'.holochain-utils.packages.hc-scaffold-zome
+            inputs'.holochain-utils.packages.hc-playground
+            inputs'.holochain-utils.packages.hc-pilot
           ];
         };
-        devShells.npm-ci = inputs'.scaffolding.devShells.synchronized-pnpm;
+        devShells.npm-ci = inputs'.holochain-utils.devShells.synchronized-pnpm;
 
         packages.scaffold = pkgs.symlinkJoin {
           name = "scaffold-remote-zome";
-          paths = [ inputs'.scaffolding.packages.scaffold-remote-zome ];
+          paths = [ inputs'.holochain-utils.packages.scaffold-remote-zome ];
           buildInputs = [ pkgs.makeWrapper ];
           postBuild = ''
             wrapProgram $out/bin/scaffold-remote-zome \
