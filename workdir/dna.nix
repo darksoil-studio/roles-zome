@@ -3,16 +3,15 @@
 {
   perSystem = { inputs', self', lib, system, ... }: {
     packages.roles_test_dna =
-      inputs.holochain-nix-builders.outputs.builders.${system}.dna {
+      inputs.holochain-utils.outputs.builders.${system}.dna {
         dnaManifest = ./dna.yaml;
         zomes = let
-          example =
-            inputs.holochain-nix-builders.outputs.builders.${system}.rustZome {
-              workspacePath = inputs.self.outPath;
-              crateCargoToml = ../zomes/coordinator/example/Cargo.toml;
-            };
+          example = inputs.holochain-utils.outputs.builders.${system}.rustZome {
+            workspacePath = inputs.self.outPath;
+            crateCargoToml = ../zomes/coordinator/example/Cargo.toml;
+          };
           example_integrity =
-            inputs.holochain-nix-builders.outputs.builders.${system}.rustZome {
+            inputs.holochain-utils.outputs.builders.${system}.rustZome {
               workspacePath = inputs.self.outPath;
               crateCargoToml = ../zomes/integrity/example/Cargo.toml;
             };
