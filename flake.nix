@@ -2,24 +2,18 @@
   description = "Template for Holochain app development";
 
   inputs = {
-    holonix.url = "github:holochain/holonix/main-0.5";
-    nixpkgs.follows = "holonix/nixpkgs";
-
     holochain-utils.url = "github:darksoil-studio/holochain-utils/main-0.5";
-    holochain-utils.inputs.holonix.follows = "holonix";
+    nixpkgs.follows = "holochain-utils/nixpkgs";
 
     linked-devices-zome.follows = "profiles-zome/linked-devices-zome";
     linked-devices-zome.inputs.holochain-utils.follows = "holochain-utils";
-    linked-devices-zome.inputs.holonix.follows = "holonix";
 
     profiles-zome.follows = "notifications-zome/profiles-zome";
     profiles-zome.inputs.holochain-utils.follows = "holochain-utils";
-    profiles-zome.inputs.holonix.follows = "holonix";
 
     notifications-zome.url =
       "github:darksoil-studio/notifications-zome/main-0.5";
     notifications-zome.inputs.holochain-utils.follows = "holochain-utils";
-    notifications-zome.inputs.holonix.follows = "holonix";
   };
 
   nixConfig = {
@@ -34,7 +28,9 @@
   };
 
   outputs = inputs:
-    inputs.holonix.inputs.flake-parts.lib.mkFlake { inherit inputs; } rec {
+    inputs.holochain-utils.inputs.holonix.inputs.flake-parts.lib.mkFlake {
+      inherit inputs;
+    } rec {
       imports = [
         ./zomes/integrity/roles/zome.nix
         ./zomes/coordinator/roles/zome.nix
@@ -66,7 +62,8 @@
           };
       };
 
-      systems = builtins.attrNames inputs.holonix.devShells;
+      systems =
+        builtins.attrNames inputs.holochain-utils.inputs.holonix.devShells;
       perSystem = { inputs', self', config, pkgs, system, ... }: {
 
         packages.network = (pkgs.callPackage flake.lib.progenitor-network { }) {
@@ -78,7 +75,7 @@
         devShells.default = pkgs.mkShell {
           inputsFrom = [
             inputs'.holochain-utils.devShells.synchronized-pnpm
-            inputs'.holonix.devShells.default
+            inputs'.holochain-utils.devShells.default
           ];
 
           packages = [
